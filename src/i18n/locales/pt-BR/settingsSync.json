@@ -87,13 +87,13 @@
       "successBody": "Este espaço está pronto para sincronizar a área de transferência.",
       "copyInvitation": "Copiar convite",
       "shareInvitation": "Compartilhar convite",
-      "shareMessage": "Entre no meu espaço UniClip com o convite {{code}}.",
+      "shareMessage": "Entre no meu espaço Clipboard com o convite {{code}}.",
       "expiresIn": "Expira em {{time}}",
       "expired": "Este convite expirou",
       "finishLater": "Concluir depois",
       "thisDevice": "Este dispositivo",
       "otherDevice": "Outro dispositivo",
-      "peerUpgradeRequired": "Conectado. Atualize o UniClip nos outros dispositivos para continuar sincronizando."
+      "peerUpgradeRequired": "Conectado. Atualize o Clipboard nos outros dispositivos para continuar sincronizando."
     },
     "status": {
       "ready": "O espaço está pronto",
@@ -248,13 +248,13 @@
       "confirmStopAction": "Confirmar e parar a sincronização",
       "confirmLeaveAction": "Parar de sincronizar este celular",
       "notificationTitle": "Revise uma alteração de dispositivos",
-      "notificationBody": "Abra o UniClip para revisar quais dispositivos podem continuar sincronizando.",
+      "notificationBody": "Abra o Clipboard para revisar quais dispositivos podem continuar sincronizando.",
       "notificationReviewTitle": "Revise uma alteração de dispositivos",
-      "notificationReviewBody": "Abra o UniClip para escolher quais dispositivos podem continuar sincronizando.",
+      "notificationReviewBody": "Abra o Clipboard para escolher quais dispositivos podem continuar sincronizando.",
       "notificationUpgradeTitle": "Um dispositivo precisa ser atualizado",
-      "notificationUpgradeBody": "Abra o UniClip para revisar o estado atual do espaço.",
+      "notificationUpgradeBody": "Abra o Clipboard para revisar o estado atual do espaço.",
       "notificationUnverifiableTitle": "Os dados do dispositivo precisam de atenção",
-      "notificationUnverifiableBody": "Abra o UniClip para revisar o estado atual do espaço.",
+      "notificationUnverifiableBody": "Abra o Clipboard para revisar o estado atual do espaço.",
       "notificationChannel": "Alterações de dispositivos",
       "stateChanged": "O estado dos dispositivos mudou. Revise o resultado mais recente.",
       "error": "Não foi possível salvar a escolha. O estado mais recente está sendo mostrado; tente novamente.",
@@ -316,7 +316,7 @@
       "serviceUnavailable": "O serviço de conexão está indisponível. Tente mais tarde",
       "connectionLost": "A conexão foi interrompida. Tente novamente",
       "operationFailed": "A operação falhou. Verifique os dados e tente novamente.",
-      "peerUpgradeRequired": "Atualize o UniClip no outro dispositivo e tente novamente."
+      "peerUpgradeRequired": "Atualize o Clipboard no outro dispositivo e tente novamente."
     },
     "manage": {
       "title": "Ações do espaço"
@@ -381,11 +381,11 @@
       "failedTitle": "Não foi possível ler o QR",
       "rescan": "Escanear novamente",
       "permissionTitle": "Acesso à câmera necessário",
-      "permissionBody": "O UniClip usa a câmera para escanear o QR de conexão.",
+      "permissionBody": "O Clipboard usa a câmera para escanear o QR de conexão.",
       "requestPermission": "Permitir câmera",
       "openSettings": "Abrir ajustes",
       "errors": {
-        "INVALID_SCHEME": "Este não é um QR de servidor UniClip.",
+        "INVALID_SCHEME": "Este não é um QR de servidor Clipboard.",
         "UNSUPPORTED_VERSION": "Esta versão do QR não é compatível. Atualize o app.",
         "UNSUPPORTED_SERVICE": "Este QR não é do Mobile LAN.",
         "PAYLOAD_DECODE_FAILED": "O QR está danificado. Gere outro.",

@@ -20,7 +20,7 @@
     "fallbackSection": {
       "header": "Nenhum aviso, ou deseja alterar sua escolha",
       "footer": "Se nenhum aviso apareceu, a área de transferência pode estar vazia (copie algum texto primeiro e acione novamente), ou você tocou em \"Não Permitir\" anteriormente e o iOS memorizou isso. Vá às configurações do sistema e defina \"Colar de Outros Apps\" como \"Permitir\"; essa opção só aparece depois que você a aciona uma vez. O iOS não expõe o valor atual ao app, portanto não é necessário voltar e confirmar depois de alterá-lo.",
-      "step1": "Abra o UniClip nas configurações do sistema",
+      "step1": "Abra o Clipboard nas configurações do sistema",
       "step2": "Toque em \"Colar de Outros Apps\"",
       "step3": "Escolha \"Permitir\""
     },

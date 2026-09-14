@@ -1,14 +1,16 @@
 import { useRef, useState } from 'react';
-import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { AppButton, AppHost } from '@/components/ui';
 import { useTheme } from '@/hooks/useTheme';
 import { OnboardingArtwork } from './onboarding/OnboardingArtwork';
+import { BrandMark } from './onboarding/Illustrations';
 import type { OnboardingScreenProps } from './OnboardingScreen.types';
 import { useOnboardingConnection } from './onboarding/useOnboardingConnection';
 import { OnboardingConnection } from './onboarding/OnboardingConnection';
+import { elevation, radius, typography } from '@/theme';
 
 const PAGES = ['history', 'sync', 'settings'] as const;
 
@@ -53,6 +55,13 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
 
   return (
     <SafeAreaView style={[s.root, { backgroundColor: c.background }]} edges={['top', 'bottom']}>
+      <View style={s.brandHeader}>
+        <View style={[s.brandBadge, { backgroundColor: c.accentContainer }]}>
+          <BrandMark color={c.accent as string} size={28} />
+        </View>
+        <Text style={[s.brandWordmark, { color: c.textPrimary }]}>Clipboard</Text>
+      </View>
+
       <PagerView
         ref={pager}
         style={s.pager}
@@ -66,11 +75,19 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
         {PAGES.map((kind, index) => (
           <View key={kind} collapsable={false} style={s.page}>
             <ScrollView contentContainerStyle={s.pageContent} showsVerticalScrollIndicator={false}>
-              <View style={s.art}>
+              <View
+                style={[
+                  s.art,
+                  Platform.OS === 'android' && elevation.md,
+                  { backgroundColor: c.surfaceLowest, borderColor: c.separator },
+                ]}
+              >
                 <OnboardingArtwork kind={kind} />
               </View>
               <View style={s.copy}>
-                <Text style={[s.step, { color: c.accent }]}>{`0${index + 1}`}</Text>
+                <View style={[s.stepPill, { backgroundColor: c.accentContainer }]}>
+                  <Text style={[s.step, { color: c.onAccentContainer }]}>{`0${index + 1}`}</Text>
+                </View>
                 <Text accessibilityRole="header" style={[s.title, { color: c.textPrimary }]}>
                   {t(`intro.${kind}.title`)}
                 </Text>
@@ -92,7 +109,13 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
           {PAGES.map((kind, index) => (
             <View
               key={kind}
-              style={[s.dot, { backgroundColor: index === page ? c.accent : c.separator }]}
+              style={[
+                s.progressTrack,
+                {
+                  width: index === page ? 28 : 8,
+                  backgroundColor: index === page ? c.accent : c.separator,
+                },
+              ]}
             />
           ))}
         </View>
@@ -158,38 +181,88 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
 
 const s = StyleSheet.create({
   root: { flex: 1 },
+  brandHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 24,
+    paddingTop: 10,
+    paddingBottom: 2,
+  },
+  brandBadge: {
+    width: 40,
+    height: 40,
+    borderRadius: 13,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  brandWordmark: {
+    fontSize: 22,
+    lineHeight: 27,
+    fontWeight: '800',
+    letterSpacing: -0.45,
+    fontFamily: Platform.OS === 'android' ? 'sans-serif' : undefined,
+  },
   pager: { flex: 1 },
   page: { flex: 1 },
   pageContent: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 28,
-    paddingVertical: 24,
-    gap: 28,
+    paddingHorizontal: 24,
+    paddingTop: 18,
+    paddingBottom: 20,
+    gap: 24,
   },
   art: {
     width: '100%',
-    maxWidth: 320,
-    height: 224,
+    maxWidth: 340,
+    height: 236,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: radius.xxl,
+    borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 12,
   },
   copy: { width: '100%', maxWidth: 360, alignItems: 'center' },
-  step: { fontSize: 13, fontWeight: '700', marginBottom: 12, fontVariant: ['tabular-nums'] },
-  title: { fontSize: 28, lineHeight: 37, fontWeight: '700', textAlign: 'center' },
-  body: { fontSize: 16, lineHeight: 25, textAlign: 'center', marginTop: 16 },
+  stepPill: {
+    minWidth: 46,
+    height: 28,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    marginBottom: 14,
+  },
+  step: { fontSize: 12, fontWeight: '800', fontVariant: ['tabular-nums'], letterSpacing: 0.5 },
+  title: {
+    ...typography.title1,
+    textAlign: 'center',
+    fontWeight: '800',
+    letterSpacing: -0.55,
+    fontFamily: Platform.OS === 'android' ? 'sans-serif' : undefined,
+  },
+  body: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+    marginTop: 12,
+    paddingHorizontal: 6,
+    fontFamily: Platform.OS === 'android' ? 'sans-serif' : undefined,
+  },
   footer: {
     paddingHorizontal: 24,
-    paddingBottom: 12,
-    paddingTop: 12,
+    paddingBottom: 10,
+    paddingTop: 8,
     alignSelf: 'center',
     width: '100%',
     maxWidth: 440,
-    gap: 16,
+    gap: 14,
   },
-  progress: { flexDirection: 'row', justifyContent: 'center', gap: 8, height: 8 },
-  dot: { width: 8, height: 8, borderRadius: 4 },
+  progress: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, height: 10 },
+  progressTrack: { height: 8, borderRadius: 4 },
   actions: { flexDirection: 'row', alignItems: 'center' },
   primaryHost: { minHeight: 56, flex: 1 },
   secondaryHost: { minHeight: 50, width: 92, marginLeft: 12 },

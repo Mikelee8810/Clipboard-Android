@@ -147,16 +147,17 @@ function Chip({ testID, label, selected, onPress, theme, trailing }: ChipProps) 
       accessibilityState={{ selected }}
       style={[
         styles.chip,
+        selected ? elevation.md : elevation.sm,
         selected
-          ? { backgroundColor: colors.accentContainer, borderColor: 'transparent' }
-          : { backgroundColor: 'transparent', borderColor: colors.separator },
+          ? { backgroundColor: colors.accent, borderColor: colors.accent }
+          : { backgroundColor: colors.surfaceLow, borderColor: colors.separator },
       ]}
     >
-      {selected && <Ionicons name="checkmark" size={14} color={colors.onAccentContainer} />}
+      {selected && <Ionicons name="checkmark" size={14} color={colors.onAccent} />}
       <Text
         style={[
           styles.chipLabel,
-          { color: selected ? colors.onAccentContainer : colors.textSecondary },
+          { color: selected ? colors.onAccent : colors.textSecondary },
         ]}
       >
         {label}
@@ -192,17 +193,17 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
   chip: {
-    height: 32,
-    borderRadius: 8,
+    height: 34,
+    borderRadius: radius.pill,
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 14,
+    paddingHorizontal: 15,
   },
   chipLabel: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   menuOverlay: {
     flex: 1,

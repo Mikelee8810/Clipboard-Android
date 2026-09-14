@@ -13,6 +13,7 @@ import android.os.IBinder
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import expo.modules.nativeutil.NativeLogger
+import expo.modules.shizukuclipboard.BackgroundClipboardMonitor
 import expo.modules.ucengine.BackgroundServiceDiagnostics
 
 class SyncForegroundService : Service() {
@@ -28,6 +29,9 @@ class SyncForegroundService : Service() {
         const val EXTRA_CONTENT = "content"
         private const val RESTART_NOTIFY_ID = 0x2021
         private const val RESTART_CHANNEL_ID = "syncclipboard_restart"
+        private const val PREFS = "clipboard_background_service"
+        private const val KEY_BACKGROUND_REQUESTED = "background_requested"
+        private const val CLIPBOARD_MONITOR_OWNER = "foreground-service"
 
         var isRunning = false
             private set
@@ -35,6 +39,17 @@ class SyncForegroundService : Service() {
         /** 标记是否为用户主动停止（ACTION_STOP / ACTION_TEMP_STOP / JS 侧 stopService），
          *  区分系统杀掉与用户操作，onDestroy 时据此决定是否发通知 */
         internal var stoppedByUser = false
+
+        fun setBackgroundRequested(context: android.content.Context, requested: Boolean) {
+            context.getSharedPreferences(PREFS, MODE_PRIVATE)
+                .edit()
+                .putBoolean(KEY_BACKGROUND_REQUESTED, requested)
+                .apply()
+        }
+
+        private fun isBackgroundRequested(context: android.content.Context): Boolean =
+            context.getSharedPreferences(PREFS, MODE_PRIVATE)
+                .getBoolean(KEY_BACKGROUND_REQUESTED, false)
     }
 
     private var notificationManager: NotificationManager? = null
@@ -57,7 +72,10 @@ class SyncForegroundService : Service() {
                 //   - intent.action == ACTION_START 但 jsInitiatedService == false：
                 //     系统重投了上次的 ACTION_START intent，JS 并未实际运行
                 // 以上两种情况：JS 不存在，不启动前台服务，仅发重启引导通知
-                if (intent == null || !ForegroundServiceModule.isJsRuntimeAlive()) {
+                if (
+                    (intent == null || !ForegroundServiceModule.isJsRuntimeAlive()) &&
+                    !isBackgroundRequested(this)
+                ) {
                     NativeLogger.w(TAG, "Service restarted by system (intent=${intent?.action}, jsAlive=${ForegroundServiceModule.isJsRuntimeAlive()}), JS not running, showing restart notification")
                     BackgroundServiceDiagnostics.systemRestarted(this)
                     showRestartNotification()
@@ -68,21 +86,24 @@ class SyncForegroundService : Service() {
 
                 val notification = createNotification()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                    startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
                 } else {
                     startForeground(NOTIFY_ID, notification)
                 }
                 NativeLogger.d(TAG, "startForeground called successfully")
                 isRunning = true
                 BackgroundServiceDiagnostics.started(this)
+                BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)
             }
             ACTION_STOP -> {
                 NativeLogger.d(TAG, "Stopping foreground service (permanent)")
                 stoppedByUser = true
+                setBackgroundRequested(this, false)
+                BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
                 if (!isRunning) {
                     val notification = createNotification(getString(R.string.foreground_service_stopping))
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                        startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
                     } else {
                         startForeground(NOTIFY_ID, notification)
                     }
@@ -97,10 +118,12 @@ class SyncForegroundService : Service() {
             ACTION_TEMP_STOP -> {
                 NativeLogger.d(TAG, "Stopping foreground service (temporary)")
                 stoppedByUser = true
+                setBackgroundRequested(this, false)
+                BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
                 if (!isRunning) {
                     val notification = createNotification(getString(R.string.foreground_service_stopping))
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                        startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
                     } else {
                         startForeground(NOTIFY_ID, notification)
                     }
@@ -119,12 +142,13 @@ class SyncForegroundService : Service() {
                 // Unknown action - still need to call startForeground to prevent crash
                 val notification = createNotification()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                    startForeground(NOTIFY_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
                 } else {
                     startForeground(NOTIFY_ID, notification)
                 }
                 isRunning = true
                 BackgroundServiceDiagnostics.started(this)
+                BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)
             }
         }
         return START_STICKY
@@ -161,19 +185,14 @@ class SyncForegroundService : Service() {
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        NativeLogger.d(TAG, "onTaskRemoved: user swiped app from recents, stopping service")
-        stoppedByUser = true
-        stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
-        isRunning = false
-        BackgroundServiceDiagnostics.taskRemoved(this)
-        ForegroundServiceModule.sendTempStopEvent()
+        NativeLogger.d(TAG, "onTaskRemoved: keeping native clipboard monitor active")
     }
 
     override fun onDestroy() {
         NativeLogger.d(TAG, "onDestroy called, stoppedByUser=$stoppedByUser, isRunning=$isRunning")
         val wasRunning = isRunning
         isRunning = false
+        BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
         // 非用户主动停止且之前确实在运行 → 可能被系统杀死，发通知引导重启
         if (!stoppedByUser && wasRunning) {
             NativeLogger.w(TAG, "Service destroyed unexpectedly, showing restart notification")

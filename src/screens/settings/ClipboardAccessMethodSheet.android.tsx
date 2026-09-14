@@ -25,6 +25,7 @@ import {
 } from 'react-native';
 import { AppBottomSheet } from '@/components/ui';
 import { useTheme } from '@/hooks/useTheme';
+import { elevation, radius } from '@/theme';
 import type { ClipboardAccessMethod } from '@/types/settings';
 import {
   clipboardAccessSheetReducer,
@@ -583,23 +584,26 @@ const styles = StyleSheet.create({
   closeButton: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
+    ...elevation.sm,
   },
   carouselContent: { paddingHorizontal: PAGE_HORIZONTAL_INSET },
   pageSeparator: { width: PAGE_GAP },
   methodPage: {
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: radius.xl,
+    borderCurve: 'continuous',
     overflow: 'hidden',
+    ...elevation.sm,
   },
   methodPageContent: { flexGrow: 1, padding: 18 },
   methodHeading: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   methodIcon: {
     width: 48,
     height: 48,
-    borderRadius: 8,
+    borderRadius: radius.lg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -607,7 +611,7 @@ const styles = StyleSheet.create({
   methodTitleRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8 },
   methodTitle: { fontSize: 20, lineHeight: 26, fontWeight: '700', letterSpacing: 0 },
   methodSummary: { fontSize: 14, lineHeight: 20, letterSpacing: 0 },
-  recommendedTag: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  recommendedTag: { borderRadius: radius.pill, paddingHorizontal: 9, paddingVertical: 4 },
   recommendedText: { fontSize: 12, lineHeight: 16, fontWeight: '600', letterSpacing: 0 },
   detailDivider: { height: StyleSheet.hairlineWidth, marginVertical: 16 },
   detailRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 13 },
@@ -616,13 +620,14 @@ const styles = StyleSheet.create({
   detailValue: { fontSize: 14, lineHeight: 20, letterSpacing: 0 },
   primaryButton: {
     minHeight: 48,
-    borderRadius: 8,
+    borderRadius: radius.lg,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
     paddingHorizontal: 16,
     marginTop: 'auto',
+    ...elevation.sm,
   },
   primaryButtonText: { fontSize: 15, lineHeight: 20, fontWeight: '700', letterSpacing: 0 },
   pageIndicatorRow: {
@@ -639,7 +644,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 10,
-    borderRadius: 8,
+    borderRadius: radius.lg,
     padding: 12,
     marginBottom: 16,
   },
@@ -662,12 +667,17 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     letterSpacing: 0,
   },
-  commandBox: { borderWidth: 1, borderRadius: 8, padding: 12 },
+  commandBox: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: radius.lg,
+    padding: 12,
+    ...elevation.sm,
+  },
   commandText: { fontSize: 13, lineHeight: 19, fontFamily: 'monospace', letterSpacing: 0 },
   adbActions: { gap: 8, paddingTop: 16 },
   secondaryButton: {
     minHeight: 44,
-    borderRadius: 8,
+    borderRadius: radius.lg,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

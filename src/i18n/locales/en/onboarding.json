@@ -47,13 +47,13 @@
     "enter": "Enter"
   },
   "welcome": {
-    "wordmark": "UniClip",
+    "wordmark": "Clipboard",
     "title": "Your clipboard,\non every device",
     "body": "All your own devices sharing one clipboard — no collaboration, no cloud."
   },
   "companion": {
     "title": "A companion\nto your computer",
-    "body": "Connect to the UniClipboard desktop app that's already running, and bring your clipboard to hand.",
+    "body": "Connect to the Clipboard desktop app that's already running, and bring your clipboard to hand.",
     "spec": "COMPANION · CONNECTS TO DESKTOP"
   },
   "action": {

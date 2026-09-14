@@ -40,37 +40,37 @@ type SourceTokens = {
 };
 
 const SOURCE_LIGHT: SourceTokens = {
-  accent: '#6750A4',
+  accent: '#007AFF',
   onAccent: '#FFFFFF',
-  accentContainer: '#EADDFF',
-  onAccentContainer: '#21005D',
-  background: '#FEF7FF',
-  surface: '#FEF7FF',
+  accentContainer: '#E2F0FF',
+  onAccentContainer: '#003A73',
+  background: '#F2F2F7',
+  surface: '#F2F2F7',
   surfaceLowest: '#FFFFFF',
-  surfaceLow: '#F7F2FA',
-  surfaceMid: '#F3EDF7',
-  surfaceHigh: '#ECE6F0',
-  surfaceHighest: '#E6E0E9',
-  textSecondary: '#49454F',
-  border: '#79747E',
-  separator: '#CAC4D0',
+  surfaceLow: '#FFFFFF',
+  surfaceMid: '#F7F7F9',
+  surfaceHigh: '#E9E9EE',
+  surfaceHighest: '#D1D1D6',
+  textSecondary: '#48484A',
+  border: '#8E8E93',
+  separator: '#D1D1D6',
 };
 
 const SOURCE_DARK: SourceTokens = {
-  accent: '#D0BCFF',
-  onAccent: '#381E72',
-  accentContainer: '#4F378B',
-  onAccentContainer: '#EADDFF',
-  background: '#141218',
-  surface: '#141218',
-  surfaceLowest: '#0F0D13',
-  surfaceLow: '#1D1B20',
-  surfaceMid: '#211F26',
-  surfaceHigh: '#2B2930',
-  surfaceHighest: '#36343B',
-  textSecondary: '#CAC4D0',
-  border: '#938F99',
-  separator: '#49454F',
+  accent: '#64A9FF',
+  onAccent: '#00284D',
+  accentContainer: '#0A3D70',
+  onAccentContainer: '#D9ECFF',
+  background: '#111113',
+  surface: '#111113',
+  surfaceLowest: '#09090B',
+  surfaceLow: '#1C1C1E',
+  surfaceMid: '#242426',
+  surfaceHigh: '#2C2C2E',
+  surfaceHighest: '#3A3A3C',
+  textSecondary: '#C7C7CC',
+  border: '#8E8E93',
+  separator: '#48484A',
 };
 
 // ------------------------------------------------------------------
@@ -78,7 +78,7 @@ const SOURCE_DARK: SourceTokens = {
 // ------------------------------------------------------------------
 
 const FIXED_LIGHT = {
-  textPrimary: '#1D1B20',
+  textPrimary: '#1C1C1E',
   textTertiary: '#8E8E93',
   textDisabled: '#CAC4D0',
 

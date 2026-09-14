@@ -50,9 +50,10 @@ class ForegroundServiceModule : Module() {
         }
 
         Function("startService") {
-            if (SyncForegroundService.isRunning) return@Function true
             val context = appContext.reactContext ?: return@Function false
             jsInitiatedService = true
+            SyncForegroundService.setBackgroundRequested(context, true)
+            if (SyncForegroundService.isRunning) return@Function true
             val intent = Intent(context, SyncForegroundService::class.java).apply {
                 action = SyncForegroundService.ACTION_START
             }
@@ -66,6 +67,7 @@ class ForegroundServiceModule : Module() {
 
         Function("stopService") {
             val context = appContext.reactContext ?: return@Function false
+            SyncForegroundService.setBackgroundRequested(context, false)
             if (!SyncForegroundService.isRunning) return@Function true
             // 标记为用户主动停止，避免 onDestroy 中误发重启通知
             SyncForegroundService.stoppedByUser = true

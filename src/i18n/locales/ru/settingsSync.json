@@ -87,13 +87,13 @@
       "successBody": "Пространство готово к синхронизации буфера обмена.",
       "copyInvitation": "Копировать приглашение",
       "shareInvitation": "Поделиться приглашением",
-      "shareMessage": "Присоединяйтесь к моему пространству UniClip по коду {{code}}.",
+      "shareMessage": "Присоединяйтесь к моему пространству Clipboard по коду {{code}}.",
       "expiresIn": "Истекает через {{time}}",
       "expired": "Срок действия приглашения истёк",
       "finishLater": "Завершить позже",
       "thisDevice": "Это устройство",
       "otherDevice": "Другое устройство",
-      "peerUpgradeRequired": "Подключено. Обновите UniClip на других устройствах для синхронизации."
+      "peerUpgradeRequired": "Подключено. Обновите Clipboard на других устройствах для синхронизации."
     },
     "status": {
       "ready": "Пространство готово",
@@ -248,13 +248,13 @@
       "confirmStopAction": "Подтвердить и прекратить синхронизацию",
       "confirmLeaveAction": "Прекратить синхронизацию телефона",
       "notificationTitle": "Проверьте изменение устройств",
-      "notificationBody": "Откройте UniClip и проверьте, какие устройства могут продолжить синхронизацию.",
+      "notificationBody": "Откройте Clipboard и проверьте, какие устройства могут продолжить синхронизацию.",
       "notificationReviewTitle": "Проверьте изменение устройств",
-      "notificationReviewBody": "Откройте UniClip и выберите устройства, которые продолжат синхронизацию.",
+      "notificationReviewBody": "Откройте Clipboard и выберите устройства, которые продолжат синхронизацию.",
       "notificationUpgradeTitle": "Требуется обновление устройства",
-      "notificationUpgradeBody": "Откройте UniClip и проверьте состояние пространства.",
+      "notificationUpgradeBody": "Откройте Clipboard и проверьте состояние пространства.",
       "notificationUnverifiableTitle": "Сведения об устройстве требуют внимания",
-      "notificationUnverifiableBody": "Откройте UniClip и проверьте состояние пространства.",
+      "notificationUnverifiableBody": "Откройте Clipboard и проверьте состояние пространства.",
       "notificationChannel": "Изменения устройств",
       "stateChanged": "Состояние устройств изменилось. Проверьте новый результат.",
       "error": "Не удалось сохранить выбор. Показано последнее состояние устройств; повторите попытку.",
@@ -316,7 +316,7 @@
       "serviceUnavailable": "Сервис подключения недоступен. Попробуйте позже",
       "connectionLost": "Соединение прервано. Попробуйте ещё раз",
       "operationFailed": "Не удалось выполнить операцию. Проверьте данные и повторите попытку.",
-      "peerUpgradeRequired": "Обновите UniClip на другом устройстве и повторите попытку."
+      "peerUpgradeRequired": "Обновите Clipboard на другом устройстве и повторите попытку."
     },
     "manage": {
       "title": "Действия с пространством"
@@ -381,11 +381,11 @@
       "failedTitle": "Не удалось прочитать QR-код",
       "rescan": "Сканировать снова",
       "permissionTitle": "Нужен доступ к камере",
-      "permissionBody": "UniClip использует камеру для QR-кода подключения.",
+      "permissionBody": "Clipboard использует камеру для QR-кода подключения.",
       "requestPermission": "Разрешить камеру",
       "openSettings": "Открыть настройки",
       "errors": {
-        "INVALID_SCHEME": "Это не QR-код сервера UniClip.",
+        "INVALID_SCHEME": "Это не QR-код сервера Clipboard.",
         "UNSUPPORTED_VERSION": "Версия QR-кода не поддерживается. Обновите приложение.",
         "UNSUPPORTED_SERVICE": "QR-код не относится к Mobile LAN.",
         "PAYLOAD_DECODE_FAILED": "QR-код повреждён. Создайте новый.",

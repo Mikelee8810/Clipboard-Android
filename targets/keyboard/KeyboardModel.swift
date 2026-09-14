@@ -7,7 +7,7 @@ internal import UcEngineCore
 
 private let log = Logger(subsystem: "app.uniclipboard.keyboard", category: "sync")
 
-/// Observable state + sync logic backing the UniClip keyboard. Owned by
+/// Observable state + sync logic backing the Clipboard keyboard. Owned by
 /// `KeyboardViewController`; the UIKit `KeyboardRootView` observes its narrow
 /// presentation objects and calls its actions.
 ///
@@ -1020,7 +1020,7 @@ final class KeyboardDiagnostics: @unchecked Sendable {
     private init() {
         logURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: SettingsStore.appGroupID)?
-            .appendingPathComponent("Library/Caches/UniClipDiagnostics", isDirectory: true)
+            .appendingPathComponent("Library/Caches/ClipboardDiagnostics", isDirectory: true)
             .appendingPathComponent("keyboard.jsonl", isDirectory: false)
         record("diagnostics.session", fields: ["phase": "started"])
     }

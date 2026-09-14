@@ -65,10 +65,8 @@ class ClipboardUserService : IClipboardUserService.Stub() {
     private var lastClip: ClipData? = null
 
     override fun init(callerToken: IBinder) {
-        try {
-            callerToken.linkToDeath({ destroy() }, 0)
-        } catch (_: Exception) {
-        }
+        // Lifecycle is owned by Shizuku bind/unbind. A React bridge token can die
+        // while the native foreground service still needs this worker.
     }
 
     override fun getPrimaryClipJson(): String {
@@ -101,14 +99,33 @@ class ClipboardUserService : IClipboardUserService.Stub() {
         val clip = lastClip ?: (invokeClipboard("getPrimaryClip") as? ClipData) ?: return false
         if (clip.itemCount == 0) return false
         val uri = clip.getItemAt(0).uri ?: return false
-        val resolver = application()?.contentResolver ?: return false
 
         return try {
-            resolver.openInputStream(uri)?.use { input ->
-                FileOutputStream(destination.fileDescriptor).use { output -> input.copyTo(output) }
-            } ?: return false
-            true
-        } catch (_: Exception) {
+            // A Shizuku UserService is not a normal Android application process;
+            // its ContentResolver cannot reliably acquire providers. Run Android's
+            // content client under this worker's shell identity instead.
+            val process = ProcessBuilder(
+                "/system/bin/content", "read", "--uri", uri.toString(), "--user", "0"
+            ).start()
+            val copiedBytes = process.inputStream.use { input ->
+                FileOutputStream(destination.fileDescriptor).use { output ->
+                    input.copyTo(output)
+                }
+            }
+            val errorText = process.errorStream.bufferedReader().use { it.readText() }.trim()
+            val exitCode = process.waitFor()
+            if (exitCode != 0 || copiedBytes == 0L) {
+                Log.e(
+                    TAG,
+                    "content read failed exit=$exitCode bytes=$copiedBytes error=$errorText"
+                )
+                false
+            } else {
+                Log.i(TAG, "Copied clipboard URI bytes=$copiedBytes")
+                true
+            }
+        } catch (error: Exception) {
+            Log.e(TAG, "Failed to copy clipboard URI", error)
             false
         }
     }

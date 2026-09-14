@@ -87,13 +87,13 @@
       "successBody": "这个空间已经可以同步剪贴板内容。",
       "copyInvitation": "复制邀请码",
       "shareInvitation": "分享邀请",
-      "shareMessage": "使用邀请码 {{code}} 加入我的 UniClip 空间。",
+      "shareMessage": "使用邀请码 {{code}} 加入我的 Clipboard 空间。",
       "expiresIn": "{{time}} 后过期",
       "expired": "这个邀请码已过期",
       "finishLater": "稍后完成",
       "thisDevice": "这台设备",
       "otherDevice": "另一台设备",
-      "peerUpgradeRequired": "已加入。请升级其他设备上的 UniClip，以便继续同步。"
+      "peerUpgradeRequired": "已加入。请升级其他设备上的 Clipboard，以便继续同步。"
     },
     "status": {
       "ready": "空间已就绪",
@@ -248,13 +248,13 @@
       "confirmStopAction": "确认并停止同步",
       "confirmLeaveAction": "让这台手机退出同步",
       "notificationTitle": "请核对设备变化",
-      "notificationBody": "打开 UniClip，核对哪些设备可以继续同步。",
+      "notificationBody": "打开 Clipboard，核对哪些设备可以继续同步。",
       "notificationReviewTitle": "请核对设备变化",
-      "notificationReviewBody": "打开 UniClip，选择哪些设备可以继续同步。",
+      "notificationReviewBody": "打开 Clipboard，选择哪些设备可以继续同步。",
       "notificationUpgradeTitle": "有设备需要更新",
-      "notificationUpgradeBody": "打开 UniClip，查看当前空间状态。",
+      "notificationUpgradeBody": "打开 Clipboard，查看当前空间状态。",
       "notificationUnverifiableTitle": "设备资料需要处理",
-      "notificationUnverifiableBody": "打开 UniClip，查看当前空间状态。",
+      "notificationUnverifiableBody": "打开 Clipboard，查看当前空间状态。",
       "notificationChannel": "设备变化",
       "stateChanged": "设备状态已经变化，请核对最新结果。",
       "error": "无法保存选择。当前已显示最新设备状态，请重试。",
@@ -316,7 +316,7 @@
       "serviceUnavailable": "连接服务暂时不可用，请稍后重试",
       "connectionLost": "连接已中断，请重试",
       "operationFailed": "操作失败,请检查输入后重试",
-      "peerUpgradeRequired": "请先升级对方设备上的 UniClip，然后重试。"
+      "peerUpgradeRequired": "请先升级对方设备上的 Clipboard，然后重试。"
     },
     "manage": {
       "title": "空间操作"
@@ -381,11 +381,11 @@
       "failedTitle": "无法读取二维码",
       "rescan": "重新扫描",
       "permissionTitle": "需要相机权限",
-      "permissionBody": "UniClip 需要使用相机扫描服务器连接二维码。",
+      "permissionBody": "Clipboard 需要使用相机扫描服务器连接二维码。",
       "requestPermission": "允许使用相机",
       "openSettings": "打开系统设置",
       "errors": {
-        "INVALID_SCHEME": "这不是 UniClip 服务器二维码。",
+        "INVALID_SCHEME": "这不是 Clipboard 服务器二维码。",
         "UNSUPPORTED_VERSION": "二维码版本暂不支持，请更新应用。",
         "UNSUPPORTED_SERVICE": "二维码不是 Mobile LAN 服务。",
         "PAYLOAD_DECODE_FAILED": "二维码内容已损坏，请重新生成。",

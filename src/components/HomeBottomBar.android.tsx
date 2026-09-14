@@ -3,6 +3,7 @@ import { View, Pressable, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import type { SelectModeBottomBarProps } from './HomeBottomBar.types';
+import { elevation } from '@/theme';
 
 export function SelectModeBottomBar({
   disabled,
@@ -19,7 +20,7 @@ export function SelectModeBottomBar({
       <Pressable
         onPress={onCopy}
         disabled={disabled}
-        style={[s.circle, bg]}
+        style={[s.circle, elevation.md, bg]}
         accessibilityRole="button"
         accessibilityLabel={t('action.copy')}
         accessibilityState={{ disabled }}
@@ -29,7 +30,7 @@ export function SelectModeBottomBar({
       <Pressable
         onPress={onShare}
         disabled={disabled}
-        style={[s.circle, bg]}
+        style={[s.circle, elevation.md, bg]}
         accessibilityRole="button"
         accessibilityLabel={t('action.share')}
         accessibilityState={{ disabled }}
@@ -39,7 +40,7 @@ export function SelectModeBottomBar({
       <Pressable
         onPress={onDelete}
         disabled={disabled}
-        style={[s.circle, bg]}
+        style={[s.circle, elevation.md, bg]}
         accessibilityRole="button"
         accessibilityLabel={t('action.delete')}
         accessibilityState={{ disabled }}
@@ -61,11 +62,6 @@ const s = StyleSheet.create({
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
   },
   selectRow: { flexDirection: 'row', justifyContent: 'center', gap: 24 },
 });

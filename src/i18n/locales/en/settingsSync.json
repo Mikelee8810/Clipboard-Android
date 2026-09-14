@@ -87,13 +87,13 @@
       "successBody": "This space is ready to sync clipboard content.",
       "copyInvitation": "Copy invitation",
       "shareInvitation": "Share invitation",
-      "shareMessage": "Join my UniClip space with invitation {{code}}.",
+      "shareMessage": "Join my Clipboard space with invitation {{code}}.",
       "expiresIn": "Expires in {{time}}",
       "expired": "This invitation has expired",
       "finishLater": "Finish later",
       "thisDevice": "This device",
       "otherDevice": "Other device",
-      "peerUpgradeRequired": "Joined. Update UniClip on the other devices to continue syncing."
+      "peerUpgradeRequired": "Joined. Update Clipboard on the other devices to continue syncing."
     },
     "status": {
       "ready": "Space is ready",
@@ -248,13 +248,13 @@
       "confirmStopAction": "Confirm and stop syncing",
       "confirmLeaveAction": "Stop syncing this phone",
       "notificationTitle": "Review a device change",
-      "notificationBody": "Open UniClip to review which devices can continue syncing.",
+      "notificationBody": "Open Clipboard to review which devices can continue syncing.",
       "notificationReviewTitle": "Review a device change",
-      "notificationReviewBody": "Open UniClip to choose which devices can continue syncing.",
+      "notificationReviewBody": "Open Clipboard to choose which devices can continue syncing.",
       "notificationUpgradeTitle": "A device needs an update",
-      "notificationUpgradeBody": "Open UniClip to review the current space status.",
+      "notificationUpgradeBody": "Open Clipboard to review the current space status.",
       "notificationUnverifiableTitle": "Device details need attention",
-      "notificationUnverifiableBody": "Open UniClip to review the current space status.",
+      "notificationUnverifiableBody": "Open Clipboard to review the current space status.",
       "notificationChannel": "Device changes",
       "stateChanged": "The device state changed. Review the latest result.",
       "error": "The choice could not be saved. The latest device state is shown; try again.",
@@ -316,7 +316,7 @@
       "serviceUnavailable": "The connection service is unavailable. Try again later",
       "connectionLost": "The connection was interrupted. Try again",
       "operationFailed": "The operation failed. Check your input and try again.",
-      "peerUpgradeRequired": "Update UniClip on the other device, then try again."
+      "peerUpgradeRequired": "Update Clipboard on the other device, then try again."
     },
     "manage": {
       "title": "Space actions"
@@ -381,11 +381,11 @@
       "failedTitle": "Unable to read QR code",
       "rescan": "Scan again",
       "permissionTitle": "Camera access required",
-      "permissionBody": "UniClip needs the camera to scan a server connection QR code.",
+      "permissionBody": "Clipboard needs the camera to scan a server connection QR code.",
       "requestPermission": "Allow camera access",
       "openSettings": "Open system settings",
       "errors": {
-        "INVALID_SCHEME": "This is not a UniClip server QR code.",
+        "INVALID_SCHEME": "This is not a Clipboard server QR code.",
         "UNSUPPORTED_VERSION": "This QR code version is unsupported. Update the app.",
         "UNSUPPORTED_SERVICE": "This QR code is not for Mobile LAN.",
         "PAYLOAD_DECODE_FAILED": "The QR code is damaged. Generate a new one.",

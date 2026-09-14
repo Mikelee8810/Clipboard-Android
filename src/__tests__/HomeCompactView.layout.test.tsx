@@ -83,7 +83,7 @@ describe('Home compact list top clearance', () => {
       expect(grid.props.contentInsetTop).toBe(0);
       const parent = grid.parent!;
       expect(StyleSheet.flatten(parent.props.style).paddingTop).toBe(118);
-      expect(grid.props.paddingTop).toBe(8);
+      expect(grid.props.paddingTop).toBe(10);
       expect(grid.props.refreshControl.props.refreshing).toBe(false);
     }
     controller.refreshing = true;

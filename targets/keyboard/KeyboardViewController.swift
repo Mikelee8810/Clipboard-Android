@@ -1,9 +1,9 @@
 import UIKit
 internal import UcEngineCore
 
-/// Principal class for the UniClip custom keyboard. iOS instantiates this
+/// Principal class for the Clipboard custom keyboard. iOS instantiates this
 /// (`NSExtensionPrincipalClass = $(PRODUCT_MODULE_NAME).KeyboardViewController`)
-/// when the user switches to the UniClip keyboard. It subclasses
+/// when the user switches to the Clipboard keyboard. It subclasses
 /// `UIInputViewController` and owns a fixed-height UIKit surface so a newly
 /// created extension never has to bootstrap a second rendering runtime.
 ///

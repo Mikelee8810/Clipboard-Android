@@ -15,9 +15,10 @@ import { HomeOverlays } from './HomeOverlays';
 import { CHIP_ROW_GRID_METRICS } from './chipRowGridMetrics';
 import { useChipRowCollapse } from './useChipRowCollapse';
 import type { HomeController } from './useHomeController';
+import { elevation } from '@/theme';
 
-const GRID_SPACING = 12;
-const GRID_PADDING = 16;
+const GRID_SPACING = 14;
+const GRID_PADDING = 18;
 const NUM_COLUMNS = 2;
 
 /**
@@ -96,7 +97,7 @@ export function HomeCompactView({
           cardSize={cardSize}
           spacing={GRID_SPACING}
           paddingHorizontal={GRID_PADDING - GRID_SPACING / 2}
-          paddingTop={8 + (showFilterRow ? CHIP_ROW_GRID_METRICS.paddingTopExtra : 0)}
+          paddingTop={10 + (showFilterRow ? CHIP_ROW_GRID_METRICS.paddingTopExtra : 0)}
           paddingBottom={isSelectMode ? selectionBarClearance : 80}
           keyExtractor={c.keyExtractor}
           renderItem={renderCard}
@@ -116,7 +117,16 @@ export function HomeCompactView({
         />
         {items.length === 0 && c.isInitialHistoryLoadComplete && (
           <View pointerEvents="none" style={styles.emptyState}>
-            <View style={[styles.emptyIcon, { backgroundColor: theme.colors.surfaceHigh }]}>
+            <View
+              style={[
+                styles.emptyIcon,
+                elevation.md,
+                {
+                  backgroundColor: theme.colors.surfaceHigh,
+                  borderColor: theme.colors.separator,
+                },
+              ]}
+            >
               <Ionicons name={c.emptyContent.icon} size={30} color={c.emptyContent.tint} />
             </View>
             <Text style={[styles.emptyTitle, { color: theme.colors.textPrimary }]}>
@@ -228,6 +238,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 2,
+    borderWidth: StyleSheet.hairlineWidth,
   },
   emptyTitle: {
     fontSize: 18,

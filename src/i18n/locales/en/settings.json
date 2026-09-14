@@ -81,7 +81,7 @@
       "sse": "Live push (SSE)"
     },
     "extensions": {
-      "footer": "The keyboard and share extensions let you use UniClip directly in other apps; set clipboard access to Allow to avoid repeated prompts during sync.",
+      "footer": "The keyboard and share extensions let you use Clipboard directly in other apps; set clipboard access to Allow to avoid repeated prompts during sync.",
       "keyboard": "Keyboard",
       "share": "Share",
       "clipboardAccess": "Clipboard access"
@@ -102,7 +102,7 @@
   "analytics": {
     "sectionTitle": "Privacy",
     "consentTitle": "Share anonymous usage and diagnostics",
-    "consentDescription": "Helps improve UniClip without collecting clipboard contents or names",
+    "consentDescription": "Helps improve Clipboard without collecting clipboard contents or names",
     "footer": "App version, system, region, session, device count, anonymous space grouping, and diagnostic records without contents or names may be sent. Turning this off stops collection and clears pending data.",
     "reset": "Reset",
     "resetTitle": "Reset statistics identity",

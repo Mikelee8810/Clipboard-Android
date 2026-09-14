@@ -22,7 +22,7 @@ const withForegroundService: ConfigPlugin = (config) => {
     };
 
     addPermission('android.permission.FOREGROUND_SERVICE');
-    addPermission('android.permission.FOREGROUND_SERVICE_DATA_SYNC');
+    addPermission('android.permission.FOREGROUND_SERVICE_SPECIAL_USE');
 
     // Register Service in <application>
     const application = manifest.application?.[0];
@@ -31,21 +31,33 @@ const withForegroundService: ConfigPlugin = (config) => {
         application.service = [];
       }
       const serviceClassName = 'expo.modules.foregroundservice.SyncForegroundService';
-      if (
-        !application.service.some(
-          (s: { $?: { 'android:name'?: string } }) => s.$?.['android:name'] === serviceClassName
-        )
-      ) {
-        application.service.push({
+      let service = application.service.find(
+        (s: { $?: { 'android:name'?: string } }) => s.$?.['android:name'] === serviceClassName
+      );
+      if (!service) {
+        service = {
           $: {
             'android:name': serviceClassName,
             'android:enabled': 'true',
             'android:exported': 'false',
-            'android:foregroundServiceType': 'dataSync',
+            'android:foregroundServiceType': 'specialUse',
           },
-        });
+        };
+        application.service.push(service);
         console.log(`✅ Registered service: ${serviceClassName}`);
       }
+      service.$ = {
+        ...(service.$ ?? {}),
+        'android:foregroundServiceType': 'specialUse',
+      };
+      service.property = [
+        {
+          $: {
+            'android:name': 'android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE',
+            'android:value': 'continuously capture user-authorized clipboard history',
+          },
+        },
+      ];
     }
 
     return modConfig;

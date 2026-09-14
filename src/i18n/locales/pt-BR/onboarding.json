@@ -47,13 +47,13 @@
     "enter": "Entrar"
   },
   "welcome": {
-    "wordmark": "UniClip",
+    "wordmark": "Clipboard",
     "title": "A área de transferência\nem cada dispositivo",
     "body": "Todos os seus dispositivos compartilham a mesma área de transferência — sem colaboração, sem nuvem."
   },
   "companion": {
     "title": "O companheiro\ndo seu computador",
-    "body": "Conecte-se ao app UniClipboard que já está rodando no computador e tenha a área de transferência sempre à mão.",
+    "body": "Conecte-se ao app Clipboardboard que já está rodando no computador e tenha a área de transferência sempre à mão.",
     "spec": "MODO COMPANHEIRO · CONECTA AO COMPUTADOR"
   },
   "action": {

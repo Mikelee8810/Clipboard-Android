@@ -18,13 +18,13 @@
     "enableSteps": {
       "title": "Etapas de configuração",
       "footer": "O Acesso Total permite que o teclado leia o clipboard e se conecte aos outros dispositivos do espaço. O conteúdo só é enviado dentro do espaço atual.",
-      "step1": "Abra o UniClip nos Ajustes e toque em Teclados",
-      "step2": "Ative o Teclado UniClip",
+      "step1": "Abra o Clipboard nos Ajustes e toque em Teclados",
+      "step2": "Ative o Teclado Clipboard",
       "step3": "Ative Permitir Acesso Total e confirme"
     },
     "tryout": {
       "title": "Experimente",
-      "footer": "Toque no campo, mantenha pressionada a tecla de globo e escolha Teclado UniClip. Ao abri-lo, o status acima será atualizado automaticamente.",
+      "footer": "Toque no campo, mantenha pressionada a tecla de globo e escolha Teclado Clipboard. Ao abri-lo, o status acima será atualizado automaticamente.",
       "placeholder": "Abra o teclado aqui para testar"
     },
     "feedback": {
@@ -36,9 +36,9 @@
   },
   "share": {
     "title": "Compartilhar",
-    "testMessage": "Teste de compartilhamento do UniClip",
+    "testMessage": "Teste de compartilhamento do Clipboard",
     "intro": {
-      "footer": "Em qualquer app, toque em Compartilhar e escolha o UniClip para enviar o conteúdo diretamente aos outros dispositivos do espaço."
+      "footer": "Em qualquer app, toque em Compartilhar e escolha o Clipboard para enviar o conteúdo diretamente aos outros dispositivos do espaço."
     },
     "supportedContent": {
       "label": "Conteúdo compatível",
@@ -46,10 +46,10 @@
     },
     "favorite": {
       "title": "Adicionar aos favoritos",
-      "footer": "Depois de adicionado aos Favoritos, o UniClip fica fixado no início da linha de apps na folha de compartilhamento.",
+      "footer": "Depois de adicionado aos Favoritos, o Clipboard fica fixado no início da linha de apps na folha de compartilhamento.",
       "step1": "Abra qualquer folha de compartilhamento",
       "step2": "Deslize a linha de ícones de apps até o fim e toque em Mais",
-      "step3": "Toque em Editar no canto superior direito e use + para adicionar o UniClip aos Favoritos",
+      "step3": "Toque em Editar no canto superior direito e use + para adicionar o Clipboard aos Favoritos",
       "step4": "Arraste-o para a frente e toque em OK"
     },
     "tryButton": "Abrir a folha de compartilhamento para experimentar"
@@ -76,8 +76,8 @@
     "error": {
       "title": "Não foi possível criar o diagnóstico",
       "message": "Tente novamente mais tarde.",
-      "engineLogsMissing": "O Engine está em execução, mas nenhum registro foi encontrado. Reinicie o UniClip e tente novamente.",
-      "engineLogsUnreadable": "Os registros do Engine foram encontrados, mas não puderam ser lidos. Reinicie o UniClip e tente novamente."
+      "engineLogsMissing": "O Engine está em execução, mas nenhum registro foi encontrado. Reinicie o Clipboard e tente novamente.",
+      "engineLogsUnreadable": "Os registros do Engine foram encontrados, mas não puderam ser lidos. Reinicie o Clipboard e tente novamente."
     },
     "capture": {
       "title": "Diagnóstico detalhado",

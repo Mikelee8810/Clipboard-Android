@@ -5,9 +5,7 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Binder
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.os.ParcelFileDescriptor
 import android.provider.Settings
 import expo.modules.kotlin.Promise
@@ -23,16 +21,13 @@ import java.util.concurrent.TimeUnit
 class ShizukuClipboardModule : Module() {
     companion object {
         private const val REQUEST_CODE_PERMISSION = 10086
-        private const val POLL_INTERVAL_MS = 500L
+        private const val MONITOR_OWNER = "react-native-module"
     }
 
-    private val mainHandler = Handler(Looper.getMainLooper())
     private val callerToken = Binder()
     private var clipboardService: IClipboardUserService? = null
     private var connectionLatch = CountDownLatch(1)
     private var binding = false
-    private var monitoring = false
-    private var lastSnapshot = ""
 
     private val userServiceArgs by lazy {
         Shizuku.UserServiceArgs(
@@ -44,7 +39,7 @@ class ShizukuClipboardModule : Module() {
             .daemon(false)
             .processNameSuffix("clipboard")
             .debuggable(BuildConfig.DEBUG)
-            .version(2)
+            .version(4)
     }
 
     private val serviceConnection = object : ServiceConnection {
@@ -84,22 +79,6 @@ class ShizukuClipboardModule : Module() {
         emitState("unavailable")
     }
 
-    private val pollRunnable = object : Runnable {
-        override fun run() {
-            if (!monitoring) return
-            val snapshot = try {
-                clipboardService?.primaryClipJson.orEmpty()
-            } catch (_: Exception) {
-                ""
-            }
-            if (snapshot.isNotEmpty() && snapshot != lastSnapshot) {
-                lastSnapshot = snapshot
-                sendSnapshot(snapshot)
-            }
-            mainHandler.postDelayed(this, POLL_INTERVAL_MS)
-        }
-    }
-
     override fun definition() = ModuleDefinition {
         Name("ShizukuClipboardModule")
         Events("onClipboardChange", "onShizukuStateChange")
@@ -128,16 +107,16 @@ class ShizukuClipboardModule : Module() {
         }
 
         AsyncFunction("startClipboardMonitor") { promise: Promise ->
-            val service = ensureConnected()
-            if (service == null) {
+            val context = appContext.reactContext?.applicationContext
+            if (context == null || !hasPermission()) {
                 promise.resolve(false)
                 return@AsyncFunction
             }
-            lastSnapshot = try { service.primaryClipJson.orEmpty() } catch (_: Exception) { "" }
-            monitoring = true
-            mainHandler.removeCallbacks(pollRunnable)
-            mainHandler.postDelayed(pollRunnable, POLL_INTERVAL_MS)
-            promise.resolve(true)
+            promise.resolve(
+                BackgroundClipboardMonitor.start(context, MONITOR_OWNER) { snapshot ->
+                    sendSnapshot(snapshot)
+                }
+            )
         }
 
         AsyncFunction("stopClipboardMonitor") { promise: Promise ->
@@ -257,15 +236,13 @@ class ShizukuClipboardModule : Module() {
 
     private fun unbindUserService() {
         if (clipboardService == null && !binding) return
-        try { Shizuku.unbindUserService(userServiceArgs, serviceConnection, true) } catch (_: Exception) {}
+        try { Shizuku.unbindUserService(userServiceArgs, serviceConnection, false) } catch (_: Exception) {}
         clipboardService = null
         binding = false
     }
 
     private fun stopMonitoring() {
-        monitoring = false
-        mainHandler.removeCallbacks(pollRunnable)
-        lastSnapshot = ""
+        BackgroundClipboardMonitor.stop(MONITOR_OWNER)
     }
 
     private fun snapshotJson(): JSONObject {

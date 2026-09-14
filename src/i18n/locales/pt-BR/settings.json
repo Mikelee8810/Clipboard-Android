@@ -82,7 +82,7 @@
       "sse": "Envio ao vivo (SSE)"
     },
     "extensions": {
-      "footer": "As extensões de teclado e compartilhamento permitem usar o UniClip diretamente em outros apps; defina o acesso à área de transferência como Permitir para evitar solicitações repetidas durante a sincronização.",
+      "footer": "As extensões de teclado e compartilhamento permitem usar o Clipboard diretamente em outros apps; defina o acesso à área de transferência como Permitir para evitar solicitações repetidas durante a sincronização.",
       "keyboard": "Teclado",
       "share": "Compartilhar",
       "clipboardAccess": "Acesso à área de transferência"
@@ -103,7 +103,7 @@
   "analytics": {
     "sectionTitle": "Privacidade",
     "consentTitle": "Compartilhar uso e diagnósticos anônimos",
-    "consentDescription": "Ajuda a melhorar o UniClip sem coletar conteúdo da área de transferência ou nomes",
+    "consentDescription": "Ajuda a melhorar o Clipboard sem coletar conteúdo da área de transferência ou nomes",
     "footer": "Podem ser enviados versão do app, sistema, região, sessão, número de dispositivos, grupo anônimo do espaço e diagnósticos sem conteúdos ou nomes. Desativar interrompe a coleta e remove os dados pendentes.",
     "reset": "Redefinir",
     "resetTitle": "Redefinir identidade estatística",

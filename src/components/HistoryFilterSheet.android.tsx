@@ -8,7 +8,7 @@ import {
   getHistoryFilterDateOptions,
   HISTORY_FILTER_KIND_OPTIONS,
 } from '@/utils/historyFilterOptions';
-import { radius, spacing } from '@/theme';
+import { elevation, radius, spacing } from '@/theme';
 
 export function HistoryFilterSheet({
   visible,
@@ -40,6 +40,7 @@ export function HistoryFilterSheet({
             backgroundColor: theme.colors.surface,
             borderTopColor: theme.colors.separator,
           },
+          elevation.lg,
         ]}
       >
         <View style={[styles.handle, { backgroundColor: theme.colors.separator }]} />
@@ -54,7 +55,14 @@ export function HistoryFilterSheet({
                 {t('action.reset', { ns: 'common' })}
               </Text>
             </Pressable>
-            <Pressable onPress={onClose} style={styles.doneButton}>
+            <Pressable
+              onPress={onClose}
+              style={[
+                styles.doneButton,
+                elevation.sm,
+                { backgroundColor: theme.colors.surfaceHigh },
+              ]}
+            >
               <Ionicons name="checkmark" size={20} color={theme.colors.accent} />
             </Pressable>
           </View>
@@ -105,7 +113,16 @@ function FilterSection({ title, children, theme }: FilterSectionProps) {
   return (
     <View style={styles.section}>
       <Text style={[styles.sectionTitle, { color: theme.colors.textSecondary }]}>{title}</Text>
-      <View style={[styles.sectionCard, { backgroundColor: theme.colors.surfaceLow }]}>
+      <View
+        style={[
+          styles.sectionCard,
+          elevation.sm,
+          {
+            backgroundColor: theme.colors.surfaceLow,
+            borderColor: theme.colors.separator,
+          },
+        ]}
+      >
         {children}
       </View>
     </View>
@@ -188,6 +205,7 @@ const styles = StyleSheet.create({
   doneButton: {
     width: 44,
     height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -207,6 +225,7 @@ const styles = StyleSheet.create({
   sectionCard: {
     borderRadius: radius.lg,
     borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
   },
   row: {

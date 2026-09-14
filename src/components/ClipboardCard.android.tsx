@@ -22,7 +22,6 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/hooks/useTheme';
 import { useURLMetadata } from '@/hooks/useURLMetadata';
 import { ClipboardItem } from '@/types/clipboard';
-import { iosDimensions } from '@/theme/iosDesignTokens';
 import {
   getDisplayKind,
   getDisplayKindLabel,
@@ -35,6 +34,7 @@ import {
 import { getDomainGradient, getDomainInitial, type DomainGradient } from '@/utils/domainColor';
 import { getFileExtension, getExtensionColor, stripExtension } from '@/utils/fileTypeColor';
 import { formatFileSize } from '@/utils';
+import { elevation } from '@/theme';
 import type { ClipboardCardProps } from './ClipboardCard.types';
 
 export const ClipboardCard: React.FC<ClipboardCardProps> = React.memo(
@@ -87,10 +87,11 @@ export const ClipboardCard: React.FC<ClipboardCardProps> = React.memo(
           accessibilityState={{ selected: isSelectMode ? isSelected : undefined }}
           style={[
             styles.card,
+            elevation.md,
             {
               backgroundColor: theme.colors.surfaceLow,
-              borderColor: isSelected ? theme.colors.accent : 'transparent',
-              borderWidth: isSelected ? 2 : 0,
+              borderColor: isSelected ? theme.colors.accent : theme.colors.separator,
+              borderWidth: isSelected ? 2 : StyleSheet.hairlineWidth,
             },
           ]}
         >
@@ -199,15 +200,22 @@ function HeaderRow({
 }) {
   return (
     <View style={styles.headerRow}>
-      <Text
+      <View
         style={[
-          styles.kindLabel,
-          { color: overlay ? '#fff' : theme.colors.textSecondary },
-          overlay && styles.kindLabelOverlay,
+          styles.kindBadge,
+          !overlay && { backgroundColor: theme.colors.fillTertiary },
         ]}
       >
-        {kindLabel}
-      </Text>
+        <Text
+          style={[
+            styles.kindLabel,
+            { color: overlay ? '#fff' : theme.colors.textSecondary },
+            overlay && styles.kindLabelOverlay,
+          ]}
+        >
+          {kindLabel}
+        </Text>
+      </View>
       <Text
         style={[
           styles.timeLabel,
@@ -602,17 +610,13 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    borderRadius: iosDimensions.cardCornerRadius,
+    borderRadius: 20,
+    borderCurve: 'continuous',
     overflow: 'hidden',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 5,
   },
   standardBody: {
     flex: 1,
-    padding: 12,
+    padding: 14,
   },
   quoteBody: {
     flex: 1,
@@ -713,14 +717,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  kindBadge: {
+    minHeight: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    paddingHorizontal: 9,
+  },
   kindLabel: {
-    fontSize: 11,
+    fontSize: 11.5,
+    fontWeight: '600',
   },
   kindLabelOverlay: {
     fontWeight: '500',
   },
   timeLabel: {
-    fontSize: 11,
+    fontSize: 11.5,
+    fontWeight: '500',
   },
   bottomRow: {
     flexDirection: 'row',

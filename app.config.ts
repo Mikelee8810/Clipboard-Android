@@ -36,8 +36,6 @@ const VARIANT = process.env.APP_VARIANT ?? 'development';
 const IS_PRODUCTION = VARIANT === 'production';
 
 const ID_SUFFIX = IS_PRODUCTION ? '' : '.dev';
-const NAME_SUFFIX = IS_PRODUCTION ? '' : ' Dev';
-
 const IOS_BUNDLE_ID = `app.uniclipboard.UniClipboard${ID_SUFFIX}`;
 const APP_GROUP = `group.app.uniclipboard.UniClipboard${ID_SUFFIX}`;
 const P2P_KEYCHAIN_GROUP = `$(AppIdentifierPrefix)${IOS_BUNDLE_ID}.p2p`;
@@ -56,7 +54,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   return {
     ...(config as ExpoConfig),
-    name: `${config.name ?? 'UniClip'}${NAME_SUFFIX}`,
+    name: config.name ?? 'Clipboard',
     scheme: IS_PRODUCTION ? 'uniclipboard' : 'uniclipboard-dev',
     ios: {
       ...ios,

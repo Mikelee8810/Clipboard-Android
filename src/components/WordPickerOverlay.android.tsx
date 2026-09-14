@@ -17,6 +17,7 @@ import { ConnectedMessageToast } from '@/components/ConnectedMessageToast';
 import { useTheme } from '@/hooks/useTheme';
 import { useOverlayGrowTransition } from '@/hooks/useOverlayGrowTransition';
 import { usePreviewExpansion, useWordPicker, type TokenFrame } from '@/hooks/useWordPicker';
+import { elevation } from '@/theme';
 import type { ColorScheme } from '@/theme/colors';
 import type { WordPickerOverlayProps } from './WordPickerOverlay.types';
 
@@ -407,6 +408,7 @@ const s = StyleSheet.create({
     borderRadius: 16,
     minHeight: 48,
     overflow: 'hidden',
+    ...elevation.sm,
   },
   previewRow: {
     flexDirection: 'row',
@@ -454,11 +456,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    ...elevation.sm,
   },
   sideButtonText: {
     fontSize: 14,
@@ -471,11 +469,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    ...elevation.md,
   },
   copyButtonText: {
     fontSize: 15,
@@ -487,10 +481,6 @@ const s = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    ...elevation.sm,
   },
 });
