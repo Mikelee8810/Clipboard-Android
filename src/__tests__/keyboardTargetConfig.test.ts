@@ -8,7 +8,7 @@ const configureKeyboardTarget =
     };
   }) => { displayName: string };
 
-it('uses the short UniClip keyboard display name', () => {
+it('uses the Clipboard keyboard display name', () => {
   const target = configureKeyboardTarget({
     ios: {
       entitlements: {
@@ -17,5 +17,5 @@ it('uses the short UniClip keyboard display name', () => {
     },
   });
 
-  expect(target.displayName).toBe('UniClip');
+  expect(target.displayName).toBe('Clipboard');
 });

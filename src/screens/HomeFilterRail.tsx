@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { DisplayKind } from '@/utils/displayKind';
+import { elevation } from '@/theme';
 import type { HomeController } from './useHomeController';
 
 /**
@@ -46,7 +47,11 @@ export function HomeFilterRail({ c }: { c: HomeController }) {
         <View
           style={[
             styles.iconPill,
-            { backgroundColor: active ? colors.accentContainer : 'transparent' },
+            active ? elevation.md : elevation.sm,
+            {
+              backgroundColor: active ? colors.accentContainer : colors.surfaceLow,
+              borderColor: active ? 'transparent' : colors.separator,
+            },
           ]}
         >
           <Ionicons
@@ -110,7 +115,8 @@ const styles = StyleSheet.create({
   iconPill: {
     width: 48,
     height: 32,
-    borderRadius: 14,
+    borderRadius: 16,
+    borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',

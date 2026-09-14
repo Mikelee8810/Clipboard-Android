@@ -8,6 +8,7 @@ import { useURLMetadata } from '@/hooks/useURLMetadata';
 import { useCardContextTransition } from '@/hooks/useCardContextTransition';
 import { getDisplayKindColor, getURLWithoutScheme, type DisplayKind } from '@/utils/displayKind';
 import { formatFileSize } from '@/utils/clipboard';
+import { elevation, radius } from '@/theme';
 import type { ActionMenuItem } from '@/utils/actionMenuItems';
 import type { ClipboardItem } from '@/types/clipboard';
 import type { CardContextOverlayProps } from './CardContextOverlay.types';
@@ -125,7 +126,15 @@ function CardPreview(props: PreviewProps) {
 function TextPreview({ item, maxWidth, maxHeight, theme }: PreviewProps) {
   return (
     <View
-      style={[s.previewCard, { maxWidth, maxHeight, backgroundColor: theme.colors.surfaceLow }]}
+      style={[
+        s.previewCard,
+        {
+          maxWidth,
+          maxHeight,
+          backgroundColor: theme.colors.surfaceLow,
+          borderColor: theme.colors.separator,
+        },
+      ]}
     >
       <Text testID="history-preview-text" style={[s.previewText, { color: theme.colors.textPrimary }]} numberOfLines={24}>
         {item.text}
@@ -144,7 +153,7 @@ function URLPreview({ item, maxWidth, theme }: PreviewProps) {
       style={[
         s.previewCard,
         s.previewNoPadding,
-        { width, backgroundColor: theme.colors.surfaceLow },
+        { width, backgroundColor: theme.colors.surfaceLow, borderColor: theme.colors.separator },
       ]}
     >
       {metadata?.ogImageUrl ? (
@@ -200,6 +209,7 @@ function ImagePreview({ item, maxWidth, maxHeight, theme }: PreviewProps) {
             width: Math.min(maxWidth, 260),
             height: 180,
             backgroundColor: theme.colors.surfaceLow,
+            borderColor: theme.colors.separator,
           },
         ]}
       >
@@ -220,7 +230,12 @@ function ImagePreview({ item, maxWidth, maxHeight, theme }: PreviewProps) {
       style={[
         s.previewCard,
         s.previewNoPadding,
-        { width, height, backgroundColor: theme.colors.surfaceLow },
+        {
+          width,
+          height,
+          backgroundColor: theme.colors.surfaceLow,
+          borderColor: theme.colors.separator,
+        },
       ]}
     >
       <Image source={{ uri }} style={StyleSheet.absoluteFill} resizeMode="cover" />
@@ -235,7 +250,11 @@ function FilePreview({ item, displayKind, maxWidth, theme }: PreviewProps) {
       style={[
         s.previewCard,
         s.filePreview,
-        { width: Math.min(maxWidth, 240), backgroundColor: theme.colors.surfaceLow },
+        {
+          width: Math.min(maxWidth, 240),
+          backgroundColor: theme.colors.surfaceLow,
+          borderColor: theme.colors.separator,
+        },
       ]}
     >
       <Ionicons
@@ -267,7 +286,12 @@ function ActionMenu({
   onAction: (action: ActionMenuItem) => void;
 }) {
   return (
-    <View style={[s.menu, { backgroundColor: theme.colors.surfaceHigh }]}>
+    <View
+      style={[
+        s.menu,
+        { backgroundColor: theme.colors.surfaceHigh, borderColor: theme.colors.separator },
+      ]}
+    >
       {groups.map((group, groupIndex) => (
         <React.Fragment key={group[0]?.key ?? groupIndex}>
           {groupIndex > 0 && (
@@ -304,10 +328,12 @@ const s = StyleSheet.create({
     gap: 10,
   },
   previewCard: {
-    borderRadius: 16,
+    borderRadius: radius.xl,
+    borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
     padding: 14,
-    elevation: 6,
+    ...elevation.lg,
   },
   previewNoPadding: {
     padding: 0,
@@ -356,10 +382,12 @@ const s = StyleSheet.create({
   },
   menu: {
     width: MENU_WIDTH,
-    borderRadius: 16,
+    borderRadius: radius.xl,
+    borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
     paddingVertical: 6,
-    elevation: 8,
+    ...elevation.lg,
   },
   row: {
     flexDirection: 'row',

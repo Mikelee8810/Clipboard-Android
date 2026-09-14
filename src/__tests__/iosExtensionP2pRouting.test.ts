@@ -297,7 +297,7 @@ describe('iOS extension P2P routing', () => {
     const controller = readProjectFile('targets/keyboard/KeyboardViewController.swift');
 
     expect(keyboard).toContain('final class KeyboardDiagnostics');
-    expect(keyboard).toContain('Library/Caches/UniClipDiagnostics');
+    expect(keyboard).toContain('Library/Caches/ClipboardDiagnostics');
     expect(keyboard).toContain('keyboard.jsonl');
     expect(keyboard).toContain('DispatchQueue(');
     expect(keyboard).toContain('maxFileBytes = 1_048_576');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { AppButton, AppHost } from '@/components/ui';
@@ -7,6 +7,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { OnboardingArtwork } from './OnboardingArtwork';
 import { OnboardingCloseButton } from './OnboardingCloseButton';
 import type { useOnboardingConnection } from './useOnboardingConnection';
+import { elevation, radius, typography } from '@/theme';
 
 interface Props {
   connection: ReturnType<typeof useOnboardingConnection>;
@@ -45,7 +46,13 @@ export function OnboardingConnection({
         </AppHost>
       </View>
       <ScrollView contentContainerStyle={s.content}>
-        <View style={s.art}>
+        <View
+          style={[
+            s.art,
+            Platform.OS === 'android' && elevation.md,
+            { backgroundColor: c.surfaceLow, borderColor: c.separator },
+          ]}
+        >
           <OnboardingArtwork kind="settings" />
         </View>
         <Text accessibilityRole="header" style={[s.title, { color: c.textPrimary }]}>
@@ -124,8 +131,19 @@ const s = StyleSheet.create({
   header: { height: 56, paddingHorizontal: 20, alignItems: 'flex-end', justifyContent: 'center' },
   closeHost: { width: 48, height: 48 },
   content: { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 24, gap: 16 },
-  art: { width: '100%', maxWidth: 280, height: 180 },
-  title: { fontSize: 26, lineHeight: 34, fontWeight: '700', textAlign: 'center' },
+  art: {
+    width: '100%',
+    maxWidth: 280,
+    height: 180,
+    borderRadius: radius.xxl,
+    borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 12,
+  },
+  title: {
+    ...typography.title1,
+    textAlign: 'center',
+  },
   name: { fontSize: 20, lineHeight: 28, fontWeight: '600', textAlign: 'center' },
   body: { fontSize: 15, lineHeight: 23, textAlign: 'center' },
   secondaryActions: { flexDirection: 'row', width: '100%', maxWidth: 320, gap: 12 },

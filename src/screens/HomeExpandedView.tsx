@@ -12,6 +12,7 @@ import { HomeTopBarArea } from './HomeChrome';
 import { HomeOverlays } from './HomeOverlays';
 import { computeExpandedWorkspaceLayout } from '@/utils/gridLayout';
 import type { ClipboardItem } from '@/types/clipboard';
+import { elevation } from '@/theme';
 
 type Controller = ReturnType<typeof useHomeController>;
 
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
   pane: {
     borderRadius: 22,
     overflow: 'hidden',
+    ...elevation.md,
   },
   railPane: {
     width: RAIL_WIDTH,

@@ -49,7 +49,7 @@
       },
       "issueDescription": {
         "service-unavailable": "先安装并启动 Shizuku，再返回授权",
-        "permission-required": "按照系统提示允许 UniClip 使用当前方式",
+        "permission-required": "按照系统提示允许 Clipboard 使用当前方式",
         "system-restriction": "需要通过 Shizuku 关闭 MIUI 智能剪贴板限制",
         "monitoring-setup-required": "在已开启 USB 调试的电脑上执行一条 ADB 命令"
       },
@@ -85,7 +85,7 @@
             "bestFor": "希望开箱即用的大多数用户",
             "benefit": "无需 ADB；授权悬浮窗后即可工作",
             "tradeoff": "每秒检查一次，可能短暂影响键盘、游戏或全屏应用",
-            "setup": "只需允许 UniClip 显示悬浮窗"
+            "setup": "只需允许 Clipboard 显示悬浮窗"
           },
           "overlay-event": {
             "title": "ADB 事件",
@@ -101,13 +101,13 @@
             "bestFor": "已经使用或熟悉 Shizuku 的进阶用户",
             "benefit": "事件驱动，响应及时，也不会临时获取窗口焦点",
             "tradeoff": "依赖 Shizuku 服务；设备重启后通常需要重新启动服务",
-            "setup": "先安装、启动 Shizuku，并允许 UniClip 访问"
+            "setup": "先安装、启动 Shizuku，并允许 Clipboard 访问"
           }
         }
       },
       "adbGuide": {
         "title": "授权 ADB 事件检测",
-        "subtitle": "UniClip 仅用此权限检测复制事件，不会处理其他日志内容",
+        "subtitle": "Clipboard 仅用此权限检测复制事件，不会处理其他日志内容",
         "status": {
           "copied": "命令已复制。请在电脑终端执行，然后返回检查授权。",
           "notDetected": "暂未检测到授权。请确认设备连接正常、命令执行成功。"
@@ -123,7 +123,7 @@
       },
       "restriction": {
         "title": "关闭 MIUI 剪贴板限制",
-        "text": "UniClip 将通过 Shizuku 关闭 MIUI 的智能剪贴板限制，以便在后台读取和写入剪贴板。此操作可能同时关闭系统的智能剪贴板功能。",
+        "text": "Clipboard 将通过 Shizuku 关闭 MIUI 的智能剪贴板限制，以便在后台读取和写入剪贴板。此操作可能同时关闭系统的智能剪贴板功能。",
         "confirm": "关闭限制"
       }
     }
@@ -147,7 +147,7 @@
     },
     "enableUpload": {
       "title": "开启后台上传本地剪贴板",
-      "text": "无需启用此选项，UniClip 也支持从选中文字弹出的菜单直接上传文字。\n\nAndroid 10 及以上的系统，应用在后台无法直接获取本地剪贴板内容，你可能需要启用悬浮窗或使用其他工具绕过此限制。",
+      "text": "无需启用此选项，Clipboard 也支持从选中文字弹出的菜单直接上传文字。\n\nAndroid 10 及以上的系统，应用在后台无法直接获取本地剪贴板内容，你可能需要启用悬浮窗或使用其他工具绕过此限制。",
       "confirm": "确认开启"
     },
     "batteryFallback": {

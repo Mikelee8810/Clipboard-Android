@@ -49,7 +49,7 @@
       },
       "issueDescription": {
         "service-unavailable": "Instale e inicie o Shizuku, depois volte para autorizar",
-        "permission-required": "Siga a solicitação do sistema para permitir este método ao UniClip",
+        "permission-required": "Siga a solicitação do sistema para permitir este método ao Clipboard",
         "system-restriction": "Use o Shizuku para desativar a restrição da área de transferência inteligente do MIUI",
         "monitoring-setup-required": "Execute um comando ADB em um computador com a depuração USB ativada"
       },
@@ -85,7 +85,7 @@
             "bestFor": "A maioria das pessoas que quer uma configuração mínima",
             "benefit": "Não exige ADB; funciona após permitir a sobreposição",
             "tradeoff": "Verifica a cada segundo e pode afetar brevemente teclados, jogos ou apps em tela cheia",
-            "setup": "Permita que o UniClip apareça sobre outros apps"
+            "setup": "Permita que o Clipboard apareça sobre outros apps"
           },
           "overlay-event": {
             "title": "Eventos ADB",
@@ -101,13 +101,13 @@
             "bestFor": "Usuários avançados que já conhecem ou usam o Shizuku",
             "benefit": "Resposta por eventos sem assumir temporariamente o foco da janela",
             "tradeoff": "Depende do serviço Shizuku, que geralmente precisa ser reiniciado após a reinicialização do dispositivo",
-            "setup": "Instale e inicie o Shizuku, depois permita o acesso ao UniClip"
+            "setup": "Instale e inicie o Shizuku, depois permita o acesso ao Clipboard"
           }
         }
       },
       "adbGuide": {
         "title": "Autorizar detecção de eventos ADB",
-        "subtitle": "O UniClip usa esta permissão somente para detectar cópias e não processa outros logs",
+        "subtitle": "O Clipboard usa esta permissão somente para detectar cópias e não processa outros logs",
         "status": {
           "copied": "Comando copiado. Execute-o no terminal do computador e volte para verificar.",
           "notDetected": "A autorização não foi detectada. Verifique a conexão e o resultado do comando."
@@ -123,7 +123,7 @@
       },
       "restriction": {
         "title": "Desativar a restrição de área de transferência do MIUI",
-        "text": "O UniClip usará o Shizuku para desativar a restrição de área de transferência inteligente do MIUI, para que o conteúdo possa ser lido e gravado em segundo plano. Isso também pode desativar o recurso de área de transferência inteligente do sistema.",
+        "text": "O Clipboard usará o Shizuku para desativar a restrição de área de transferência inteligente do MIUI, para que o conteúdo possa ser lido e gravado em segundo plano. Isso também pode desativar o recurso de área de transferência inteligente do sistema.",
         "confirm": "Desativar restrição"
       }
     }
@@ -147,7 +147,7 @@
     },
     "enableUpload": {
       "title": "Ativar envio em segundo plano da área de transferência local",
-      "text": "Não é necessário ativar esta opção: o UniClip também permite enviar texto diretamente pelo menu exibido ao selecionar texto.\n\nNo Android 10 e versões posteriores, os apps não podem ler diretamente a área de transferência local em segundo plano. Talvez seja necessário ativar a sobreposição ou usar outra ferramenta para contornar essa limitação.",
+      "text": "Não é necessário ativar esta opção: o Clipboard também permite enviar texto diretamente pelo menu exibido ao selecionar texto.\n\nNo Android 10 e versões posteriores, os apps não podem ler diretamente a área de transferência local em segundo plano. Talvez seja necessário ativar a sobreposição ou usar outra ferramenta para contornar essa limitação.",
       "confirm": "Ativar"
     },
     "batteryFallback": {

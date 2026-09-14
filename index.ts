@@ -1,9 +1,16 @@
 import { registerRootComponent } from 'expo';
-import { Platform, AppRegistry } from 'react-native';
+import { Platform, AppRegistry, LogBox } from 'react-native';
 
 // 初始化 i18next(副作用),必须在任何组件渲染前完成,覆盖所有 AppRegistry 入口。
 import './src/i18n';
 import App from './App';
+
+// React Native 0.85 adds its Fusebox migration notice directly to LogBox, so
+// ignoreLogs() cannot filter it. Keep debug installs free of LogBox banners;
+// release builds do not install LogBox at all.
+if (__DEV__) {
+  LogBox.ignoreAllLogs(true);
+}
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
 // It also ensures that whether you load the app in Expo Go or in a native build,

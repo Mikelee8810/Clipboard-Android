@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "UniClip",
+    "name": "Clipboard",
     "slug": "uniclip",
     "scheme": "uniclipboard",
     "version": "2.0.0",
@@ -65,8 +65,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "授权 UniClip 使用相机以扫描二维码接入服务器",
-          "microphonePermission": "授权 UniClip 在录像时使用麦克风"
+          "cameraPermission": "授权 Clipboard 使用相机以扫描二维码接入服务器",
+          "microphonePermission": "授权 Clipboard 在录像时使用麦克风"
         }
       ],
       "expo-sqlite",

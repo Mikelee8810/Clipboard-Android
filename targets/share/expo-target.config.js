@@ -4,7 +4,7 @@ module.exports = (config) => ({
   name: 'share',
   // Variant-suffixed so the share sheet distinguishes the dev install from
   // the App Store one when both are on the same device.
-  displayName: config.extra?.appVariant === 'production' ? 'UniClip' : 'UniClip Dev',
+  displayName: 'Clipboard',
   // Leading dot → appended to the main app bundle id, so it follows the
   // dev/prod variant automatically (…UniClipboard.Share / …UniClipboard.dev.Share).
   bundleIdentifier: '.Share',

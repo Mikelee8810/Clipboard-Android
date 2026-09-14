@@ -438,8 +438,9 @@ const styles = StyleSheet.create({
   loadingPreviewImage: {
     width: 120,
     height: 120,
-    borderRadius: 8,
+    borderRadius: radius.xl,
     resizeMode: 'cover',
+    ...elevation.sm,
   },
   progressContainer: {
     width: '100%',
@@ -457,14 +458,17 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 1,
     maxHeight: 320,
-    borderRadius: 12,
+    borderRadius: radius.xl,
+    ...elevation.sm,
   },
   previewTextBox: {
     width: 280,
     maxHeight: 160,
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: radius.lg,
+    borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
     padding: 12,
+    ...elevation.sm,
   },
   previewText: {
     fontSize: 14,
@@ -472,11 +476,13 @@ const styles = StyleSheet.create({
   },
   previewFileBox: {
     width: 280,
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: radius.lg,
+    borderCurve: 'continuous',
+    borderWidth: StyleSheet.hairlineWidth,
     padding: 12,
     alignItems: 'center',
     gap: 6,
+    ...elevation.sm,
   },
   previewFileIcon: {
     fontSize: 32,

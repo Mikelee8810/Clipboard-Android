@@ -20,7 +20,7 @@
     "fallbackSection": {
       "header": "No prompt, or want to change your choice",
       "footer": "If no prompt appeared, the clipboard may be empty (copy some text first, then trigger), or you previously tapped \"Don't Allow\" and iOS remembered it. Go to system settings and set \"Paste from Other Apps\" to \"Allow\"—this row only appears after you've triggered it once. iOS doesn't expose the current value to the app, so there's no need to return and confirm after changing it.",
-      "step1": "Open UniClip in system settings",
+      "step1": "Open Clipboard in system settings",
       "step2": "Tap \"Paste from Other Apps\"",
       "step3": "Choose \"Allow\""
     },

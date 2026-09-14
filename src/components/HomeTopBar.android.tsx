@@ -8,15 +8,26 @@ import type {
   SelectModeTopBarProps,
 } from './HomeTopBar.types';
 import { HistoryFilterTags } from '@/components/HistoryFilterTags';
+import { elevation } from '@/theme';
 
 export function DefaultTopBar({ onSearch, onSettings, onSelectMode, theme }: DefaultTopBarProps) {
   const { t } = useTranslation('home');
   return (
     <View style={s.row}>
+      <View style={s.brand} accessibilityRole="header">
+        <View style={[s.brandIcon, elevation.md, { backgroundColor: theme.colors.accent }]}>
+          <Ionicons name="clipboard" size={21} color={theme.colors.onAccent} />
+        </View>
+        <Text numberOfLines={1} style={[s.brandTitle, { color: theme.colors.textPrimary }]}>Clipboard</Text>
+      </View>
       <View style={s.actions}>
         <Pressable
           onPress={onSelectMode}
-          style={[s.pill, { backgroundColor: theme.colors.surfaceHigh }]}
+          style={[
+            s.pill,
+            elevation.sm,
+            { backgroundColor: theme.colors.surfaceLowest, borderColor: theme.colors.separator },
+          ]}
           accessibilityRole="button"
           accessibilityLabel={t('action.select', { ns: 'common' })}
         >
@@ -27,7 +38,11 @@ export function DefaultTopBar({ onSearch, onSettings, onSelectMode, theme }: Def
         <Pressable
           testID="history-search-open"
           onPress={onSearch}
-          style={s.iconBtn}
+          style={[
+            s.iconBtn,
+            elevation.sm,
+            { backgroundColor: theme.colors.surfaceLowest, borderColor: theme.colors.separator },
+          ]}
           hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
           accessibilityRole="button"
           accessibilityLabel={t('a11y.search')}
@@ -62,7 +77,7 @@ export function SearchTopBar({
     <View style={s.searchWrap}>
       <View style={s.searchRow}>
         <View style={s.boxWrap}>
-          <View style={[s.searchBox, bg]}>
+          <View style={[s.searchBox, elevation.sm, bg]}>
             <Ionicons name="search" size={16} color={theme.colors.textSecondary} />
             <TextInput
               testID="history-search-input"
@@ -88,7 +103,7 @@ export function SearchTopBar({
         </View>
         <Pressable
           onPress={onOpenFilters}
-          style={[s.circle, bg]}
+          style={[s.circle, elevation.md, bg]}
           accessibilityRole="button"
           accessibilityLabel={t('a11y.searchFilters')}
         >
@@ -101,7 +116,7 @@ export function SearchTopBar({
         <Pressable
           testID="history-search-close"
           onPress={onClose}
-          style={[s.circle, bg]}
+          style={[s.circle, elevation.md, bg]}
           accessibilityRole="button"
           accessibilityLabel={t('action.close', { ns: 'common' })}
         >
@@ -136,7 +151,7 @@ export function SelectModeTopBar({
       <View style={s.actions}>
         <Pressable
           onPress={onSelectAll}
-          style={[s.pill, { backgroundColor: theme.colors.surfaceHigh }]}
+          style={[s.pill, elevation.sm, { backgroundColor: theme.colors.surfaceHigh }]}
           accessibilityRole="button"
         >
           <Text style={[s.pillText, { color: theme.colors.textPrimary }]}>
@@ -145,7 +160,7 @@ export function SelectModeTopBar({
         </Pressable>
         <Pressable
           onPress={onDone}
-          style={[s.pill, { backgroundColor: theme.colors.surfaceHigh }]}
+          style={[s.pill, elevation.sm, { backgroundColor: theme.colors.surfaceHigh }]}
           accessibilityRole="button"
         >
           <Text style={[s.pillText, { color: theme.colors.textPrimary }]}>
@@ -158,14 +173,39 @@ export function SelectModeTopBar({
 }
 
 const s = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 52 },
-  actions: { flexDirection: 'row', alignItems: 'center', gap: 12, marginLeft: 'auto' },
-  iconBtn: { justifyContent: 'center', alignItems: 'center' },
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 68 },
+  brand: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 },
+  brandIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 13,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  brandTitle: {
+    fontSize: 27,
+    lineHeight: 32,
+    fontWeight: '800',
+    letterSpacing: -0.7,
+    fontFamily: 'sans-serif',
+    flexShrink: 1,
+  },
+  actions: { flexDirection: 'row', alignItems: 'center', gap: 8, marginLeft: 10, flexShrink: 0 },
+  iconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: StyleSheet.hairlineWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   selectCount: { fontSize: 14, fontWeight: '600' },
   pill: {
     height: 36,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     borderRadius: 18,
+    borderWidth: StyleSheet.hairlineWidth,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -188,10 +228,5 @@ const s = StyleSheet.create({
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
   },
 });

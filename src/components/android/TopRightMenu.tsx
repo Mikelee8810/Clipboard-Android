@@ -141,7 +141,11 @@ export const TopRightMenu: React.FC<TopRightMenuProps> = ({ items, onClose, test
         ref={menuButtonRef}
         testID={testID}
         onPress={handleOpenMenu}
-        style={styles.headerButton}
+        style={[
+          styles.headerButton,
+          elevation.sm,
+          { backgroundColor: theme.colors.surfaceLowest, borderColor: theme.colors.separator },
+        ]}
         hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
         accessibilityRole="button"
         accessibilityLabel={t('action.more')}
@@ -174,8 +178,10 @@ export const TopRightMenu: React.FC<TopRightMenuProps> = ({ items, onClose, test
 
 const styles = StyleSheet.create({
   headerButton: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: StyleSheet.hairlineWidth,
     justifyContent: 'center',
     alignItems: 'center',
   },

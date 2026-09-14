@@ -35,7 +35,7 @@ describe('Expo app config variants', () => {
     const appGroups = config.ios.entitlements['com.apple.security.application-groups'];
     const extensions = config.extra.eas.build.experimental.ios.appExtensions;
 
-    expect(config.name).toBe('UniClip Dev');
+    expect(config.name).toBe('Clipboard');
     expect(config.scheme).toBe('uniclipboard-dev');
     expect(config.ios.bundleIdentifier).toBe('app.uniclipboard.UniClipboard.dev');
     expect(config.ios.infoPlist.UCAppGroupIdentifier).toBe(
@@ -73,7 +73,7 @@ describe('Expo app config variants', () => {
     const appGroups = config.ios.entitlements['com.apple.security.application-groups'];
     const extensions = config.extra.eas.build.experimental.ios.appExtensions;
 
-    expect(config.name).toBe('UniClip');
+    expect(config.name).toBe('Clipboard');
     expect(config.scheme).toBe('uniclipboard');
     expect(config.ios.bundleIdentifier).toBe('app.uniclipboard.UniClipboard');
     expect(config.ios.infoPlist.UCAppGroupIdentifier).toBe('group.app.uniclipboard.UniClipboard');

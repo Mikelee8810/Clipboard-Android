@@ -1,6 +1,6 @@
 import Foundation
 
-/// Resolves extension-owned strings using the language selected in UniClip.
+/// Resolves extension-owned strings using the language selected in Clipboard.
 /// The `system` sentinel intentionally uses the host's autoupdating locale.
 struct ExtensionLocalization: Equatable {
     let locale: Locale

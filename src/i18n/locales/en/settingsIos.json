@@ -18,13 +18,13 @@
     "enableSteps": {
       "title": "Setup steps",
       "footer": "Allow Full Access lets the keyboard read the clipboard and connect to the other devices in your space. Content is only sent within the current space.",
-      "step1": "Open UniClip in Settings and tap Keyboards",
-      "step2": "Turn on UniClip Keyboard",
+      "step1": "Open Clipboard in Settings and tap Keyboards",
+      "step2": "Turn on Clipboard Keyboard",
       "step3": "Turn on Allow Full Access and confirm"
     },
     "tryout": {
       "title": "Try it",
-      "footer": "Tap the field, then press and hold the globe key 🌐 and choose UniClip Keyboard. Once it opens, the status above refreshes automatically.",
+      "footer": "Tap the field, then press and hold the globe key 🌐 and choose Clipboard Keyboard. Once it opens, the status above refreshes automatically.",
       "placeholder": "Bring up the keyboard here to test"
     },
     "feedback": {
@@ -36,9 +36,9 @@
   },
   "share": {
     "title": "Share",
-    "testMessage": "Share test from UniClip 👋",
+    "testMessage": "Share test from Clipboard 👋",
     "intro": {
-      "footer": "In any app, tap Share and choose UniClip to send content directly to the other devices in your space without switching back first."
+      "footer": "In any app, tap Share and choose Clipboard to send content directly to the other devices in your space without switching back first."
     },
     "supportedContent": {
       "label": "Supported content",
@@ -46,10 +46,10 @@
     },
     "favorite": {
       "title": "Add to favorites",
-      "footer": "Once added to Favorites, UniClip stays pinned at the front of the app row in the share sheet.",
+      "footer": "Once added to Favorites, Clipboard stays pinned at the front of the app row in the share sheet.",
       "step1": "Open any share sheet (tap the button below)",
       "step2": "Swipe the app icon row to the far right and tap More",
-      "step3": "Tap Edit in the top right, then use ➕ to add UniClip to Favorites",
+      "step3": "Tap Edit in the top right, then use ➕ to add Clipboard to Favorites",
       "step4": "Drag it to the front and tap Done"
     },
     "tryButton": "Open the share sheet to try"
@@ -76,8 +76,8 @@
     "error": {
       "title": "Couldn't create diagnostics",
       "message": "Please try again later.",
-      "engineLogsMissing": "The Engine is running, but no Engine logs were found. Restart UniClip and try again.",
-      "engineLogsUnreadable": "Engine logs were found but couldn't be read. Restart UniClip and try again."
+      "engineLogsMissing": "The Engine is running, but no Engine logs were found. Restart Clipboard and try again.",
+      "engineLogsUnreadable": "Engine logs were found but couldn't be read. Restart Clipboard and try again."
     },
     "capture": {
       "title": "Detailed diagnostics",

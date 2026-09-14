@@ -28,7 +28,12 @@ describe('Android background service diagnostics', () => {
     expect(module).toContain('BackgroundServiceDiagnostics.stoppedPermanently(context)');
     expect(service).toContain('BackgroundServiceDiagnostics.stoppedTemporarily(this)');
     expect(service).toContain('BackgroundServiceDiagnostics.timedOut(this)');
-    expect(service).toContain('BackgroundServiceDiagnostics.taskRemoved(this)');
+    expect(service).toContain('onTaskRemoved: keeping native clipboard monitor active');
+    expect(service).toContain('BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)');
+    expect(service).toContain('BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)');
+    expect(read('modules/foreground-service/android/build.gradle')).toContain(
+      "implementation project(':shizuku-clipboard')"
+    );
     expect(service).toContain('BackgroundServiceDiagnostics.destroyed(this, expected = stoppedByUser)');
     expect(bridge).toContain('BindingHostDiagnosticSource.BACKGROUND_SERVICE');
     expect(bridge).toContain('AndroidNativeDiagnostics.get(context)');

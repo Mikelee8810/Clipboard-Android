@@ -14,7 +14,7 @@ extension KeyboardModel: KeyboardViewStore {
                     symbol: "lock.shield",
                     title: localization.string("需要「完全访问权限」"),
                     detail: localization.string(
-                        "在 设置 › 通用 › 键盘 › UniClip 中开启「允许完全访问」,即可在打开键盘时自动同步剪贴板。"
+                        "在 设置 › 通用 › 键盘 › Clipboard 中开启「允许完全访问」,即可在打开键盘时自动同步剪贴板。"
                     ),
                     actionTitle: KeyboardSettingsURL.destination == nil
                         ? nil
@@ -45,7 +45,7 @@ extension KeyboardModel: KeyboardViewStore {
                 returnKeyTitle: returnKeyTitle
             ),
             topBar: .init(
-                title: "UniClip",
+                title: "Clipboard",
                 showsSearch: gate != .needsFullAccess && !cards.isEmpty,
                 showsRefresh: gate != .needsFullAccess
             ),

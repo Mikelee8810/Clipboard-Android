@@ -49,7 +49,7 @@
       },
       "issueDescription": {
         "service-unavailable": "Install and start Shizuku, then return to authorize",
-        "permission-required": "Follow the system prompt to allow UniClip to use this method",
+        "permission-required": "Follow the system prompt to allow Clipboard to use this method",
         "system-restriction": "Use Shizuku to turn off the MIUI smart clipboard restriction",
         "monitoring-setup-required": "Run one ADB command on a computer with USB debugging enabled"
       },
@@ -85,7 +85,7 @@
             "bestFor": "Most people who want it to work with minimal setup",
             "benefit": "No ADB; works as soon as overlay permission is granted",
             "tradeoff": "Checks every second and may briefly affect keyboards, games, or full-screen apps",
-            "setup": "Allow UniClip to display over other apps"
+            "setup": "Allow Clipboard to display over other apps"
           },
           "overlay-event": {
             "title": "ADB events",
@@ -101,13 +101,13 @@
             "bestFor": "Advanced users who already use or understand Shizuku",
             "benefit": "Event-driven, responsive, and never temporarily takes window focus",
             "tradeoff": "Depends on the Shizuku service, which usually needs restarting after a reboot",
-            "setup": "Install and start Shizuku, then grant UniClip access"
+            "setup": "Install and start Shizuku, then grant Clipboard access"
           }
         }
       },
       "adbGuide": {
         "title": "Authorize ADB event detection",
-        "subtitle": "UniClip uses this permission only to detect copy events and does not process other log content",
+        "subtitle": "Clipboard uses this permission only to detect copy events and does not process other log content",
         "status": {
           "copied": "Command copied. Run it in a computer terminal, then return to check access.",
           "notDetected": "Authorization was not detected. Check the device connection and command result."
@@ -123,7 +123,7 @@
       },
       "restriction": {
         "title": "Turn off the MIUI clipboard restriction",
-        "text": "UniClip will use Shizuku to turn off MIUI's smart clipboard restriction so clipboard content can be read and written in the background. This may also disable the system smart clipboard feature.",
+        "text": "Clipboard will use Shizuku to turn off MIUI's smart clipboard restriction so clipboard content can be read and written in the background. This may also disable the system smart clipboard feature.",
         "confirm": "Turn off restriction"
       }
     }
@@ -147,7 +147,7 @@
     },
     "enableUpload": {
       "title": "Enable background upload of local clipboard",
-      "text": "You don't need to enable this option — UniClip also lets you upload text directly from the menu that pops up when you select text.\n\nOn Android 10 and above, apps can't directly read the local clipboard in the background. You may need to enable the overlay or use another tool to work around this limitation.",
+      "text": "You don't need to enable this option — Clipboard also lets you upload text directly from the menu that pops up when you select text.\n\nOn Android 10 and above, apps can't directly read the local clipboard in the background. You may need to enable the overlay or use another tool to work around this limitation.",
       "confirm": "Enable"
     },
     "batteryFallback": {
