@@ -31,6 +31,7 @@ object BackgroundClipboardMonitor {
     @Volatile private var binding = false
     @Volatile private var listenersRegistered = false
     @Volatile private var lastSnapshot = ""
+    @Volatile private var pollerActive = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
@@ -61,33 +62,45 @@ object BackgroundClipboardMonitor {
 
     private val pollRunnable = object : Runnable {
         override fun run() {
-            if (owners.isEmpty()) return
-            val service = clipboardService
-            if (service == null) {
-                bindUserService()
-            } else {
-                val snapshot = try {
-                    service.primaryClipJson.orEmpty()
-                } catch (error: Exception) {
-                    Log.w(TAG, "Clipboard worker read failed; reconnecting", error)
-                    clipboardService = null
-                    binding = false
-                    ""
-                }
-                if (snapshot.isNotEmpty() && snapshot != lastSnapshot) {
-                    lastSnapshot = snapshot
-                    applicationContext?.let { context ->
-                        persistenceExecutor.execute {
-                            BackgroundClipboardHistoryWriter.persist(context, snapshot, service)
+            if (owners.isEmpty()) {
+                pollerActive = false
+                return
+            }
+
+            pollerActive = true
+            try {
+                val service = clipboardService
+                if (service == null) {
+                    bindUserService()
+                } else {
+                    val snapshot = try {
+                        service.primaryClipJson.orEmpty()
+                    } catch (error: Exception) {
+                        Log.w(TAG, "Clipboard worker read failed; reconnecting", error)
+                        clipboardService = null
+                        binding = false
+                        ""
+                    }
+                    if (snapshot.isNotEmpty() && snapshot != lastSnapshot) {
+                        lastSnapshot = snapshot
+                        applicationContext?.let { context ->
+                            persistenceExecutor.execute {
+                                BackgroundClipboardHistoryWriter.persist(context, snapshot, service)
+                            }
+                        }
+                        val callbacks = synchronized(listenerLock) { listeners.values.toList() }
+                        if (callbacks.isNotEmpty()) {
+                            mainHandler.post { callbacks.forEach { it(snapshot) } }
                         }
                     }
-                    val callbacks = synchronized(listenerLock) { listeners.values.toList() }
-                    if (callbacks.isNotEmpty()) {
-                        mainHandler.post { callbacks.forEach { it(snapshot) } }
-                    }
+                }
+            } finally {
+                if (owners.isNotEmpty()) {
+                    monitorHandler.postDelayed(this, POLL_INTERVAL_MS)
+                } else {
+                    pollerActive = false
                 }
             }
-            monitorHandler.postDelayed(this, POLL_INTERVAL_MS)
         }
     }
 
@@ -104,9 +117,23 @@ object BackgroundClipboardMonitor {
             return false
         }
         bindUserService()
-        monitorHandler.removeCallbacks(pollRunnable)
-        monitorHandler.post(pollRunnable)
+        schedulePoller()
         return true
+    }
+
+    /**
+     * Reconcile the native monitor after Shizuku or its user service has died.
+     * This is intentionally idempotent so a watchdog can call it repeatedly.
+     */
+    @JvmStatic
+    fun ensureRunning(context: Context, owner: String): Boolean {
+        applicationContext = context.applicationContext
+        if (!owners.contains(owner)) return start(context, owner)
+        registerListeners()
+        if (!hasPermission()) return false
+        bindUserService()
+        schedulePoller()
+        return isRunning()
     }
 
     @JvmStatic
@@ -115,12 +142,18 @@ object BackgroundClipboardMonitor {
         synchronized(listenerLock) { listeners.remove(owner) }
         if (owners.isNotEmpty()) return
         monitorHandler.removeCallbacks(pollRunnable)
+        pollerActive = false
         lastSnapshot = ""
         unbindUserService()
     }
 
     @JvmStatic
-    fun isRunning(): Boolean = owners.isNotEmpty() && clipboardService != null
+    fun isRunning(): Boolean = owners.isNotEmpty() && clipboardService != null && pollerActive
+
+    private fun schedulePoller() {
+        monitorHandler.removeCallbacks(pollRunnable)
+        monitorHandler.post(pollRunnable)
+    }
 
     private fun registerListeners() {
         if (listenersRegistered) return
