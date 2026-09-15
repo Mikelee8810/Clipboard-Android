@@ -9,8 +9,9 @@ import android.content.res.Configuration
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
-import androidx.annotation.StringRes
+import android.os.Looper
 import androidx.core.app.NotificationCompat
 import expo.modules.nativeutil.NativeLogger
 import expo.modules.shizukuclipboard.BackgroundClipboardMonitor
@@ -27,17 +28,16 @@ class SyncForegroundService : Service() {
         const val ACTION_TEMP_STOP = "TEMP_STOP"
         const val ACTION_UPDATE = "UPDATE"
         const val EXTRA_CONTENT = "content"
-        private const val RESTART_NOTIFY_ID = 0x2021
-        private const val RESTART_CHANNEL_ID = "syncclipboard_restart"
         private const val PREFS = "clipboard_background_service"
         private const val KEY_BACKGROUND_REQUESTED = "background_requested"
         private const val CLIPBOARD_MONITOR_OWNER = "foreground-service"
+        private const val LEGACY_RESTART_CHANNEL_ID = "syncclipboard_restart"
+        private const val WATCHDOG_INTERVAL_MS = 5_000L
 
         var isRunning = false
             private set
 
-        /** 标记是否为用户主动停止（ACTION_STOP / ACTION_TEMP_STOP / JS 侧 stopService），
-         *  区分系统杀掉与用户操作，onDestroy 时据此决定是否发通知 */
+        /** Marks a user initiated stop so diagnostics can distinguish it from a system kill. */
         internal var stoppedByUser = false
 
         fun setBackgroundRequested(context: android.content.Context, requested: Boolean) {
@@ -54,6 +54,18 @@ class SyncForegroundService : Service() {
 
     private var notificationManager: NotificationManager? = null
     private var lastContent: String? = null
+    private val watchdogHandler = Handler(Looper.getMainLooper())
+    private val monitorWatchdog = object : Runnable {
+        override fun run() {
+            if (!isRunning || stoppedByUser) return
+
+            if (!BackgroundClipboardMonitor.isRunning()) {
+                NativeLogger.w(TAG, "Clipboard monitor is not healthy; attempting native recovery")
+                BackgroundClipboardMonitor.ensureRunning(this@SyncForegroundService, CLIPBOARD_MONITOR_OWNER)
+            }
+            watchdogHandler.postDelayed(this, WATCHDOG_INTERVAL_MS)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -71,15 +83,14 @@ class SyncForegroundService : Service() {
                 //   - intent 为 null：系统直接重启
                 //   - intent.action == ACTION_START 但 jsInitiatedService == false：
                 //     系统重投了上次的 ACTION_START intent，JS 并未实际运行
-                // 以上两种情况：JS 不存在，不启动前台服务，仅发重启引导通知
+                // A stale system restart is ignored when the user has not enabled background work.
                 if (
                     (intent == null || !ForegroundServiceModule.isJsRuntimeAlive()) &&
                     !isBackgroundRequested(this)
                 ) {
-                    NativeLogger.w(TAG, "Service restarted by system (intent=${intent?.action}, jsAlive=${ForegroundServiceModule.isJsRuntimeAlive()}), JS not running, showing restart notification")
+                    NativeLogger.w(TAG, "Service restarted without an active background request; stopping")
                     BackgroundServiceDiagnostics.systemRestarted(this)
-                    showRestartNotification()
-                    stoppedByUser = true  // 防止 onDestroy 再次发重启通知
+                    stoppedByUser = true
                     stopSelf()
                     return START_NOT_STICKY
                 }
@@ -94,6 +105,7 @@ class SyncForegroundService : Service() {
                 isRunning = true
                 BackgroundServiceDiagnostics.started(this)
                 BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)
+                startMonitorWatchdog()
             }
             ACTION_STOP -> {
                 NativeLogger.d(TAG, "Stopping foreground service (permanent)")
@@ -109,6 +121,7 @@ class SyncForegroundService : Service() {
                     }
                 }
                 stopForeground(STOP_FOREGROUND_REMOVE)
+                stopMonitorWatchdog()
                 stopSelf()
                 isRunning = false
                 BackgroundServiceDiagnostics.stoppedPermanently(this)
@@ -129,6 +142,7 @@ class SyncForegroundService : Service() {
                     }
                 }
                 stopForeground(STOP_FOREGROUND_REMOVE)
+                stopMonitorWatchdog()
                 stopSelf()
                 isRunning = false
                 BackgroundServiceDiagnostics.stoppedTemporarily(this)
@@ -149,6 +163,7 @@ class SyncForegroundService : Service() {
                 isRunning = true
                 BackgroundServiceDiagnostics.started(this)
                 BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)
+                startMonitorWatchdog()
             }
         }
         return START_STICKY
@@ -172,8 +187,9 @@ class SyncForegroundService : Service() {
     @androidx.annotation.RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onTimeout(startId: Int) {
         NativeLogger.w(TAG, "dataSync foreground service timed out (6h/24h quota exhausted), stopping gracefully")
-        stoppedByUser = true   // 防止 onDestroy 重复发通知
-        showRestartNotification(R.string.foreground_service_timeout_content)
+        stoppedByUser = true
+        stopMonitorWatchdog()
+        BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
         isRunning = false
@@ -191,12 +207,11 @@ class SyncForegroundService : Service() {
     override fun onDestroy() {
         NativeLogger.d(TAG, "onDestroy called, stoppedByUser=$stoppedByUser, isRunning=$isRunning")
         val wasRunning = isRunning
+        stopMonitorWatchdog()
         isRunning = false
         BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
-        // 非用户主动停止且之前确实在运行 → 可能被系统杀死，发通知引导重启
         if (!stoppedByUser && wasRunning) {
-            NativeLogger.w(TAG, "Service destroyed unexpectedly, showing restart notification")
-            showRestartNotification()
+            NativeLogger.w(TAG, "Service destroyed unexpectedly; native watchdog will recover on restart")
         }
         BackgroundServiceDiagnostics.destroyed(this, expected = stoppedByUser)
         stoppedByUser = false
@@ -214,17 +229,19 @@ class SyncForegroundService : Service() {
                 description = getString(R.string.foreground_service_channel_description)
                 setShowBadge(false)
             }
-            val restartChannel = NotificationChannel(
-                RESTART_CHANNEL_ID,
-                getString(R.string.foreground_service_restart_channel_name),
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = getString(R.string.foreground_service_restart_channel_description)
-            }
-            notificationManager?.createNotificationChannels(
-                listOf(foregroundChannel, restartChannel)
-            )
+            notificationManager?.createNotificationChannel(foregroundChannel)
+            // Remove the high-priority recovery channel used by older builds.
+            notificationManager?.deleteNotificationChannel(LEGACY_RESTART_CHANNEL_ID)
         }
+    }
+
+    private fun startMonitorWatchdog() {
+        watchdogHandler.removeCallbacks(monitorWatchdog)
+        watchdogHandler.post(monitorWatchdog)
+    }
+
+    private fun stopMonitorWatchdog() {
+        watchdogHandler.removeCallbacks(monitorWatchdog)
     }
 
     private fun createNotification(content: String? = null): Notification {
@@ -255,13 +272,7 @@ class SyncForegroundService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val iconResId = applicationContext.resources.getIdentifier(
-            "ic_notification", "drawable", packageName
-        ).takeIf { it != 0 }
-            ?: applicationContext.resources.getIdentifier(
-                "ic_launcher_foreground", "mipmap", packageName
-            ).takeIf { it != 0 }
-            ?: android.R.drawable.ic_menu_info_details
+        val iconResId = notificationIconResId()
 
         NativeLogger.d(TAG, "Notification icon resId=$iconResId")
 
@@ -300,40 +311,13 @@ class SyncForegroundService : Service() {
         notificationManager?.notify(NOTIFY_ID, notification)
     }
 
-    private fun showRestartNotification(
-        @StringRes contentResId: Int = R.string.foreground_service_restart_content
-    ) {
-        val nm = getSystemService(NOTIFICATION_SERVICE) as? NotificationManager ?: return
-
-        createNotificationChannels()
-
-        // 启动 ServiceRestartActivity（自动恢复服务后退出）
-        val restartIntent = Intent().apply {
-            setClassName(packageName, "com.jericx.syncclipboardmobile.servicerestart.ServiceRestartActivity")
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        }
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0, restartIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val iconResId = applicationContext.resources.getIdentifier(
-            "ic_notification", "drawable", packageName
+    private fun notificationIconResId(): Int {
+        val resources = applicationContext.resources
+        return resources.getIdentifier(
+            "ic_launcher_monochrome", "mipmap", packageName
         ).takeIf { it != 0 }
-            ?: applicationContext.resources.getIdentifier(
-                "ic_launcher_foreground", "mipmap", packageName
-            ).takeIf { it != 0 }
+            ?: resources.getIdentifier("ic_notification", "drawable", packageName)
+                .takeIf { it != 0 }
             ?: android.R.drawable.ic_menu_info_details
-
-        val notification = NotificationCompat.Builder(this, RESTART_CHANNEL_ID)
-            .setContentTitle(getString(R.string.foreground_service_restart_title))
-            .setContentText(getString(contentResId))
-            .setSmallIcon(iconResId)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .build()
-
-        nm.notify(RESTART_NOTIFY_ID, notification)
     }
 }
