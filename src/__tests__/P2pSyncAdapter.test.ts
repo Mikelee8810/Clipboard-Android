@@ -76,6 +76,7 @@ function dependencies(platform: 'android' | 'ios' = 'ios') {
   };
   return {
     platform,
+    captureSettleMs: 0,
     engine,
     space,
     content,
@@ -390,6 +391,118 @@ describe('P2pSyncAdapter', () => {
     });
     expect(deps.clipboard.observeClipboardChange).toHaveBeenCalledWith(true);
     expect(deps.clipboard.persistDelivery).toHaveBeenCalledWith('TEXT_HASH', deps.delivery.report);
+  });
+
+  it('sends Shizuku-captured content when the engine cannot read the clipboard', async () => {
+    const P2pSyncAdapter = loadP2pSyncAdapter();
+    expect(P2pSyncAdapter).toBeDefined();
+    if (!P2pSyncAdapter) return;
+
+    const deps = dependencies();
+    deps.clipboard.observeClipboardChange.mockResolvedValue(null);
+    const adapter = new P2pSyncAdapter(deps) as unknown as {
+      observeClipboardChange(content: unknown, dispatch: boolean): Promise<unknown>;
+    };
+
+    await adapter.observeClipboardChange(
+      { type: 'Text', text: 'typed on the phone', profileHash: 'TEXT_HASH' },
+      true
+    );
+
+    expect(deps.content.sendImportedText).toHaveBeenCalledWith(
+      'typed on the phone',
+      'TEXT_HASH'
+    );
+  });
+
+  it('does not send back content that a peer just delivered', async () => {
+    const P2pSyncAdapter = loadP2pSyncAdapter();
+    expect(P2pSyncAdapter).toBeDefined();
+    if (!P2pSyncAdapter) return;
+
+    const deps = dependencies();
+    deps.clipboard.observeClipboardChange.mockResolvedValue(null);
+    const adapter = new P2pSyncAdapter(deps) as unknown as {
+      start(context: unknown): Promise<void>;
+      observeClipboardChange(content: unknown, dispatch: boolean): Promise<unknown>;
+    };
+    await adapter.start({
+      appVersion: '2.0.0',
+      profileId: 'default',
+      policy: { appState: 'background', backgroundSyncEnabled: true },
+    });
+
+    deps.emitEngineEvent({
+      type: 'incomingEntry',
+      entryId: 'e1',
+      attemptId: 'a1',
+      preview: 'copied on the Mac, long enough to be trimmed…',
+      origin: 'remote',
+    });
+
+    await expect(
+      adapter.observeClipboardChange(
+        {
+          type: 'Text',
+          text: 'copied on the Mac, long enough to be trimmed by the preview',
+          profileHash: 'ECHO_HASH',
+        },
+        true
+      )
+    ).resolves.toBeNull();
+    await expect(
+      adapter.observeClipboardChange(
+        { type: 'Image', fileUri: 'file:///tmp/echo.png', profileHash: 'IMG_HASH' },
+        true
+      )
+    ).resolves.toBeNull();
+    expect(deps.content.sendImportedText).not.toHaveBeenCalled();
+    expect(deps.content.sendImportedAsset).not.toHaveBeenCalled();
+
+    await adapter.observeClipboardChange(
+      { type: 'Text', text: 'something new from the phone', profileHash: 'NEW_HASH' },
+      true
+    );
+    expect(deps.content.sendImportedText).toHaveBeenCalledWith(
+      'something new from the phone',
+      'NEW_HASH'
+    );
+  });
+
+  it('waits for the peer report that arrives just after the watcher fires', async () => {
+    const P2pSyncAdapter = loadP2pSyncAdapter();
+    expect(P2pSyncAdapter).toBeDefined();
+    if (!P2pSyncAdapter) return;
+
+    const deps = dependencies();
+    deps.captureSettleMs = 80;
+    deps.clipboard.observeClipboardChange.mockResolvedValue(null);
+    const adapter = new P2pSyncAdapter(deps) as unknown as {
+      start(context: unknown): Promise<void>;
+      observeClipboardChange(content: unknown, dispatch: boolean): Promise<unknown>;
+    };
+    await adapter.start({
+      appVersion: '2.0.0',
+      profileId: 'default',
+      policy: { appState: 'background', backgroundSyncEnabled: true },
+    });
+
+    const pending = adapter.observeClipboardChange(
+      { type: 'Text', text: 'late report from the Mac', profileHash: 'LATE_HASH' },
+      true
+    );
+    setTimeout(() => {
+      deps.emitEngineEvent({
+        type: 'incomingEntry',
+        entryId: 'e2',
+        attemptId: 'a2',
+        preview: 'late report from the Mac',
+        origin: 'remote',
+      });
+    }, 20);
+
+    await expect(pending).resolves.toBeNull();
+    expect(deps.content.sendImportedText).not.toHaveBeenCalled();
   });
 
   it('uses the existing P2P connection refresh for manual synchronization', async () => {
