@@ -61,15 +61,15 @@ public struct AppSettings: Codable, Equatable, Hashable, Sendable {
     public var appearance: AppearanceMode
     /// UI language preference mirrored from the React Native app. `system`
     /// follows the extension host locale; explicit values keep extensions in
-    /// sync with the language selected inside UniClip.
+    /// sync with the language selected inside Clip.
     public var language: String
-    /// When true, key taps in the UniClip keyboard extension play the
+    /// When true, key taps in the Clip keyboard extension play the
     /// system key-click sound via `UIDevice.playInputClick()` — which iOS
     /// further gates on the global 键盘点击音 switch. Default true to match
     /// a stock keyboard. Lives in `app_settings` so the App Group-shared
     /// keyboard reads it without a dedicated key.
     public var keyboardSoundFeedback: Bool
-    /// When true, key taps in the UniClip keyboard extension fire a light
+    /// When true, key taps in the Clip keyboard extension fire a light
     /// haptic. iOS blocks haptics for keyboards without Full Access, which
     /// the keyboard already requires for its core sync, so this is free to
     /// honor. Default true.

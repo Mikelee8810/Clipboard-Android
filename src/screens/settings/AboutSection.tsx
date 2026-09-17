@@ -381,7 +381,7 @@ export const AboutSection = memo(function AboutSection({ initialUpdate }: AboutS
               </OutlinedButton>
             )}
             <Spacer modifiers={[widthModifier(8)]} />
-            <Button onClick={() => Linking.openURL('https://github.com/UniClipboard/uc-android')}>
+            <Button onClick={() => Linking.openURL('https://github.com/Mikelee8810/Clipboard-Android')}>
               <ComposeText>GitHub</ComposeText>
             </Button>
           </Row>

@@ -32,9 +32,9 @@ require 'uri'
 require 'fileutils'
 
 PROFILES = {
-  'app.uniclipboard.UniClipboard'          => 'UniClipboard App Store',
-  'app.uniclipboard.UniClipboard.Share'    => 'UniClipboard Share App Store',
-  'app.uniclipboard.UniClipboard.Keyboard' => 'UniClipboard Keyboard App Store',
+  'app.clipboard.Clipboard'          => 'Clipboard App Store',
+  'app.clipboard.Clipboard.Share'    => 'Clipboard Share App Store',
+  'app.clipboard.Clipboard.Keyboard' => 'Clipboard Keyboard App Store',
 }.freeze
 
 API = 'https://api.appstoreconnect.apple.com'

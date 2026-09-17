@@ -42,7 +42,7 @@ describe('history advanced filters', () => {
   it('filters URL display kind separately from plain text', () => {
     const items = [
       createItem('plain', today, { text: 'regular note' }),
-      createItem('url', today, { text: 'https://uniclip.app/start' }),
+      createItem('url', today, { text: 'https://clip.app/start' }),
       createItem('image', today, {
         type: 'Image',
         text: 'screenshot.png',

@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.summary        = 'Native QR scanner using DataScannerViewController'
   s.description    = 'Expo module wrapping the iOS VisionKit QR scanner'
   s.license        = 'MIT'
-  s.author         = 'uniclipboard'
+  s.author         = 'clipboard'
   s.homepage       = 'https://github.com/UniClipboard/mobile'
   s.platforms      = { :ios => '16.4' }
   s.swift_version  = '5.9'

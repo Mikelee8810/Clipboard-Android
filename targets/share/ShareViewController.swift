@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 /// Principal class for the Share Extension. iOS instantiates this when the
-/// user picks UniClipboard from the system share sheet.
+/// user picks Clipboard from the system share sheet.
 ///
 /// The extension stages content and hands the user back to the host's Share
 /// screen. It never starts an engine session or sends content itself.
@@ -12,7 +12,7 @@ final class ShareViewController: UIViewController {
     private var nativeObservation: NativeDiagnosticOperation?
     nonisolated private static let nativeDiagnostics = NativeRuntimeDiagnostics(
         directory: FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: SettingsStore.appGroupID)?
-            .appendingPathComponent("Library/Caches/UniClipDiagnostics", isDirectory: true),
+            .appendingPathComponent("Library/Caches/ClipDiagnostics", isDirectory: true),
         role: .shareExtension
     )
 
@@ -110,8 +110,8 @@ final class ShareViewController: UIViewController {
 
     private static var hostShareURL: URL? {
         let scheme = SettingsStore.appGroupID.hasSuffix(".dev")
-            ? "uniclipboard-dev"
-            : "uniclipboard"
+            ? "clipboard-dev"
+            : "clipboard"
         return URL(string: "\(scheme)://share")
     }
 

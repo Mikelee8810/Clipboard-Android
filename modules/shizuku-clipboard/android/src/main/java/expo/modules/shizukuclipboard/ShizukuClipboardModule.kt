@@ -32,7 +32,7 @@ class ShizukuClipboardModule : Module() {
     private val userServiceArgs by lazy {
         Shizuku.UserServiceArgs(
             ComponentName(
-                appContext.reactContext?.packageName ?: "app.uniclipboard.android",
+                appContext.reactContext?.packageName ?: "app.clipboard.android",
                 ClipboardUserService::class.java.name
             )
         )

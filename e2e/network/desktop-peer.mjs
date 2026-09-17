@@ -13,17 +13,17 @@ export function desktopPeer(cli, output) {
   const data = join(
     homedir(),
     "Library/Application Support",
-    `app.uniclipboard.desktop-${profile}`
+    `app.clipboard.desktop-${profile}`
   );
   const logs = join(
     homedir(),
     "Library/Logs",
-    `app.uniclipboard.desktop-${profile}`
+    `app.clipboard.desktop-${profile}`
   );
   const env = {
     ...process.env,
     UC_PROFILE: profile,
-    UNICLIPBOARD_ENV: "development",
+    CLIPBOARD_ENV: "development",
     UC_DAEMON_RUN_MODE: "server",
   };
   const base = ["--dev", "--profile", profile];
@@ -53,7 +53,7 @@ export function desktopPeer(cli, output) {
         )
       );
       outputHandle = await open(join(output, "peer-process.log"), "w", 0o600);
-      daemon = spawn(join(dirname(cli), "uniclipd"), [], {
+      daemon = spawn(join(dirname(cli), "clipd"), [], {
         env,
         stdio: ["ignore", outputHandle.fd, outputHandle.fd],
       });

@@ -10,7 +10,7 @@ const log = createLogger('DB');
  * 数据库文件名。iOS 上落在 App Group 容器的 Databases/ 子目录,
  * 键盘/分享扩展直接读写同一个文件(单一信源);Android 用默认位置。
  */
-const DB_NAME = 'uniclipboard.db';
+const DB_NAME = 'clipboard.db';
 
 /** App Group 容器内的数据库子目录(与 payloads/ 平级) */
 const APP_GROUP_DB_SUBDIR = 'Databases';

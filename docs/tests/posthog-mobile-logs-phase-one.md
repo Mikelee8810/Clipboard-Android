@@ -29,7 +29,7 @@ The same filtering is applied at the SDK boundary.
   describing anonymous diagnostics. Disabled consent or a missing project key
   prevents client creation. Early startup logs before consent is loaded are not
   buffered by the application.
-- Service name: `uniclip-mobile`; version from the installed application;
+- Service name: `clip-mobile`; version from the installed application;
   environment: `development` or `production`; OS metadata supplied by the SDK.
 - Normal log-level settings apply. Debug output remains local.
 - SDK batching: 10-second interval, 50-record batch/buffer threshold, and a
@@ -58,7 +58,7 @@ request to configure PostHog directly, project 416399 (`Default project`) was
 configured in the ignored local `.env.local` file. Expo config introspection
 confirmed both iOS and Android receive the same nonempty project token. The
 iOS development app was subsequently rebuilt and installed on the physical
-iPhone. `devicectl` confirmed `app.uniclipboard.UniClipboard.dev` is version
+iPhone. `devicectl` confirmed `app.clipboard.Clipboard.dev` is version
 `2.0.0` build `179`; the production app remains `2.0.0` build `178`. The built
 main app, share extension, and keyboard extension all contain the matching
 PostHog project token and version `2.0.0` build `179`. The updated app was launched
@@ -75,7 +75,7 @@ checks passed, and the physical-device build completed with zero errors or warni
 1. For Android, regenerate the native development project and rebuild using
    `POSTHOG_PROJECT_KEY` from the configured local environment. iOS is installed.
 2. With consent enabled, trigger a supported diagnostic through an actual app
-   action, then find the record under service `uniclip-mobile` in PostHog Logs.
+   action, then find the record under service `clip-mobile` in PostHog Logs.
 3. Verify the received platform/version, allowed fields, and absence of clipboard
    contents or names. Repeat on Android and iOS.
 4. Turn consent off with pending logs, then on again; confirm those pending

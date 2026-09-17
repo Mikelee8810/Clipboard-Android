@@ -1,7 +1,7 @@
 import Foundation
 import OSLog
 
-private let log = Logger(subsystem: "app.uniclipboard", category: "store")
+private let log = Logger(subsystem: "app.clipboard", category: "store")
 
 /// Persists extension settings and local history under the keys defined in
 /// `AppSettings.PersistenceKey`.
@@ -22,8 +22,8 @@ public final class SettingsStore: @unchecked Sendable {
         infoPlistAppGroupID ?? bundleDerivedAppGroupID ?? defaultAppGroupID
     }
 
-    private static let defaultAppGroupID = "group.app.uniclipboard.UniClipboard"
-    private static let appBundleIDPrefix = "app.uniclipboard.UniClipboard"
+    private static let defaultAppGroupID = "group.app.clipboard.Clipboard"
+    private static let appBundleIDPrefix = "app.clipboard.Clipboard"
     private static let extensionBundleSuffixes = [".Share", ".Keyboard"]
 
     private static var infoPlistAppGroupID: String? {
@@ -65,7 +65,7 @@ public final class SettingsStore: @unchecked Sendable {
         "last_history_sync_at",
     ]
 
-    static let legacyAppGroupIDs = ["group.app.uniclipboard.ios"]
+    static let legacyAppGroupIDs = ["group.app.clipboard.ios"]
 
     private let defaults: UserDefaults
     private let containerURL: URL
@@ -108,7 +108,7 @@ public final class SettingsStore: @unchecked Sendable {
             // sharing state with another process, so process-uniqueness
             // matches what they get from `.standard` UserDefaults above.
             chosenContainer = FileManager.default.temporaryDirectory
-                .appendingPathComponent("UniClipboardStore-\(UUID().uuidString)", isDirectory: true)
+                .appendingPathComponent("ClipboardStore-\(UUID().uuidString)", isDirectory: true)
         }
         try? FileManager.default.createDirectory(
             at: chosenContainer,

@@ -27,9 +27,9 @@ For an already prepared development checkout:
 
 ```sh
 APP_VARIANT=development xcodebuild build \
-  -workspace ios/UniClipDev.xcworkspace -scheme UniClipDev \
+  -workspace ios/ClipDev.xcworkspace -scheme ClipDev \
   -configuration Release -destination 'generic/platform=iOS Simulator' \
-  -derivedDataPath /tmp/uniclip-e2e-ios \
+  -derivedDataPath /tmp/clip-e2e-ios \
   CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=YES
 ```
 
@@ -49,10 +49,10 @@ creating a device. No distribution certificate is needed for this simulator sign
 ## Run
 
 ```sh
-npm run test:e2e -- --platform ios --app /tmp/uniclip-e2e-ios/Build/Products/Release-iphonesimulator/UniClipDev.app
+npm run test:e2e -- --platform ios --app /tmp/clip-e2e-ios/Build/Products/Release-iphonesimulator/ClipDev.app
 npm run test:e2e -- --platform android --app /absolute/path/to/app-arm64-v8a-release.apk
-npm run test:e2e -- --platform ios --app /path/to/UniClipDev.app --scenario first-launch
-npm run test:e2e -- --platform ios --app /path/to/UniClipDev.app --repeat 3
+npm run test:e2e -- --platform ios --app /path/to/ClipDev.app --scenario first-launch
+npm run test:e2e -- --platform ios --app /path/to/ClipDev.app --repeat 3
 npm run test:e2e:environment
 ```
 
@@ -105,7 +105,7 @@ transport port pairs are not reused within a run, even after a prior emulator ex
 Only the emulator-recommended even console ports 5556–5584 are used (5554 is left
 for normal development); unavailable pairs are skipped.
 SIGINT/SIGTERM interrupts Maestro and allows cleanup; SIGKILL/machine failure cannot
-run cleanup. For recovery, inspect the exact `uniclip-e2e-*` simulator or the run's AVD
+run cleanup. For recovery, inspect the exact `clip-e2e-*` simulator or the run's AVD
 before deleting it. Never use bulk device erasure. Device names/IDs are not accepted as
 inputs, so existing personal simulators and AVDs cannot be selected accidentally.
 
@@ -133,12 +133,12 @@ Search, selection/copy, context actions, filters and history assertions remain r
 
 ## 联网双向同步验收
 
-显式选择 `bidirectional-sync`，并提供同版本的桌面 `uniclip` 与相邻 `uniclipd`。
+显式选择 `bidirectional-sync`，并提供同版本的桌面 `clip` 与相邻 `clipd`。
 默认套件仍然离线，不会自动执行联网场景。
 
 ```bash
-npm run test:e2e -- --platform ios --app /path/to/Release-iphonesimulator/UniClipDev.app --scenario bidirectional-sync --peer-cli /path/to/uniclip
-npm run test:e2e -- --platform android --app /path/to/app-arm64-v8a-release.apk --scenario bidirectional-sync --peer-cli /path/to/uniclip
+npm run test:e2e -- --platform ios --app /path/to/Release-iphonesimulator/ClipDev.app --scenario bidirectional-sync --peer-cli /path/to/clip
+npm run test:e2e -- --platform android --app /path/to/app-arm64-v8a-release.apk --scenario bidirectional-sync --peer-cli /path/to/clip
 ```
 
 运行器创建独立临时桌面空间，以无系统剪贴板的服务模式启动对端。

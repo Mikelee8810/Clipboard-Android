@@ -26,7 +26,7 @@ iOS:
               ├─ ShareItemExtractor 提取内容
               ├─ OutboundShareStore.stage* + enqueue(App Group,现有目录)
               ├─ completeRequest(面板关闭)
-              └─ openURL("uniclipboard://share")
+              └─ openURL("clipboard://share")
                          │
 Android:
   ACTION_SEND intent ─▶ expo-sharing 解析(现有)
@@ -174,7 +174,7 @@ final class ShareViewController: UIViewController {
     }
 
     static func openMainApp(_ context: NSExtensionContext) {
-        let url = URL(string: "uniclipboard://share")!
+        let url = URL(string: "clipboard://share")!
         context.open(url) { _ in }    // 先 openURL,再 completeRequest
     }
 }
@@ -266,7 +266,7 @@ type RootStackParamList = {
 
 | 场景           | 触发                                                   | 动作                                                         |
 | -------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| iOS 冷启动     | `Linking.getInitialURL()` === `uniclipboard://share`   | `navigateWhenReady('Share')`                                 |
+| iOS 冷启动     | `Linking.getInitialURL()` === `clipboard://share`   | `navigateWhenReady('Share')`                                 |
 | iOS 热启动     | `Linking.addEventListener('url')` 同 URL               | `navigateWhenReady('Share')`                                 |
 | Android 冷启动 | 主 Activity intent 数据(`expo-sharing` 已缓存 payload) | `ShareReceiveRedirector` 转存后 `navigateWhenReady('Share')` |
 | Android 热启动 | `isShareIntentUrl(url)`(现有判断)                      | 同上一行                                                     |
@@ -384,7 +384,7 @@ type Phase =
 
 ```text
 来源 app ─▶ ShareViewController ─▶ OutboundShareStore.stageFile(流式拷贝,内存安全)
-         ─▶ enqueue(pending/{id}.json) ─▶ openURL("uniclipboard://share")
+         ─▶ enqueue(pending/{id}.json) ─▶ openURL("clipboard://share")
          ─▶ completeRequest(面板关闭)
 主应用(冷/热启动) ─▶ Linking ─▶ navigateWhenReady('Share')
 分享页 ─▶ claimPending(→ processing/) ─▶ 预览 + 选设备 ─▶ sendImportedAsset

@@ -10,9 +10,9 @@ export interface VariantApplicationIdProps {
  * Appends a suffix to the Android `applicationId` WITHOUT touching the
  * gradle `namespace`.
  *
- * Keeping the namespace pinned at `app.uniclipboard.android` is essential:
+ * Keeping the namespace pinned at `app.clipboard.android` is essential:
  * `BuildConfig` is generated under the namespace package, so the native
- * Kotlin `import app.uniclipboard.android.BuildConfig` and every
+ * Kotlin `import app.clipboard.android.BuildConfig` and every
  * `ComponentName` class FQN keep resolving. Only the install-time
  * `applicationId` changes, which is what lets a ".dev" build coexist with the
  * production install on one device (FileProvider authorities and

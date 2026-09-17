@@ -1,7 +1,7 @@
 import Foundation
 
 public extension SettingsStore {
-    static let legacyAppGroupID = "group.app.uniclipboard.ios"
+    static let legacyAppGroupID = "group.app.clipboard.ios"
 
     private static var legacyMigrationSentinel: String {
         ".app_group_store_migrated_v2"

@@ -131,7 +131,7 @@ class ClipboardUserService : IClipboardUserService.Stub() {
     }
 
     override fun setPrimaryClipText(text: String): Boolean {
-        return invokeClipboard("setPrimaryClip", ClipData.newPlainText("UniClip", text)) != null
+        return invokeClipboard("setPrimaryClip", ClipData.newPlainText("Clip", text)) != null
     }
 
     override fun resolveBackgroundClipboardRestriction(): Boolean {

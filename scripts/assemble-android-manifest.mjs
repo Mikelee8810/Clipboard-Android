@@ -4,7 +4,7 @@
  * companion app polls to discover new releases.
  *
  * The desktop workspace ships a single Cloudflare R2 bucket
- * (`uniclipboard-releases`) fronted by the update-server Worker at
+ * (`clipboard-releases`) fronted by the update-server Worker at
  * `https://release.uniclipboard.app`. Android reuses the same bucket under an
  * `android/` prefix: APKs land in `android/artifacts/<tag>/`, and the app reads
  * `android/{stable,beta}.json`. This script produces those channel manifests
@@ -14,7 +14,7 @@
  * ## Two version strings, on purpose
  *
  * The APK filenames use the 3-segment marketing version (`expo.version`, e.g.
- * `1.3.0`) — `UniClip-<marketing>-<abi>.apk` — because android-build.yml names
+ * `1.3.0`) — `Clip-<marketing>-<abi>.apk` — because android-build.yml names
  * them from `expo.version`. But the app compares the 4-segment Android
  * `versionName` (`<marketing>.<versionCode>`, e.g. `1.3.0.164`, which is also
  * the release tag minus its leading `v`). So the manifest `version` field is
@@ -32,7 +32,7 @@
  *     "prerelease": false,
  *     "pub_date": "2026-07-18T10:00:00.000Z",
  *     "notes": { "en": "...", "zh": "..." },
- *     "assets": [ { "name": "UniClip-1.3.0-arm64-v8a.apk", "sha256": "hex" }, ... ]
+ *     "assets": [ { "name": "Clip-1.3.0-arm64-v8a.apk", "sha256": "hex" }, ... ]
  *   }
  *
  * Usage:
@@ -47,7 +47,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-// The per-ABI APKs android-build.yml renames to `UniClip-<marketing>-<abi>.apk`.
+// The per-ABI APKs android-build.yml renames to `Clip-<marketing>-<abi>.apk`.
 const ABIS = ['arm64-v8a'];
 
 function fail(message) {
@@ -89,7 +89,7 @@ const version = tag.replace(/^v/, '');
 
 const assets = [];
 for (const abi of ABIS) {
-  const name = `UniClip-${marketingVersion}-${abi}.apk`;
+  const name = `Clip-${marketingVersion}-${abi}.apk`;
   const filePath = resolve(apkDir, name);
   if (!existsSync(filePath)) {
     console.warn(`  skip missing APK: ${name}`);

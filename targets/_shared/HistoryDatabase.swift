@@ -2,14 +2,14 @@ import Foundation
 import OSLog
 import SQLite3
 
-private let log = Logger(subsystem: "app.uniclipboard", category: "historydb")
+private let log = Logger(subsystem: "app.clipboard", category: "historydb")
 
 /// `sqlite3_bind_text` must copy Swift string bytes (their lifetime ends at
 /// the call boundary) — this is the canonical SQLITE_TRANSIENT destructor.
 private let sqliteTransient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 /// Direct reader/writer over the main app's clipboard-history SQLite database
-/// (`<AppGroup>/Databases/uniclipboard.db`). Schema is owned by RN
+/// (`<AppGroup>/Databases/clipboard.db`). Schema is owned by RN
 /// (`src/services/db/database.ts`, `clipboard_history` v1); this class makes
 /// that database the single source of truth on iOS — the app, keyboard, and
 /// share extension all touch the same rows, so a delete in the app vanishes
@@ -31,7 +31,7 @@ private let sqliteTransient = unsafeBitCast(-1, to: sqlite3_destructor_type.self
 /// block the app's writes; extension writes are single short statements.
 public final class HistoryDatabase {
     public static let databaseSubdirectory = "Databases"
-    public static let databaseFilename = "uniclipboard.db"
+    public static let databaseFilename = "clipboard.db"
 
     private static let table = "clipboard_history"
 

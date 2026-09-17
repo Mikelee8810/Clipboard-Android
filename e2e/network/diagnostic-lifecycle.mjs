@@ -14,7 +14,7 @@ export async function runDiagnosticLifecycle({ cli, output, runFlow, platform, i
     await runFlow('diagnostic-start', {});
     await runFlow('diagnostic-background-enable', {});
     if (platform === 'android') {
-      const dump = await command(join(process.env.ANDROID_HOME ?? join(homedir(), 'Library/Android/sdk'), 'platform-tools/adb'), ['-s', id, 'shell', 'dumpsys', 'activity', 'services', 'app.uniclipboard.android.dev']);
+      const dump = await command(join(process.env.ANDROID_HOME ?? join(homedir(), 'Library/Android/sdk'), 'platform-tools/adb'), ['-s', id, 'shell', 'dumpsys', 'activity', 'services', 'app.clipboard.android.dev']);
       await writeFile(join(output, 'background-service-state.txt'), dump);
       assert.ok(dump.includes('SyncForegroundService') && dump.includes('isForeground=true'), 'The foreground service was not actually running');
     }

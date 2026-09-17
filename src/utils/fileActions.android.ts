@@ -16,7 +16,7 @@ const log = createLogger('FileActions');
 
 export { shareFile, saveToGallery };
 
-const APP_PACKAGE = 'app.uniclipboard.android';
+const APP_PACKAGE = 'app.clipboard.android';
 
 /**
  * 通过系统 ACTION_VIEW Intent 打开文件

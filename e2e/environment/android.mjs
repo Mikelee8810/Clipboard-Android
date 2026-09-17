@@ -13,7 +13,7 @@ export function androidDevice({ app, output, network = "offline" }) {
   const adb = join(sdk, "platform-tools/adb");
   const avdHome = join(output, "avd");
   const env = { ...process.env, ANDROID_HOME: sdk, ANDROID_AVD_HOME: avdHome };
-  const name = `uniclip_e2e_${randomUUID().replaceAll("-", "")}`;
+  const name = `clip_e2e_${randomUUID().replaceAll("-", "")}`;
   const image = "system-images;android-36;google_apis;arm64-v8a";
   let id, child, logHandle;
   const device = (...args) => command(adb, ["-s", id, ...args]);

@@ -12,7 +12,7 @@ describe('LAN self-signed HTTPS native wiring', () => {
   });
 
   it('registers the Android opt-in trust manager before React Native starts', () => {
-    const source = patchMainApplicationForLanInsecureTls(`package app.uniclipboard.android
+    const source = patchMainApplicationForLanInsecureTls(`package app.clipboard.android
 
 import android.app.Application
 

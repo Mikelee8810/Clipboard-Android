@@ -36,13 +36,13 @@ const VARIANT = process.env.APP_VARIANT ?? 'development';
 const IS_PRODUCTION = VARIANT === 'production';
 
 const ID_SUFFIX = IS_PRODUCTION ? '' : '.dev';
-const IOS_BUNDLE_ID = `app.uniclipboard.UniClipboard${ID_SUFFIX}`;
-const APP_GROUP = `group.app.uniclipboard.UniClipboard${ID_SUFFIX}`;
+const IOS_BUNDLE_ID = `app.clipboard.Clipboard${ID_SUFFIX}`;
+const APP_GROUP = `group.app.clipboard.Clipboard${ID_SUFFIX}`;
 const P2P_KEYCHAIN_GROUP = `$(AppIdentifierPrefix)${IOS_BUNDLE_ID}.p2p`;
 
 // The legacy group is a one-way migration source from the old native Swift
 // app; only the production install has data there, so keep it out of dev.
-const LEGACY_APP_GROUP = 'group.app.uniclipboard.ios';
+const LEGACY_APP_GROUP = 'group.app.clipboard.ios';
 const APP_GROUPS = IS_PRODUCTION ? [APP_GROUP, LEGACY_APP_GROUP] : [APP_GROUP];
 
 export default ({ config }: ConfigContext): ExpoConfig => {
@@ -55,7 +55,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     ...(config as ExpoConfig),
     name: config.name ?? 'Clipboard',
-    scheme: IS_PRODUCTION ? 'uniclipboard' : 'uniclipboard-dev',
+    scheme: IS_PRODUCTION ? 'clipboard' : 'clipboard-dev',
     ios: {
       ...ios,
       bundleIdentifier: IOS_BUNDLE_ID,

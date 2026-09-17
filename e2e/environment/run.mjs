@@ -71,7 +71,7 @@ async function main() {
         join(app, "Info.plist"),
       ])
     );
-    const temp = await mkdtemp(join(tmpdir(), "uniclip-e2e-entitlements-"));
+    const temp = await mkdtemp(join(tmpdir(), "clip-e2e-entitlements-"));
     try {
       const xml = decodeSimulatorEntitlements(
         await command("otool", [

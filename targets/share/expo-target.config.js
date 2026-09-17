@@ -6,7 +6,7 @@ module.exports = (config) => ({
   // the App Store one when both are on the same device.
   displayName: 'Clipboard',
   // Leading dot → appended to the main app bundle id, so it follows the
-  // dev/prod variant automatically (…UniClipboard.Share / …UniClipboard.dev.Share).
+  // dev/prod variant automatically (…Clipboard.Share / …Clipboard.dev.Share).
   bundleIdentifier: '.Share',
   deploymentTarget: '16.4',
   exportJs: false,

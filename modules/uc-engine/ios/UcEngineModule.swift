@@ -5,18 +5,18 @@ import UIKit
 internal import UcEngineCore
 
 public final class UcEngineModule: Module {
-  private static let spaceReadLog = Logger(subsystem: "app.uniclipboard", category: "space-read")
-  private static let startupLog = Logger(subsystem: "app.uniclipboard", category: "uc-startup")
+  private static let spaceReadLog = Logger(subsystem: "app.clipboard", category: "space-read")
+  private static let startupLog = Logger(subsystem: "app.clipboard", category: "uc-startup")
   private let host = MainApplicationEngineHost()
   private lazy var lifecycle = NativeLifecycleHost(report: Self.reportLifecycleError)
   private lazy var lifecycleTransitions = NativeLifecycleTransitionCoordinator(
     lifecycle: lifecycle,
-    queue: DispatchQueue(label: "app.uniclipboard.engine-lifecycle"),
+    queue: DispatchQueue(label: "app.clipboard.engine-lifecycle"),
     beginBackgroundActivity: Self.beginBackgroundActivity
   )
-  private let engineOperationQueue = DispatchQueue(label: "app.uniclipboard.uc-engine")
-  private let engineConnectivityQueue = DispatchQueue(label: "app.uniclipboard.uc-engine-connectivity")
-  private let engineEventQueue = DispatchQueue(label: "app.uniclipboard.uc-engine-events")
+  private let engineOperationQueue = DispatchQueue(label: "app.clipboard.uc-engine")
+  private let engineConnectivityQueue = DispatchQueue(label: "app.clipboard.uc-engine-connectivity")
+  private let engineEventQueue = DispatchQueue(label: "app.clipboard.uc-engine-events")
   private let engines = NativeEngineRegistry<MobileEngine>()
 
   public func definition() -> ModuleDefinition {
@@ -723,7 +723,7 @@ private final class UIKitBackgroundActivity: @unchecked Sendable {
 
   func begin() {
     let identifier = UIApplication.shared.beginBackgroundTask(
-      withName: "UniClip Engine Suspend",
+      withName: "Clip Engine Suspend",
       expirationHandler: { [weak self] in self?.end() }
     )
     lock.withLock { self.identifier = identifier }

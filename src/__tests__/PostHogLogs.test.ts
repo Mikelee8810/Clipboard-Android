@@ -41,7 +41,7 @@ describe('PostHog mobile logs', () => {
   });
   it('configures bounded mobile delivery and a separate log filter', () => {
     expect(analytics.createPostHogOptions(state).logs).toMatchObject({
-      serviceName: 'uniclip-mobile', maxBufferSize: 50,
+      serviceName: 'clip-mobile', maxBufferSize: 50,
       rateCap: { maxLogs: 100, windowMs: 10_000 }, beforeSend: expect.any(Function),
     });
   });

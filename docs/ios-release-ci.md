@@ -59,8 +59,8 @@ locally (idempotent — re-run to refresh after a cert rotation):
 ruby scripts/asc_profiles.rb create <ASC_API_KEY_ID> <ASC_API_ISSUER_ID> <AuthKey_*.p8>
 ```
 
-This makes `UniClipboard App Store`, `UniClipboard Share App Store`, and
-`UniClipboard Keyboard App Store`. If the native iOS app repo already created
+This makes `Clipboard App Store`, `Clipboard Share App Store`, and
+`Clipboard Keyboard App Store`. If the native iOS app repo already created
 them, this app reuses the same ones (same bundle ids). CI installs them each run
 via `asc_profiles.rb install`.
 

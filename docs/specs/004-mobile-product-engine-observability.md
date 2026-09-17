@@ -4,7 +4,7 @@
 
 - 状态：研究完成，实施规格；本文描述目标合同，不代表功能已经实现或正式验收通过。
 - 研究日期：2026-09-08。
-- 关联任务：[UniClip #22](https://github.com/UniClipboard/UniClip/issues/22)。
+- 关联任务：[Clip #22](https://github.com/UniClipboard/UniClip/issues/22)。
 - 移动端研究基线：`bddeb535be676ccdca4ea8d70947ba33ddf61091`，包含当前工作区已有的第一阶段日志、安装流程和其他未提交修改。
 - Engine 研究基线：`v1.1.0-rc.14`，`168a3ebd7c2701f2e9f8a0ebe0c4a0af4aa14543`；相邻 Engine checkout 与移动端锁定提交一致。
 - 当前云端配置目标：PostHog US，项目 `416399`；本文不包含任何真实 token。
@@ -490,8 +490,8 @@ handle 校验包括进程实例、generation、父子所属关系、已完成状
 
 | 字段 | 移动端 v2 规则 |
 | --- | --- |
-| `service.namespace` | 固定 `uniclipboard` |
-| `service.name` | 固定 `uniclip-mobile`；这是移动应用进程，包含其 Engine 库 |
+| `service.namespace` | 固定 `clipboard` |
+| `service.name` | 固定 `clip-mobile`；这是移动应用进程，包含其 Engine 库 |
 | `service.version` | 已安装应用版本，复用 Engine 严格 SemVer 校验，不带任意 build metadata |
 | `service.instance.id` | 每进程随机 UUID，不持久化，不使用设备标识 |
 | `deployment.environment.name` | development/test/staging/production |

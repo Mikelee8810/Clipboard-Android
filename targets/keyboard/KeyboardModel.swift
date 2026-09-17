@@ -5,7 +5,7 @@ import ImageIO
 import OSLog
 internal import UcEngineCore
 
-private let log = Logger(subsystem: "app.uniclipboard.keyboard", category: "sync")
+private let log = Logger(subsystem: "app.clipboard.keyboard", category: "sync")
 
 /// Observable state + sync logic backing the Clipboard keyboard. Owned by
 /// `KeyboardViewController`; the UIKit `KeyboardRootView` observes its narrow
@@ -1008,7 +1008,7 @@ final class KeyboardDiagnostics: @unchecked Sendable {
     }
 
     private let queue = DispatchQueue(
-        label: "app.uniclipboard.keyboard.diagnostics",
+        label: "app.clipboard.keyboard.diagnostics",
         qos: .utility
     )
     private let sessionID = UUID().uuidString
@@ -1130,8 +1130,8 @@ extension KeyboardModel {
                  entry: Clipboard(type: .text, text: "明天上午 10 点开会,别忘了带上周的报表。", hasData: false, size: 18),
                  title: "明天上午 10 点开会,别忘了带上周的报表。", subtitle: nil, time: "刚刚", sizeText: "18 字"),
             Card(id: UUID(), kind: .link,
-                 entry: Clipboard(type: .text, text: "https://uniclip.app/start", hasData: false, size: 25),
-                 title: "https://uniclip.app/start", subtitle: "uniclip.app", time: "2 分钟前", sizeText: "25 字"),
+                 entry: Clipboard(type: .text, text: "https://clip.app/start", hasData: false, size: 25),
+                 title: "https://clip.app/start", subtitle: "clip.app", time: "2 分钟前", sizeText: "25 字"),
             Card(id: UUID(), kind: .image,
                  entry: Clipboard(type: .image, text: "截屏", hasData: true, dataName: "shot.png", size: 1_240_000),
                  title: "图片", subtitle: "PNG", time: "5 分钟前", sizeText: "1.2 MB"),

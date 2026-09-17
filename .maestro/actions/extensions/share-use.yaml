@@ -12,14 +12,14 @@ appId: ${APP_ID}
     timeout: 30000
 - runFlow:
     when:
-      notVisible: "UniClip Dev"
+      notVisible: "Clip Dev"
     commands:
       - scrollUntilVisible:
           element:
             text: "More"
           direction: RIGHT
       - tapOn: "More"
-- tapOn: "UniClip Dev"
+- tapOn: "Clip Dev"
 - extendedWaitUntil:
     visible: "Send to devices"
     timeout: 30000

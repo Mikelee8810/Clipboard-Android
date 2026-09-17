@@ -14,7 +14,7 @@ function git(cwd: string, ...args: string[]): string {
 }
 
 function createRepository() {
-  const root = mkdtempSync(join(tmpdir(), 'uniclip-release-tag-'));
+  const root = mkdtempSync(join(tmpdir(), 'clip-release-tag-'));
   const remote = join(root, 'remote.git');
   const seed = join(root, 'seed');
   const work = join(root, 'work');

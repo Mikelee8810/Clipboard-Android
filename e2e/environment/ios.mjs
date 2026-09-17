@@ -14,7 +14,7 @@ export function iosDevice({ app, output }) {
     },
     metadata: { runtime, model, language: "en-US" },
     async prepare() {
-      id = await sim("create", `uniclip-e2e-${randomUUID()}`, model, runtime);
+      id = await sim("create", `clip-e2e-${randomUUID()}`, model, runtime);
       await writeFile(
         join(output, "owned-device.json"),
         JSON.stringify({ platform: "ios", id, runtime, model })
@@ -61,7 +61,7 @@ export function iosDevice({ app, output }) {
           "--style",
           "compact",
           "--predicate",
-          'process CONTAINS "UniClip"',
+          'process CONTAINS "Clip"',
         ],
         { timeout: 30_000 }
       );

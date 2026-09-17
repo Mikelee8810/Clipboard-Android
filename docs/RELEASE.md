@@ -1,11 +1,11 @@
 # Release & Versioning Guide
 
 This document describes the versioning policy, upstream-sync workflow, and
-release process for UniClip.
+release process for Clip.
 
 ## Versioning Policy
 
-UniClip uses **two independent axes**, so our fast release cadence does not keep
+Clip uses **two independent axes**, so our fast release cadence does not keep
 re-triggering iOS App Store / TestFlight review:
 
 1. **Marketing version** — `expo.version`, a 3-segment `MAJOR.MINOR.PATCH`
@@ -24,7 +24,7 @@ re-triggering iOS App Store / TestFlight review:
    `CFBundleVersion` changes → no review. Our fast cadence rides on this axis.
 
 > **Snapshot point:** version `1.0.11` (versionCode 152) was the alignment
-> snapshot where UniClip last shared a version number with upstream. From then
+> snapshot where Clip last shared a version number with upstream. From then
 > on the two axes evolve independently.
 
 ### Build Counter Rule
@@ -112,7 +112,7 @@ Run `npm run changelog:generate` after editing the top CHANGES blocks and commit
 all four generated files. `npm run release:validate` rejects missing or stale
 client changelog files before the release tag can be created.
 
-Bullets may still carry a provenance tag (`[uc]` for UniClip-specific changes,
+Bullets may still carry a provenance tag (`[uc]` for Clip-specific changes,
 `[upstream]` for changes ported from `Jeric-X/syncclipboard-mobile` /
 `Jeric-X/SyncClipboard`, with a commit/PR ref when possible).
 
@@ -151,7 +151,7 @@ to both platforms. Legacy inline platform tags are also still supported.
 
 ## Upstream Sync Workflow
 
-UniClip is a **clean-room re-implementation** of the SyncClipboard protocol
+Clip is a **clean-room re-implementation** of the SyncClipboard protocol
 (TypeScript / Expo), not a git-level fork of the upstream Android app. Merging
 is therefore manual.
 
@@ -165,9 +165,9 @@ Routine:
    - **Cross-platform logic** bugs (sync race conditions, retry logic) —
      usually applicable.
    - Android-platform fixes (background services, permissions) — port only if
-     UniClip exhibits the same issue.
+     Clip exhibits the same issue.
    - **Skip** anything specific to upstream's stack (MAUI, .NET, their UI).
-3. **Port manually** into UniClip's corresponding module
+3. **Port manually** into Clip's corresponding module
    (`modules/*`, `src/services/*`, plugins, etc.). Do not `cherry-pick` —
    technical stacks differ.
 4. **Commit** with an upstream reference, e.g.:
@@ -183,9 +183,9 @@ Routine:
 
 ### Tracking the Sync Point
 
-When a UniClip release ships, optionally record the upstream version it has
+When a Clip release ships, optionally record the upstream version it has
 been synced to in the release notes or the in-app About page, e.g.
-"Tracked upstream: v1.0.13 (2026-06-XX)". UniClip's own version stays
+"Tracked upstream: v1.0.13 (2026-06-XX)". Clip's own version stays
 independent.
 
 ## Release Workflow
@@ -248,7 +248,7 @@ In GitHub Actions, open `build`, choose **Run workflow** on `main`, enable
 6. Uploads the immutable Android APK to Cloudflare R2 and registers a Ready release in FlareRelease.
 7. Leaves Stable and Beta unchanged until a maintainer explicitly promotes the release in FlareRelease.
 
-FlareRelease registration uses the `UniClipboard` organization's
+FlareRelease registration uses the `Clipboard` organization's
 `FLARE_RELEASE_ACCESS_CLIENT_ID` and `FLARE_RELEASE_ACCESS_CLIENT_SECRET`
 GitHub Actions secrets. The organization secrets must grant this repository
 access. Registration never selects a channel; release approval and channel
@@ -271,10 +271,10 @@ CI marks Alpha tags as prereleases and uploads the iOS build to TestFlight.
 
 | Field            | Value                      |
 | ---------------- | -------------------------- |
-| Android package  | `app.uniclipboard.android` |
-| iOS bundle       | `app.uniclipboard.ios`     |
-| App display name | `UniClip`                  |
-| Expo slug        | `uniclip`                  |
+| Android package  | `app.clipboard.android` |
+| iOS bundle       | `app.clipboard.ios`     |
+| App display name | `Clip`                  |
+| Expo slug        | `clip`                  |
 
-These are independent namespaces from upstream. UniClip can be installed
+These are independent namespaces from upstream. Clip can be installed
 alongside any other SyncClipboard-protocol client on the same device.

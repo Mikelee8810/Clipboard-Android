@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="foreground_service_channel_name">后台任务</string>
-    <string name="foreground_service_channel_description">UniClip 后台同步服务</string>
+    <string name="foreground_service_channel_description">Clip 后台同步服务</string>
     <string name="foreground_service_running">后台任务运行中</string>
     <string name="foreground_service_stopping">正在停止…</string>
     <string name="foreground_service_action_temp_stop">临时停止</string>

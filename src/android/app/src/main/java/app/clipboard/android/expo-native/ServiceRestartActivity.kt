@@ -1,4 +1,4 @@
-package app.uniclipboard.android.servicerestart
+package app.clipboard.android.servicerestart
 
 import android.os.Bundle
 
@@ -8,7 +8,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnable
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
 import android.content.res.Configuration
-import app.uniclipboard.android.BuildConfig
+import app.clipboard.android.BuildConfig
 import expo.modules.ReactActivityDelegateWrapper
 
 /**

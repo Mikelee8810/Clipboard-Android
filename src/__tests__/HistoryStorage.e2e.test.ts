@@ -89,7 +89,7 @@ describe('Android history file directories', () => {
   it.each(['first save', 'after clearing history', 'existing directory'])(
     'persists image bytes and the permanent URI: %s',
     async (scenario) => {
-      const root = mkdtempSync(join(tmpdir(), 'uniclip-history-'));
+      const root = mkdtempSync(join(tmpdir(), 'clip-history-'));
       const destination = join(root, 'clipboards', 'history', 'Image-DIR_TEST');
       const source = join(root, 'clipboard.png');
       const bytes = Buffer.from('clipboard image bytes');

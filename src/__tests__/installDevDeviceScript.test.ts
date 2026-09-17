@@ -32,8 +32,8 @@ describe('install-dev-device.sh', () => {
   it('requires the development app and keeps Metro separate', () => {
     const script = readFileSync(scriptPath, 'utf8');
 
-    expect(script).toContain('PRODUCT_BUNDLE_IDENTIFIER = app.uniclipboard.UniClipboard.dev;');
-    expect(script).toContain("applicationId 'app.uniclipboard.android.dev'");
+    expect(script).toContain('PRODUCT_BUNDLE_IDENTIFIER = app.clipboard.Clipboard.dev;');
+    expect(script).toContain("applicationId 'app.clipboard.android.dev'");
     expect(script).toContain('UC_ENGINE_LOCAL_CORE=1 APP_VARIANT=development npx expo run:ios');
     expect(script).toContain('APP_VARIANT=development npx expo run:ios');
     expect(script).toContain('UC_ENGINE_LOCAL_AAR="$engine_aar" ./gradlew :app:assembleDebug');

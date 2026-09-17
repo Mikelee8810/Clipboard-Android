@@ -150,9 +150,9 @@ private fun workspaceConvergenceMap(convergence: WorkspaceConvergence): Map<Stri
 
 private const val CLIPBOARD_SHARE_MAX_ENTRIES = 64
 private const val CLIPBOARD_SHARE_MAX_AGE_MS = 7L * 24 * 60 * 60 * 1_000
-private const val FILE_DISPLAY_METADATA_FORMAT = "uniclipboard-file-display-metadata"
+private const val FILE_DISPLAY_METADATA_FORMAT = "clipboard-file-display-metadata"
 private const val FILE_DISPLAY_METADATA_MIME =
-  "application/x-uniclipboard-file-display-metadata+json"
+  "application/x-clipboard-file-display-metadata+json"
 
 private fun clipboardDisplayNames(
   representations: List<BindingClipboardRepresentation>

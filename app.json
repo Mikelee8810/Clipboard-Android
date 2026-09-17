@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Clipboard",
-    "slug": "uniclip",
-    "scheme": "uniclipboard",
+    "slug": "clip",
+    "scheme": "clipboard",
     "version": "2.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -11,12 +11,12 @@
       "buildNumber": "181",
       "supportsTablet": true,
       "appleTeamId": "8XG39X5CL8",
-      "bundleIdentifier": "app.uniclipboard.UniClipboard",
+      "bundleIdentifier": "app.clipboard.Clipboard",
       "infoPlist": { "ITSAppUsesNonExemptEncryption": false },
       "entitlements": {
         "com.apple.security.application-groups": [
-          "group.app.uniclipboard.UniClipboard",
-          "group.app.uniclipboard.ios"
+          "group.app.clipboard.Clipboard",
+          "group.app.clipboard.ios"
         ]
       }
     },
@@ -29,7 +29,7 @@
         "monochromeImage": "./assets/adaptive-icon-mono.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "app.uniclipboard.android",
+      "package": "app.clipboard.android",
       "permissions": ["android.permission.REQUEST_INSTALL_PACKAGES", "android.permission.CAMERA"]
     },
     "web": { "favicon": "./assets/favicon.png" },
@@ -88,21 +88,21 @@
               "appExtensions": [
                 {
                   "targetName": "share",
-                  "bundleIdentifier": "app.uniclipboard.UniClipboard.Share",
+                  "bundleIdentifier": "app.clipboard.Clipboard.Share",
                   "entitlements": {
                     "com.apple.security.application-groups": [
-                      "group.app.uniclipboard.UniClipboard",
-                      "group.app.uniclipboard.ios"
+                      "group.app.clipboard.Clipboard",
+                      "group.app.clipboard.ios"
                     ]
                   }
                 },
                 {
                   "targetName": "keyboard",
-                  "bundleIdentifier": "app.uniclipboard.UniClipboard.Keyboard",
+                  "bundleIdentifier": "app.clipboard.Clipboard.Keyboard",
                   "entitlements": {
                     "com.apple.security.application-groups": [
-                      "group.app.uniclipboard.UniClipboard",
-                      "group.app.uniclipboard.ios"
+                      "group.app.clipboard.Clipboard",
+                      "group.app.clipboard.ios"
                     ]
                   }
                 }

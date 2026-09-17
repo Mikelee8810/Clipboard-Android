@@ -64,7 +64,7 @@
   `src/features/transfer/internal/outboundShareHandoffManager.ts`)认领 pending
   job 并发送——但目前只服务于 iOS 大文件回退场景,且自动发送到扩展内预选的
   `targetDeviceIds`。
-- **主应用深链**:已注册 URL scheme `uniclipboard`(`app.json`),并有
+- **主应用深链**:已注册 URL scheme `clipboard`(`app.json`),并有
   `navigationRef` / `navigateWhenReady` / `flushPendingNavigation`
   (`src/navigation/navigationRef.ts`)支持导航器未就绪时的冷启动导航。
 - **Android intent 接收**:`expo-sharing` 已配置
@@ -95,7 +95,7 @@
   `outbound-handoff`,Android 在应用私有目录实现相同语义;JS 侧一套 API。
 - G5. 发送复用主应用既有链路(`UnifiedContentService` + 历史落库 +
   job 生命周期 claim/complete/release),接收端不启动任何引擎会话。
-- G6. iOS 扩展暂存完成后自动唤醒主应用(`uniclipboard://share` 深链),主应用
+- G6. iOS 扩展暂存完成后自动唤醒主应用(`clipboard://share` 深链),主应用
   无法被唤醒时优雅降级(job 保持 pending,下次启动时呈现)。
 - G7. 分享诊断跨"接收端暂存 + 应用内发送"两阶段持续记录。
 
@@ -164,7 +164,7 @@
   面板显示系统自带的转圈(不需要应用提供的视图;仅当面板渲染为空白时才可接受
   一个极简的兜底 `UIViewController`)。
 - R6. `completeRequest` 之后,扩展通过 `extensionContext.openURL` 打开
-  `uniclipboard://share` 唤醒主应用。打开 URL 失败不得导致暂存或 job 失败——
+  `clipboard://share` 唤醒主应用。打开 URL 失败不得导致暂存或 job 失败——
   job 保持 pending,下次主应用启动时呈现(见 R8/R9)。
 - R7. 暂存内容携带完整元数据:kind、显示名、字节数、MIME 类型、payload URI。
   文本以 UTF-8 payload 文件暂存;图片复用 `stageData`;文件复用 `stageFile`
@@ -192,7 +192,7 @@
 ### 6.4 主应用:统一入口与导航
 
 - R11. 新增路由(如 `Share`),挂载同一 `ShareSendScreen`,两端共用;触发入口:
-  - iOS:深链 `uniclipboard://share`,同时处理冷启动(`getInitialURL`)与热启动
+  - iOS:深链 `clipboard://share`,同时处理冷启动(`getInitialURL`)与热启动
     (`Linking.addEventListener`),复用 `navigationRef` / `navigateWhenReady` /
     `flushPendingNavigation`,保证导航器未挂载时也能打开;
   - Android:intent 暂存完成后的应用内跳转(与 R10 的 URL 事件共用同一入口)。
@@ -281,7 +281,7 @@
   再入队,"取消"即出队(`completeJob`),每次分享页都是崭新的一次分享,未发送
   内容仍留在主页历史;Android 内容仅存在于队列,"取消"保持 `releaseJob`
   (保留 pending,另设显式"删除"操作)。
-- Q4. iOS 深链保持无参数 `uniclipboard://share`,还是把 job id 带进 URL,
+- Q4. iOS 深链保持无参数 `clipboard://share`,还是把 job id 带进 URL,
   以便存在多个 job 时页面认领指定的一项?
 - Q5. Android 分享页的返回语义:用户在分享页放弃后是留在主应用 Home 还是
   返回来源应用(`moveTaskToBack`)?建议保留在主应用(与 iOS 一致)。

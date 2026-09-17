@@ -2,7 +2,7 @@ import { patchPodfileForXcode27 } from '../../plugins/withXcode27DeploymentTarge
 
 const podfile = `platform :ios, podfile_properties['ios.deploymentTarget'] || '16.4'
 
-target 'UniClipDev' do
+target 'ClipDev' do
   post_install do |installer|
     react_native_post_install(installer)
   end
@@ -27,6 +27,6 @@ describe('Xcode 27 iOS deployment targets', () => {
     const twice = patchPodfileForXcode27(once);
 
     expect(twice).toBe(once);
-    expect(twice.match(/@generated begin uniclip-xcode-27-deployment-targets/g)).toHaveLength(1);
+    expect(twice.match(/@generated begin clip-xcode-27-deployment-targets/g)).toHaveLength(1);
   });
 });

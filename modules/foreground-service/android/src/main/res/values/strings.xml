@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="foreground_service_channel_name">Background tasks</string>
-    <string name="foreground_service_channel_description">UniClip background sync service</string>
+    <string name="foreground_service_channel_description">Clip background sync service</string>
     <string name="foreground_service_running">Background tasks running</string>
     <string name="foreground_service_stopping">Stopping…</string>
     <string name="foreground_service_action_temp_stop">Pause</string>

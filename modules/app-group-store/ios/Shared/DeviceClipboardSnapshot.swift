@@ -9,7 +9,7 @@ import Foundation
 /// Share Extension and the Widget Extension — which both run the §3.5
 /// push sequence through `SendClipboardIntent` — can name the same type
 /// without dragging in the UIKit-bound observer. Pure Foundation: the
-/// SwiftPM `UniClipboardModels` target compiles it without UIKit.
+/// SwiftPM `ClipboardModels` target compiles it without UIKit.
 struct DeviceClipboardSnapshot {
     let clipboard: Clipboard
     let payload: Data?

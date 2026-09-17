@@ -6,7 +6,7 @@ describe('Android background clipboard setup', () => {
       Linking: { openURL: jest.fn().mockResolvedValue(undefined) },
       Platform: { OS: 'android' },
     }));
-    jest.doMock('expo-application', () => ({ applicationId: 'app.uniclipboard.android.dev' }));
+    jest.doMock('expo-application', () => ({ applicationId: 'app.clipboard.android.dev' }));
     jest.doMock('expo-clipboard', () => ({ setStringAsync: jest.fn().mockResolvedValue(true) }));
     jest.doMock('native-timer', () => ({ setTimer: jest.fn(), clearTimer: jest.fn() }));
     jest.doMock('@/features/settings', () => ({

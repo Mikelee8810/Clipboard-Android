@@ -22,7 +22,7 @@ describe('unified engine core source validation', () => {
   let root: string;
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'uniclip-engine-source-'));
+    root = mkdtempSync(join(tmpdir(), 'clip-engine-source-'));
     mkdirSync(join(root, 'modules', 'uc-engine'), { recursive: true });
   });
 
@@ -38,7 +38,7 @@ describe('unified engine core source validation', () => {
       versionArtifact?: 'version.txt' | 'core-version.txt';
     } = {}
   ) {
-    const repository = options.repository ?? 'UniClipboard/core';
+    const repository = options.repository ?? 'Clipboard/core';
     const version = options.version ?? 'core-v1.2.3-rc.4';
     const versionArtifact = options.versionArtifact ?? 'core-version.txt';
     const sourceCommit = 'a'.repeat(40);

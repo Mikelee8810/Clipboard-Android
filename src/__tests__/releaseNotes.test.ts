@@ -17,7 +17,7 @@ describe('localized release note generation', () => {
   let outDir: string;
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'uniclip-release-notes-'));
+    root = mkdtempSync(join(tmpdir(), 'clip-release-notes-'));
     outDir = join(root, 'output');
     mkdirSync(outDir);
 

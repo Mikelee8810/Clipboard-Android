@@ -1,4 +1,4 @@
-package app.uniclipboard.android.quickaction
+package app.clipboard.android.quickaction
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -8,7 +8,7 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
-import app.uniclipboard.android.BuildConfig
+import app.clipboard.android.BuildConfig
 import expo.modules.ReactActivityDelegateWrapper
 
 /**

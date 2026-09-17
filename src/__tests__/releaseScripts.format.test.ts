@@ -14,7 +14,7 @@ const projectRoot = join(__dirname, '..', '..');
 type ScriptName = 'bump-build.mjs' | 'bump-version.mjs';
 
 function createFixture(scriptName: ScriptName): string {
-  const fixtureRoot = mkdtempSync(join(tmpdir(), 'uniclip-release-script-'));
+  const fixtureRoot = mkdtempSync(join(tmpdir(), 'clip-release-script-'));
   const fixtureScripts = join(fixtureRoot, 'scripts');
   mkdirSync(fixtureScripts);
   copyFileSync(join(projectRoot, 'scripts', scriptName), join(fixtureScripts, scriptName));

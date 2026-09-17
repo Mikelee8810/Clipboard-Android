@@ -34,7 +34,7 @@ function validUri(): string {
     }),
     'utf8'
   ).toString('base64url');
-  return `uniclipboard://connect?v=1&svc=mobile-sync&p=${payload}`;
+  return `clipboard://connect?v=1&svc=mobile-sync&p=${payload}`;
 }
 
 describe('LAN deep-link routing', () => {
@@ -43,7 +43,7 @@ describe('LAN deep-link routing', () => {
     expect(routing).toBeDefined();
     if (!routing) return;
 
-    expect(routing.ingestLanConnectUrl('uniclipboard://quick-upload')).toEqual({ matched: false });
+    expect(routing.ingestLanConnectUrl('clipboard://quick-upload')).toEqual({ matched: false });
   });
 
   it('queues valid credentials for one-time settings consumption', () => {
@@ -68,7 +68,7 @@ describe('LAN deep-link routing', () => {
     routing.usePendingLanConnectStore.getState().clear();
 
     expect(
-      routing.ingestLanConnectUrl('uniclipboard://connect?v=1&svc=mobile-sync&p=broken')
+      routing.ingestLanConnectUrl('clipboard://connect?v=1&svc=mobile-sync&p=broken')
     ).toEqual({ matched: true, queued: false, error: 'PAYLOAD_DECODE_FAILED' });
     expect(routing.usePendingLanConnectStore.getState().consume()).toBeNull();
   });

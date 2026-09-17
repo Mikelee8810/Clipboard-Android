@@ -24,7 +24,7 @@ class ClipboardHistoryProofReceiver : BroadcastReceiver() {
             return
         }
 
-        val databaseFile = File(context.filesDir, "SQLite/uniclipboard.db")
+        val databaseFile = File(context.filesDir, "SQLite/clipboard.db")
         if (!databaseFile.exists()) {
             resultCode = 3
             resultData = JSONObject()

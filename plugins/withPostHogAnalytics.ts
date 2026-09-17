@@ -16,7 +16,7 @@ type XcodeProject = {
   rootObject: { props: { targets: XcodeTarget[] } };
 };
 
-const ANDROID_KEY = 'app.uniclipboard.analytics.POSTHOG_PROJECT_KEY';
+const ANDROID_KEY = 'app.clipboard.analytics.POSTHOG_PROJECT_KEY';
 const EXTENSION_TARGET_NAMES = new Set(['share', 'keyboard']);
 
 const withPostHogAnalytics: ConfigPlugin = (config) => {

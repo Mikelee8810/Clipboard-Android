@@ -31,7 +31,7 @@ final class ExtensionRuntimeLifecycle<Engine: AnyObject>: @unchecked Sendable {
     ownership: any NativeRuntimeOwnership,
     acquisitionTimeoutMs: UInt64 = 1_000,
     shutdownQueue: DispatchQueue = DispatchQueue(
-      label: "app.uniclipboard.extension-runtime-shutdown",
+      label: "app.clipboard.extension-runtime-shutdown",
       qos: .utility
     ),
     suspend: @escaping (Engine) throws -> Void,

@@ -1,8 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 
-const SECRET_PREFIX = 'uniclip.lan.server.';
+const SECRET_PREFIX = 'clip.lan.server.';
 const SECURE_STORE_OPTIONS: SecureStore.SecureStoreOptions = {
-  keychainService: 'app.uniclipboard.lan-servers',
+  keychainService: 'app.clipboard.lan-servers',
   keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY,
 };
 

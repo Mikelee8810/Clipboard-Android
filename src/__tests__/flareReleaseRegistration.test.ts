@@ -22,7 +22,7 @@ describe('FlareRelease Android registration', () => {
     tempDirs.push(workDir);
     const apkDir = join(workDir, 'apk');
     mkdirSync(apkDir);
-    writeFileSync(join(apkDir, 'UniClip-1.3.0-arm64-v8a.apk'), 'apk-data');
+    writeFileSync(join(apkDir, 'Clip-1.3.0-arm64-v8a.apk'), 'apk-data');
     const manifestPath = join(workDir, 'beta.json');
     writeFileSync(
       manifestPath,
@@ -32,7 +32,7 @@ describe('FlareRelease Android registration', () => {
         prerelease: true,
         pub_date: '2026-08-21T00:00:00.000Z',
         notes: { en: 'English notes', zh: '中文说明' },
-        assets: [{ name: 'UniClip-1.3.0-arm64-v8a.apk', sha256: 'abc123' }],
+        assets: [{ name: 'Clip-1.3.0-arm64-v8a.apk', sha256: 'abc123' }],
       })
     );
     const outputPath = join(workDir, 'registration.json');
@@ -62,8 +62,8 @@ describe('FlareRelease Android registration', () => {
         {
           platform: 'android',
           architecture: 'arm64-v8a',
-          filename: 'UniClip-1.3.0-arm64-v8a.apk',
-          r2Key: 'android/artifacts/v1.3.0.166-beta1/UniClip-1.3.0-arm64-v8a.apk',
+          filename: 'Clip-1.3.0-arm64-v8a.apk',
+          r2Key: 'android/artifacts/v1.3.0.166-beta1/Clip-1.3.0-arm64-v8a.apk',
           size: 8,
           sha256: 'abc123',
         },

@@ -18,7 +18,7 @@ final class NativeSystemHostTests: XCTestCase {
   }
 
   func testKeychainRoundTripUsesSystemKeychain() throws {
-    let service = "app.uniclipboard.uc-engine.tests.\(UUID().uuidString)"
+    let service = "app.clipboard.uc-engine.tests.\(UUID().uuidString)"
     let key = "identity"
     let value = Data("keychain-value".utf8)
     let storage = AppleSecureStorage(service: service)
@@ -33,7 +33,7 @@ final class NativeSystemHostTests: XCTestCase {
 
   func testKeychainUnavailableReturnsStableFailure() throws {
     let storage = AppleSecureStorage(
-      service: "app.uniclipboard.uc-engine.tests.unavailable",
+      service: "app.clipboard.uc-engine.tests.unavailable",
       keychain: UnavailableKeychain()
     )
 

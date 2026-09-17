@@ -13,8 +13,8 @@ Fixtures use native Copy, never database writes or Maestro internal clipboard me
 
 ## Artifacts
 
-- iOS: app.uniclipboard.UniClipboard.dev, 2.0.0 (180), signed Simulator Release build.
-- UniClipDev SHA-256: `4dab9eefb0183014e1610e9b59b98a149e30db474e76eb36dbb50bf99d05b895`.
+- iOS: app.clipboard.Clipboard.dev, 2.0.0 (180), signed Simulator Release build.
+- ClipDev SHA-256: `4dab9eefb0183014e1610e9b59b98a149e30db474e76eb36dbb50bf99d05b895`.
 - main.jsbundle SHA-256: `ecc3aa6a69df25f118718a879b91c0639888d4ea3e501b54a6d100e315980ff6`.
 - app-arm64-v8a-release.apk SHA-256: `04f285e9d91b9201d2fc4e528eeca5864bd6eee09455355c7a642cb6f0865f94`.
 

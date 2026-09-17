@@ -156,8 +156,8 @@ struct AppleFileMetadata {
 }
 
 struct AppleClipboardDisplayMetadata: Decodable {
-  static let format = "uniclipboard-file-display-metadata"
-  static let mimeType = "application/x-uniclipboard-file-display-metadata+json"
+  static let format = "clipboard-file-display-metadata"
+  static let mimeType = "application/x-clipboard-file-display-metadata+json"
 
   private struct Entry: Decodable {
     let storageName: String

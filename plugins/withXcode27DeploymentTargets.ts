@@ -1,6 +1,6 @@
 import { CodeGenerator, ConfigPlugin, createRunOncePlugin, withPodfile } from 'expo/config-plugins';
 
-const GENERATED_TAG = 'uniclip-xcode-27-deployment-targets';
+const GENERATED_TAG = 'clip-xcode-27-deployment-targets';
 
 const POD_DEPLOYMENT_TARGET_PATCH = [
   "    minimum_deployment_target = Gem::Version.new(podfile_properties['ios.deploymentTarget'] || '16.4')",

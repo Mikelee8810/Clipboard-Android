@@ -129,7 +129,7 @@ printf '%s\\n' '${JSON.stringify({ target_directory: sharedBuild })}'
         readFileSync(
           join(
             module,
-            "android/release-maven/app/uniclipboard/uniclipboard-engine/1.1.0-rc.13.local.abcdef12/uniclipboard-engine-1.1.0-rc.13.local.abcdef12.pom"
+            "android/release-maven/app/clipboard/clipboard-engine/1.1.0-rc.13.local.abcdef12/clipboard-engine-1.1.0-rc.13.local.abcdef12.pom"
           ),
           "utf8"
         ),

@@ -4,7 +4,7 @@
 
 import * as Application from 'expo-application';
 
-export const APP_NAME = 'UniClip';
+export const APP_NAME = 'Clip';
 export const APP_VERSION = Application.nativeApplicationVersion ?? '1.0.0';
 export const APP_BUILD_NUMBER = Application.nativeBuildVersion;
 export const APP_VERSION_WITH_BUILD = APP_BUILD_NUMBER

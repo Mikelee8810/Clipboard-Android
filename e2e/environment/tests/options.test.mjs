@@ -60,15 +60,15 @@ test("network acceptance requires an explicit isolated desktop peer executable",
       "--scenario",
       "bidirectional-sync",
       "--peer-cli",
-      "/tmp/uniclip",
+      "/tmp/clip",
     ]).peerCli,
-    "/tmp/uniclip"
+    "/tmp/clip"
   );
 });
 
 test('diagnostic fault scenarios also require an explicit isolated peer', () => {
   for (const scenario of ['diagnostic-auth-failure', 'diagnostic-connect-timeout', 'diagnostic-lifecycle', 'diagnostic-extensions']) {
     assert.throws(() => parseOptions(['--platform', 'ios', '--app', '/tmp/app.app', '--scenario', scenario]), /peer-cli/);
-    assert.equal(parseOptions(['--platform', 'ios', '--app', '/tmp/app.app', '--scenario', scenario, '--peer-cli', '/tmp/uniclip']).scenario, scenario);
+    assert.equal(parseOptions(['--platform', 'ios', '--app', '/tmp/app.app', '--scenario', scenario, '--peer-cli', '/tmp/clip']).scenario, scenario);
   }
 });

@@ -1,4 +1,4 @@
-const mockApplication = { applicationId: 'app.uniclipboard.android.dev' as string | null };
+const mockApplication = { applicationId: 'app.clipboard.android.dev' as string | null };
 
 jest.mock('expo-application', () => ({
   get applicationId() {
@@ -20,7 +20,7 @@ function resetSpace() {
 
 describe('device trust preview coordinator', () => {
   beforeEach(() => {
-    mockApplication.applicationId = 'app.uniclipboard.android.dev';
+    mockApplication.applicationId = 'app.clipboard.android.dev';
     resetSpace();
     closeDeviceTrustPreview();
   });
@@ -28,7 +28,7 @@ describe('device trust preview coordinator', () => {
   it('is available only to an isolated development application identity', () => {
     expect(isDeviceTrustPreviewAvailable()).toBe(true);
 
-    mockApplication.applicationId = 'app.uniclipboard.android';
+    mockApplication.applicationId = 'app.clipboard.android';
 
     expect(isDeviceTrustPreviewAvailable()).toBe(false);
     expect(openDeviceTrustPreview('standard')).toBe(false);

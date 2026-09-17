@@ -2,7 +2,7 @@
 
 import { checkForUpdate } from '../features/updates';
 
-const R2_BASE = 'https://release.uniclipboard.app/android';
+const R2_BASE = 'https://github.com/Mikelee8810/Clipboard-Android/releases/latest/download';
 
 const manifest = {
   version: '1.4.0.200',
@@ -13,8 +13,8 @@ const manifest = {
   // The APK filenames use the 3-segment marketing version, distinct from the
   // 4-segment compared `version` above — see assemble-android-manifest.mjs.
   assets: [
-    { name: 'UniClip-1.4.0-arm64-v8a.apk', sha256: 'AABBCC' },
-    { name: 'UniClip-1.4.0-universal.apk', sha256: 'DDEEFF' },
+    { name: 'Clip-1.4.0-arm64-v8a.apk', sha256: 'AABBCC' },
+    { name: 'Clip-1.4.0-universal.apk', sha256: 'DDEEFF' },
   ],
 };
 
@@ -54,10 +54,10 @@ describe('checkForUpdate via R2 manifest', () => {
 
     expect(result.assets).toHaveLength(2);
     const [arm] = result.assets;
-    expect(arm.name).toBe('UniClip-1.4.0-arm64-v8a.apk');
-    expect(arm.r2DownloadUrl).toBe(`${R2_BASE}/artifacts/v1.4.0.200/UniClip-1.4.0-arm64-v8a.apk`);
+    expect(arm.name).toBe('Clip-1.4.0-arm64-v8a.apk');
+    expect(arm.r2DownloadUrl).toBe(`${R2_BASE}/artifacts/v1.4.0.200/Clip-1.4.0-arm64-v8a.apk`);
     expect(arm.githubDownloadUrl).toBe(
-      'https://github.com/UniClipboard/uc-android/releases/download/v1.4.0.200/UniClip-1.4.0-arm64-v8a.apk'
+      'https://github.com/Mikelee8810/Clipboard-Android/releases/download/v1.4.0.200/Clip-1.4.0-arm64-v8a.apk'
     );
     expect(arm).not.toHaveProperty('giteeDownloadUrl');
     expect(result).not.toHaveProperty('giteeReleaseUrl');

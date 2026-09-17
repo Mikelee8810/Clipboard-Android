@@ -13,7 +13,7 @@ DEFAULT_ANDROID_DEVICE="7bac761b"
 
 usage() {
   cat <<EOF
-Install the UniClip development app on connected physical devices.
+Install the Clip development app on connected physical devices.
 
 Usage:
   npm run install:dev
@@ -46,11 +46,11 @@ assert_development_project() {
 
   case "$platform" in
     ios)
-      expected_identifier='PRODUCT_BUNDLE_IDENTIFIER = app.uniclipboard.UniClipboard.dev;'
-      project_file="$PROJECT_ROOT/ios/UniClipDev.xcodeproj/project.pbxproj"
+      expected_identifier='PRODUCT_BUNDLE_IDENTIFIER = app.clipboard.Clipboard.dev;'
+      project_file="$PROJECT_ROOT/ios/ClipDev.xcodeproj/project.pbxproj"
       ;;
     android)
-      expected_identifier="applicationId 'app.uniclipboard.android.dev'"
+      expected_identifier="applicationId 'app.clipboard.android.dev'"
       project_file="$PROJECT_ROOT/android/app/build.gradle"
       ;;
   esac
@@ -298,7 +298,7 @@ install_android() {
   fi
   adb -s "$device" install -r "$apk_path"
   adb -s "$device" reverse tcp:8081 tcp:8081
-  adb -s "$device" shell monkey -p app.uniclipboard.android.dev 1 >/dev/null
+  adb -s "$device" shell monkey -p app.clipboard.android.dev 1 >/dev/null
 }
 
 platform="${1:-all}"

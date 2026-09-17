@@ -159,7 +159,7 @@ jobs:
             filename=$(basename "$file")
             echo "Uploading ${filename} to R2..."
             scripts/release-tools/node_modules/.bin/wrangler r2 object put \
-              "uniclipboard-releases/android/artifacts/${TAG}/${filename}" \
+              "clipboard-releases/android/artifacts/${TAG}/${filename}" \
               --file "$file" \
               --remote
           done

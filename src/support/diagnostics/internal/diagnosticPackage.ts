@@ -192,7 +192,7 @@ export async function createDiagnosticArchive(
   signal?: AbortSignal
 ): Promise<DiagnosticArtifact> {
   throwIfArchiveAborted(signal);
-  const fileName = `uniclip_diagnostics_${formatFileTimestamp(now)}.zip`;
+  const fileName = `clip_diagnostics_${formatFileTimestamp(now)}.zip`;
   const artifact = new File(Paths.cache, fileName);
   let appFlushStatus: 'completed' | 'incomplete' | 'unavailable';
   try { appFlushStatus = (await flushAppLogs()) ? 'completed' : 'incomplete'; }
