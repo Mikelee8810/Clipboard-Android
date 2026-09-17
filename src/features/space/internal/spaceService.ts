@@ -18,7 +18,12 @@ import {
   type DeviceTrustFailure,
   type DeviceTrustQueryState,
 } from '../store';
-import { invitationCodeForSubmission } from '@/utils/invitationCode';
+import {
+  combinePairingCode,
+  loadOrCreateSpaceSecret,
+  splitPairingCode,
+  storeSpaceSecret,
+} from '@/utils/spaceSecret';
 import { createLogger } from '@/support/observability';
 import {
   buildSpaceOperationContext,
@@ -344,11 +349,6 @@ function required(value: string, code: UnifiedSpaceInputErrorCode): string {
   return normalized;
 }
 
-function passphrase(value: string): string {
-  if (!value.trim()) throw new UnifiedSpaceInputError('passphraseRequired');
-  return value;
-}
-
 export class UnifiedSpaceService {
   private snapshot = createInitialUnifiedSpaceSnapshot();
   private mutationRevision = 0;
@@ -471,16 +471,17 @@ export class UnifiedSpaceService {
     }
   }
 
-  async createSpace(deviceName: string, secret: string): Promise<SpaceCreationResult> {
+  async createSpace(deviceName: string, _secret = ''): Promise<SpaceCreationResult> {
     const normalizedName = required(deviceName, 'deviceNameRequired');
-    const normalizedPassphrase = passphrase(secret);
+    // No user passphrase: this device generates and keeps its own space secret.
+    const normalizedPassphrase = await loadOrCreateSpaceSecret();
     let revision: number | null = null;
     try {
       return await this.runSetup(async () => {
         revision = this.beginMutation();
         this.updateSnapshot({ status: 'loading', lastError: null });
         const space = await this.api.createSpace(normalizedName, normalizedPassphrase);
-        const invitation = await this.api.issueInvitation();
+        const invitation = await this.issueCombinedInvitation();
         const devices = await this.api.listDevices();
         await this.completion.markComplete();
         if (!this.isCurrentMutation(revision)) return { ...space, invitation };
@@ -517,9 +518,19 @@ export class UnifiedSpaceService {
   }
 
   async issueInvitation(): Promise<InvitationIssued> {
-    const invitation = await this.api.issueInvitation();
+    const invitation = await this.issueCombinedInvitation();
     this.updateSnapshot({ invitation, lastError: null });
     return invitation;
+  }
+
+  /** Issue an engine invitation and append this device's space secret to it. */
+  private async issueCombinedInvitation(): Promise<InvitationIssued> {
+    const invitation = await this.api.issueInvitation();
+    const secret = await loadOrCreateSpaceSecret();
+    return {
+      ...invitation,
+      invitationCode: combinePairingCode(invitation.invitationCode, secret),
+    };
   }
 
   refreshDevices(): Promise<UnifiedSpaceSnapshot> {
@@ -596,11 +607,15 @@ export class UnifiedSpaceService {
     preserveUnreadableHistory = false
   ): Promise<JoinedSpace> {
     required(invitationCode, 'invitationCodeRequired');
-    const normalizedInvitation = invitationCodeForSubmission(invitationCode);
-    if (!normalizedInvitation) throw new UnifiedSpaceInputError('invitationCodeInvalid');
+    const parsed = splitPairingCode(invitationCode);
+    if (!parsed) throw new UnifiedSpaceInputError('invitationCodeInvalid');
+    const normalizedInvitation = parsed.engineCode;
     if (this.joinRequestInFlight) throw new SpaceOperationInProgressError();
     const normalizedName = required(deviceName, 'deviceNameRequired');
-    const normalizedPassphrase = passphrase(secret);
+    // The secret rides inside the pairing code; remember it so this device can
+    // sponsor others later. `secret` is only a legacy fallback.
+    const normalizedPassphrase = parsed.secret || secret.trim();
+    if (!normalizedPassphrase) throw new UnifiedSpaceInputError('invitationCodeInvalid');
     const hadExistingSpace = Boolean(this.snapshot.spaceId);
     let stage: JoinSpaceStage = 'prepareP2p';
     let revision: number | null = null;
@@ -608,6 +623,7 @@ export class UnifiedSpaceService {
       this.joinRequestInFlight = this.runSetup(async () => {
         revision = this.beginMutation();
         this.updateSnapshot({ status: 'loading', lastError: null });
+        await storeSpaceSecret(normalizedPassphrase);
         stage = 'requestJoin';
         return this.api.joinSpace(
           normalizedInvitation,

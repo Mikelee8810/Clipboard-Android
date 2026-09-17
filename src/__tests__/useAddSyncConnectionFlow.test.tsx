@@ -130,7 +130,7 @@ describe('add sync connection flow', () => {
     act(() => currentFlow.actions.continueFromCode());
     expect(currentFlow.state.error).toBe('space.error.invitationCodeInvalid');
 
-    act(() => currentFlow.actions.updateInvitationCode('001234'));
+    act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
     act(() => currentFlow.actions.continueFromCode());
     act(() => currentFlow.actions.setDeviceName('  Laptop  '));
     act(() => currentFlow.actions.setPassphrase('secret'));
@@ -138,7 +138,7 @@ describe('add sync connection flow', () => {
     await act(async () => currentFlow.actions.submitJoin());
 
     expect(mockJoinSpace).toHaveBeenCalledTimes(1);
-    expect(mockJoinSpace).toHaveBeenCalledWith('001-234', '  Laptop  ', 'secret', false);
+    expect(mockJoinSpace).toHaveBeenCalledWith('001-234-ABCDEFGHJK', '  Laptop  ', 'secret', false);
     expect(currentFlow.state.mode).toBe('success');
 
     await act(async () => currentFlow.actions.completeConnection());
@@ -150,7 +150,7 @@ describe('add sync connection flow', () => {
     jest.useFakeTimers();
     try {
       createHarness('join');
-      act(() => currentFlow.actions.updateInvitationCode('001234'));
+      act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
       act(() => currentFlow.actions.continueFromCode());
       act(() => currentFlow.actions.setPassphrase('secret'));
       let resolve!: (value: { spaceId: string }) => void;
@@ -187,7 +187,7 @@ describe('add sync connection flow', () => {
 
   it('requests cancellation once and closes only after it is confirmed', async () => {
     const props = createHarness('join');
-    act(() => currentFlow.actions.updateInvitationCode('001234'));
+    act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
     act(() => currentFlow.actions.continueFromCode());
     act(() => currentFlow.actions.setPassphrase('secret'));
     let reject!: (error: Error) => void;
@@ -218,7 +218,7 @@ describe('add sync connection flow', () => {
 
   it('keeps waiting after a failed cancellation and clears its warning on success', async () => {
     const props = createHarness('join');
-    act(() => currentFlow.actions.updateInvitationCode('001234'));
+    act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
     act(() => currentFlow.actions.continueFromCode());
     act(() => currentFlow.actions.setPassphrase('secret'));
     let resolve!: (value: { spaceId: string }) => void;
@@ -267,13 +267,13 @@ describe('add sync connection flow', () => {
     mockUnifiedSpaceUserErrorCode.mockReturnValueOnce('unreadableHistoryRequiresConfirmation');
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 
-    act(() => currentFlow.actions.updateInvitationCode('001234'));
+    act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
     act(() => currentFlow.actions.continueFromCode());
     act(() => currentFlow.actions.setPassphrase('secret'));
 
     await act(async () => currentFlow.actions.submitJoin());
 
-    expect(mockJoinSpace).toHaveBeenNthCalledWith(1, '001-234', 'Phone', 'secret', false);
+    expect(mockJoinSpace).toHaveBeenNthCalledWith(1, '001-234-ABCDEFGHJK', 'Phone', 'secret', false);
     expect(alert).toHaveBeenCalledWith(
       'space.unreadableHistory.title',
       'space.unreadableHistory.body',
@@ -287,7 +287,7 @@ describe('add sync connection flow', () => {
     );
     await act(async () => continueButton?.onPress?.());
 
-    expect(mockJoinSpace).toHaveBeenNthCalledWith(2, '001-234', 'Phone', 'secret', true);
+    expect(mockJoinSpace).toHaveBeenNthCalledWith(2, '001-234-ABCDEFGHJK', 'Phone', 'secret', true);
     expect(currentFlow.state.mode).toBe('success');
     alert.mockRestore();
   });
@@ -302,7 +302,7 @@ describe('add sync connection flow', () => {
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 
     expect(currentFlow.state.mode).toBe('joinCode');
-    act(() => currentFlow.actions.updateInvitationCode('001234'));
+    act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
     act(() => currentFlow.actions.continueFromCode());
     act(() => currentFlow.actions.setPassphrase('secret'));
 
@@ -319,7 +319,7 @@ describe('add sync connection flow', () => {
     const confirmButton = buttons?.find((button) => button.text === 'space.switch.confirmAction');
     await act(async () => confirmButton?.onPress?.());
 
-    expect(mockJoinSpace).toHaveBeenCalledWith('001-234', 'Phone', 'secret', false);
+    expect(mockJoinSpace).toHaveBeenCalledWith('001-234-ABCDEFGHJK', 'Phone', 'secret', false);
     expect(currentFlow.state.mode).toBe('success');
     alert.mockRestore();
   });
@@ -333,7 +333,7 @@ describe('add sync connection flow', () => {
     createHarness('switch');
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 
-    act(() => currentFlow.actions.updateInvitationCode('001234'));
+    act(() => currentFlow.actions.updateInvitationCode('001234ABCDEFGHJK'));
     act(() => currentFlow.actions.continueFromCode());
     act(() => currentFlow.actions.setPassphrase('secret'));
     await act(async () => currentFlow.actions.submitJoin());

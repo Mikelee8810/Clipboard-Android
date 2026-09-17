@@ -153,7 +153,13 @@ export class P2pSyncAdapter implements SyncAdapter {
     content: ClipboardContent,
     dispatch: boolean
   ): Promise<SyncAdapterDelivery | null> {
-    const report = await this.dependencies.clipboard.observeClipboardChange(dispatch);
+    let report = await this.dependencies.clipboard.observeClipboardChange(dispatch);
+    if (!report && dispatch) {
+      // Android hides the system clipboard from a backgrounded app, so the
+      // engine sees nothing to send. Shizuku already captured the content, so
+      // hand it to the engine directly.
+      report = await this.sendCapturedContent(content);
+    }
     if (!report) return null;
     await this.dependencies.clipboard.persistDelivery(content.profileHash, report);
     const state = p2pDeliveryStateFromReport(report);
@@ -162,6 +168,22 @@ export class P2pSyncAdapter implements SyncAdapter {
       state,
       counts: p2pDeliveryCountsFromReport(report),
     };
+  }
+
+  private async sendCapturedContent(content: ClipboardContent): Promise<SendReport | null> {
+    const profileHash = content.profileHash ?? '';
+    if (content.type === 'Text' && content.text) {
+      return (await this.dependencies.content.sendImportedText(content.text, profileHash)).report;
+    }
+    if (content.type === 'Image' && content.fileUri) {
+      return (
+        await this.dependencies.content.sendImportedAsset(
+          { kind: 'image', uri: content.fileUri, fileName: content.fileName },
+          profileHash
+        )
+      ).report;
+    }
+    return null;
   }
 
   private subscribeToEngineEvents(): void {
