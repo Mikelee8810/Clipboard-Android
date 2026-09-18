@@ -58,13 +58,88 @@ export function getDatabase(): Promise<SQLite.SQLiteDatabase> {
 
 async function openAndMigrate(): Promise<SQLite.SQLiteDatabase> {
   const directory = await resolveIOSAppGroupDirectory();
-  const db = await SQLite.openDatabaseAsync(DB_NAME, undefined, directory ?? undefined);
+  let db = await SQLite.openDatabaseAsync(DB_NAME, undefined, directory ?? undefined);
   // WAL 提升并发读写性能(官方推荐建库即开);跨进程(键盘/分享扩展)
   // 并发访问依赖 WAL + busy_timeout,两侧都必须设置。
   await db.execAsync('PRAGMA journal_mode = WAL;');
   await db.execAsync('PRAGMA busy_timeout = 3000;');
+  if (!(await isHealthy(db))) {
+    db = await rebuildDamagedDatabase(db, directory);
+  }
   await migrate(db);
   log.info(`opened ${DB_NAME} at ${directory ?? 'default'}, schema v${SCHEMA_VERSION}`);
+  return db;
+}
+
+async function isHealthy(db: SQLite.SQLiteDatabase): Promise<boolean> {
+  try {
+    const row = await db.getFirstAsync<{ quick_check: string }>('PRAGMA quick_check');
+    if (row?.quick_check === 'ok') return true;
+    log.error('database integrity check failed:', row?.quick_check);
+    return false;
+  } catch (error) {
+    log.error('database integrity check errored:', error);
+    return false;
+  }
+}
+
+/**
+ * A damaged database is replaced by a fresh one. Whatever history rows are
+ * still readable are carried over first; the damaged file is kept next to
+ * it with a `.corrupt-<time>` suffix.
+ */
+async function rebuildDamagedDatabase(
+  damaged: SQLite.SQLiteDatabase,
+  directory: string | null
+): Promise<SQLite.SQLiteDatabase> {
+  let salvaged: Record<string, unknown>[] = [];
+  try {
+    salvaged = await damaged.getAllAsync<Record<string, unknown>>(
+      `SELECT * FROM ${TABLE_HISTORY} WHERE isDeleted = 0`
+    );
+  } catch (error) {
+    log.error('could not read history rows from the damaged database:', error);
+  }
+  try {
+    await damaged.closeAsync();
+  } catch {
+    // The file is renamed below either way.
+  }
+  const dbDirectory = directory ?? `file://${SQLite.defaultDatabaseDirectory as string}`;
+  const suffix = `.corrupt-${Date.now()}`;
+  for (const name of [DB_NAME, `${DB_NAME}-wal`, `${DB_NAME}-shm`, `${DB_NAME}-journal`]) {
+    const file = new File(dbDirectory, name);
+    try {
+      if (file.exists) file.move(new File(dbDirectory, `${name}${suffix}`));
+    } catch (error) {
+      log.error(`could not set aside ${name}:`, error);
+      try {
+        if (file.exists) file.delete();
+      } catch {
+        // Nothing more can be done for this file.
+      }
+    }
+  }
+  const db = await SQLite.openDatabaseAsync(DB_NAME, undefined, directory ?? undefined);
+  await db.execAsync('PRAGMA journal_mode = WAL;');
+  await db.execAsync('PRAGMA busy_timeout = 3000;');
+  await migrate(db);
+  let restored = 0;
+  for (const row of salvaged) {
+    const columns = Object.keys(row);
+    try {
+      await db.runAsync(
+        `INSERT OR IGNORE INTO ${TABLE_HISTORY} (${columns.join(', ')}) VALUES (${columns
+          .map(() => '?')
+          .join(', ')})`,
+        columns.map((column) => row[column] as SQLite.SQLiteBindValue)
+      );
+      restored += 1;
+    } catch {
+      // A row whose page was damaged is skipped.
+    }
+  }
+  log.info(`rebuilt ${DB_NAME}: restored ${restored}/${salvaged.length} history rows`);
   return db;
 }
 

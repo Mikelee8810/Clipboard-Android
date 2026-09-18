@@ -297,12 +297,21 @@ internal fun clipDataForSnapshot(
 internal object EngineClipboardWrites {
   @Volatile var lastText: String? = null
   @Volatile var lastKind: String? = null
+  @Volatile var lastSize: Long = -1
   @Volatile var lastAt: Long = 0
 
-  fun record(clip: ClipData) {
+  fun record(clip: ClipData, representations: List<BindingClipboardRepresentation>) {
     val item = clip.takeIf { it.itemCount > 0 }?.getItemAt(0)
     lastKind = if (item?.uri != null) "file" else "text"
     lastText = if (item?.uri == null) item?.text?.toString() else null
+    lastSize = when (val first = representations.firstOrNull {
+      it !is BindingClipboardRepresentation.Inline ||
+        (it.format != FILE_DISPLAY_METADATA_FORMAT && it.mimeType != FILE_DISPLAY_METADATA_MIME)
+    }) {
+      is BindingClipboardRepresentation.File -> first.sizeBytes.toLong()
+      is BindingClipboardRepresentation.Inline -> first.bytes.size.toLong()
+      else -> -1
+    }
     lastAt = System.currentTimeMillis()
   }
 }
@@ -651,6 +660,7 @@ class UcEngineModule : Module() {
       else mapOf(
         "kind" to EngineClipboardWrites.lastKind,
         "text" to EngineClipboardWrites.lastText,
+        "size" to EngineClipboardWrites.lastSize,
         "at" to at
       )
     }
@@ -1003,7 +1013,7 @@ private class AndroidEngineHost(
       ?: throw HostBindingException.Unavailable()
     try {
       val clip = clipDataForSnapshot(context, files, snapshot.representations)
-      EngineClipboardWrites.record(clip)
+      EngineClipboardWrites.record(clip, snapshot.representations)
       clipboard.setPrimaryClip(clip)
     } catch (_: SecurityException) {
       throw HostBindingException.PermissionDenied()

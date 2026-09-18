@@ -561,7 +561,12 @@ describe('P2pSyncAdapter', () => {
     if (!P2pSyncAdapter) return;
 
     const deps = dependencies();
-    let write: { kind: 'text' | 'file'; text: string | null; at: number } | null = null;
+    let write: {
+      kind: 'text' | 'file';
+      text: string | null;
+      size?: number;
+      at: number;
+    } | null = null;
     (deps.clipboard as { lastEngineWrite?: () => typeof write }).lastEngineWrite = () => write;
     const adapter = new P2pSyncAdapter(deps) as unknown as {
       start(context: unknown): Promise<void>;
@@ -585,14 +590,20 @@ describe('P2pSyncAdapter', () => {
     );
     expect(deps.content.sendImportedText).toHaveBeenCalledTimes(1);
 
-    write = { kind: 'file', text: null, at: Date.now() };
+    write = { kind: 'file', text: null, size: 512, at: Date.now() };
     await expect(
       adapter.observeClipboardChange(
-        { type: 'Image', fileUri: 'file:///tmp/echo.png', profileHash: 'I' },
+        { type: 'Image', fileUri: 'file:///tmp/echo.png', fileSize: 512, profileHash: 'I' },
         true
       )
     ).resolves.toBeNull();
     expect(deps.content.sendImportedAsset).not.toHaveBeenCalled();
+
+    await adapter.observeClipboardChange(
+      { type: 'Image', fileUri: 'file:///tmp/new.png', fileSize: 9000, profileHash: 'I2' },
+      true
+    );
+    expect(deps.content.sendImportedAsset).toHaveBeenCalledTimes(1);
 
     write = { kind: 'text', text: 'old', at: Date.now() - 60_000 };
     await adapter.observeClipboardChange({ type: 'Text', text: 'old', profileHash: 'O' }, true);

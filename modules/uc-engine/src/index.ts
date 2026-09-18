@@ -554,6 +554,8 @@ export function observeClipboardChange(dispatch: boolean): Promise<SendReport | 
 export interface EngineClipboardWrite {
   kind: 'text' | 'file';
   text: string | null;
+  /** Size in bytes of a written file, or -1 when unknown. */
+  size: number;
   at: number;
 }
 
