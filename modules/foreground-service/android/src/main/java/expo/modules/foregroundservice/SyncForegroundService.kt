@@ -15,6 +15,7 @@ import android.os.Looper
 import androidx.core.app.NotificationCompat
 import expo.modules.nativeutil.NativeLogger
 import expo.modules.shizukuclipboard.BackgroundClipboardMonitor
+import expo.modules.shizukuclipboard.ScreenshotWatcher
 import expo.modules.ucengine.BackgroundServiceDiagnostics
 
 class SyncForegroundService : Service() {
@@ -105,6 +106,7 @@ class SyncForegroundService : Service() {
                 isRunning = true
                 BackgroundServiceDiagnostics.started(this)
                 BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)
+                ScreenshotWatcher.start(this)
                 startMonitorWatchdog()
             }
             ACTION_STOP -> {
@@ -112,6 +114,7 @@ class SyncForegroundService : Service() {
                 stoppedByUser = true
                 setBackgroundRequested(this, false)
                 BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
+                ScreenshotWatcher.stop()
                 if (!isRunning) {
                     val notification = createNotification(getString(R.string.foreground_service_stopping))
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -133,6 +136,7 @@ class SyncForegroundService : Service() {
                 stoppedByUser = true
                 setBackgroundRequested(this, false)
                 BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
+                ScreenshotWatcher.stop()
                 if (!isRunning) {
                     val notification = createNotification(getString(R.string.foreground_service_stopping))
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -163,6 +167,7 @@ class SyncForegroundService : Service() {
                 isRunning = true
                 BackgroundServiceDiagnostics.started(this)
                 BackgroundClipboardMonitor.start(this, CLIPBOARD_MONITOR_OWNER)
+                ScreenshotWatcher.start(this)
                 startMonitorWatchdog()
             }
         }
@@ -190,6 +195,7 @@ class SyncForegroundService : Service() {
         stoppedByUser = true
         stopMonitorWatchdog()
         BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
+        ScreenshotWatcher.stop()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
         isRunning = false
@@ -210,6 +216,7 @@ class SyncForegroundService : Service() {
         stopMonitorWatchdog()
         isRunning = false
         BackgroundClipboardMonitor.stop(CLIPBOARD_MONITOR_OWNER)
+        ScreenshotWatcher.stop()
         if (!stoppedByUser && wasRunning) {
             NativeLogger.w(TAG, "Service destroyed unexpectedly; native watchdog will recover on restart")
         }

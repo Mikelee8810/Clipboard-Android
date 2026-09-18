@@ -145,6 +145,37 @@ class ClipboardUserService : IClipboardUserService.Stub() {
         }
     }
 
+    override fun copyLatestScreenshotToClipboard(afterMediaId: Long, maxAgeSeconds: Long): Long {
+        // This worker runs as shell, so it may query the media store directly
+        // without the app holding a photo permission.
+        val minDateAdded = System.currentTimeMillis() / 1000 - maxAgeSeconds
+        val query = try {
+            val process = ProcessBuilder(
+                "/system/bin/content", "query",
+                "--uri", "content://media/external/images/media",
+                "--user", "0",
+                "--projection", "_id:date_added:relative_path:mime_type",
+                "--where", "date_added>=$minDateAdded AND _id>$afterMediaId AND " +
+                    "(relative_path LIKE '%Screenshots%' OR _display_name LIKE 'Screenshot%')",
+                "--sort", "_id DESC"
+            ).start()
+            val output = process.inputStream.bufferedReader().use { it.readText() }
+            process.waitFor()
+            output
+        } catch (error: Exception) {
+            Log.e(TAG, "Screenshot query failed", error)
+            return -1
+        }
+        val row = query.lineSequence().firstOrNull { it.startsWith("Row:") } ?: return -1
+        val id = Regex("_id=(\\d+)").find(row)?.groupValues?.get(1)?.toLongOrNull() ?: return -1
+        val mimeType = Regex("mime_type=([^,\\s]+)").find(row)?.groupValues?.get(1) ?: "image/png"
+        val uri = Uri.parse("content://media/external/images/media/$id")
+        val clip = ClipData(ClipDescription("Screenshot", arrayOf(mimeType)), ClipData.Item(uri))
+        val written = invokeClipboard("setPrimaryClip", clip) != null
+        Log.i(TAG, "Screenshot $id placed on clipboard=$written")
+        return if (written) id else -1
+    }
+
     override fun destroy() {
         lastClip = null
         clipboardService = null

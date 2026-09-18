@@ -150,6 +150,10 @@ object BackgroundClipboardMonitor {
     @JvmStatic
     fun isRunning(): Boolean = owners.isNotEmpty() && clipboardService != null && pollerActive
 
+    /** The bound Shizuku worker, when connected. */
+    @JvmStatic
+    fun currentService(): IClipboardUserService? = clipboardService
+
     private fun schedulePoller() {
         monitorHandler.removeCallbacks(pollRunnable)
         monitorHandler.post(pollRunnable)
@@ -202,5 +206,5 @@ object BackgroundClipboardMonitor {
         .daemon(false)
         .processNameSuffix("clipboard")
         .debuggable(BuildConfig.DEBUG)
-        .version(4)
+        .version(5)
 }
