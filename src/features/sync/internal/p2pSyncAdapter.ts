@@ -68,6 +68,8 @@ interface P2pContentPort {
 
 interface P2pClipboardPort {
   observeClipboardChange(dispatch: boolean): Promise<SendReport | null>;
+  /** What the engine last wrote to the system clipboard, if the platform reports it. */
+  lastEngineWrite?(): { kind: 'text' | 'file'; text: string | null; at: number } | null;
   persistDelivery(profileHash: string | undefined, report: SendReport): Promise<void>;
 }
 
@@ -235,6 +237,7 @@ export class P2pSyncAdapter implements SyncAdapter {
   }
 
   private isEchoOfRemoteEntry(content: ClipboardContent): boolean {
+    if (this.isEchoOfEngineWrite(content)) return true;
     if (content.type !== 'Text') return false;
     const now = Date.now();
     const recent = this.recentRemoteArrivals.filter(
@@ -247,6 +250,21 @@ export class P2pSyncAdapter implements SyncAdapter {
       if (!arrival.preview) return false;
       return arrival.truncated ? text.startsWith(arrival.preview) : text === arrival.preview;
     });
+  }
+
+  /**
+   * The engine writes peer content to the system clipboard itself, so the
+   * most reliable echo check is comparing against that write directly. It
+   * does not depend on the order in which the watcher and the engine report.
+   */
+  private isEchoOfEngineWrite(content: ClipboardContent): boolean {
+    const write = this.dependencies.clipboard.lastEngineWrite?.();
+    if (!write || Date.now() - write.at > REMOTE_ECHO_WINDOW_MS) return false;
+    if (content.type === 'Text') {
+      return write.kind === 'text' && (content.text ?? '') === (write.text ?? '');
+    }
+    if (content.type === 'Image') return write.kind === 'file';
+    return false;
   }
 
   private subscribeToEngineEvents(): void {

@@ -555,6 +555,50 @@ describe('P2pSyncAdapter', () => {
     expect(deps.content.sendImportedText).toHaveBeenCalledTimes(1);
   });
 
+  it('skips content the engine itself just wrote to the clipboard', async () => {
+    const P2pSyncAdapter = loadP2pSyncAdapter();
+    expect(P2pSyncAdapter).toBeDefined();
+    if (!P2pSyncAdapter) return;
+
+    const deps = dependencies();
+    let write: { kind: 'text' | 'file'; text: string | null; at: number } | null = null;
+    (deps.clipboard as { lastEngineWrite?: () => typeof write }).lastEngineWrite = () => write;
+    const adapter = new P2pSyncAdapter(deps) as unknown as {
+      start(context: unknown): Promise<void>;
+      observeClipboardChange(content: unknown, dispatch: boolean): Promise<unknown>;
+    };
+    await adapter.start({
+      appVersion: '2.0.0',
+      profileId: 'default',
+      policy: { appState: 'background', backgroundSyncEnabled: true },
+    });
+
+    write = { kind: 'text', text: 'from the Mac', at: Date.now() };
+    await expect(
+      adapter.observeClipboardChange({ type: 'Text', text: 'from the Mac', profileHash: 'E' }, true)
+    ).resolves.toBeNull();
+    expect(deps.content.sendImportedText).not.toHaveBeenCalled();
+
+    await adapter.observeClipboardChange(
+      { type: 'Text', text: 'from the Mac but edited', profileHash: 'E2' },
+      true
+    );
+    expect(deps.content.sendImportedText).toHaveBeenCalledTimes(1);
+
+    write = { kind: 'file', text: null, at: Date.now() };
+    await expect(
+      adapter.observeClipboardChange(
+        { type: 'Image', fileUri: 'file:///tmp/echo.png', profileHash: 'I' },
+        true
+      )
+    ).resolves.toBeNull();
+    expect(deps.content.sendImportedAsset).not.toHaveBeenCalled();
+
+    write = { kind: 'text', text: 'old', at: Date.now() - 60_000 };
+    await adapter.observeClipboardChange({ type: 'Text', text: 'old', profileHash: 'O' }, true);
+    expect(deps.content.sendImportedText).toHaveBeenCalledTimes(2);
+  });
+
   it('uses the existing P2P connection refresh for manual synchronization', async () => {
     const P2pSyncAdapter = loadP2pSyncAdapter();
     expect(P2pSyncAdapter).toBeDefined();

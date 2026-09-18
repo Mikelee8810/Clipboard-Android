@@ -293,6 +293,20 @@ internal fun clipDataForSnapshot(
   return clipDataForRepresentation(context, files, first, displayNames)
 }
 
+/** The last clipboard content the engine itself wrote, so a watcher echo can be recognised. */
+internal object EngineClipboardWrites {
+  @Volatile var lastText: String? = null
+  @Volatile var lastKind: String? = null
+  @Volatile var lastAt: Long = 0
+
+  fun record(clip: ClipData) {
+    val item = clip.takeIf { it.itemCount > 0 }?.getItemAt(0)
+    lastKind = if (item?.uri != null) "file" else "text"
+    lastText = if (item?.uri == null) item?.text?.toString() else null
+    lastAt = System.currentTimeMillis()
+  }
+}
+
 class UcEngineModule : Module() {
   companion object {
     init {
@@ -631,6 +645,15 @@ class UcEngineModule : Module() {
       sendReportMap(requireEngine().sendFiles(fileHandles, targetDevices))
     }
     AsyncFunction("captureCurrentClipboard") { requireEngine().captureCurrentClipboard() }
+    Function("lastClipboardWrite") {
+      val at = EngineClipboardWrites.lastAt
+      if (at == 0L) null
+      else mapOf(
+        "kind" to EngineClipboardWrites.lastKind,
+        "text" to EngineClipboardWrites.lastText,
+        "at" to at
+      )
+    }
     AsyncFunction("observeClipboardChange") { dispatch: Boolean ->
       requireEngine().observeClipboardChange(dispatch)?.let(::sendReportMap)
     }
@@ -980,6 +1003,7 @@ private class AndroidEngineHost(
       ?: throw HostBindingException.Unavailable()
     try {
       val clip = clipDataForSnapshot(context, files, snapshot.representations)
+      EngineClipboardWrites.record(clip)
       clipboard.setPrimaryClip(clip)
     } catch (_: SecurityException) {
       throw HostBindingException.PermissionDenied()
