@@ -13,6 +13,24 @@ import { createLogger } from '@/support/observability';
 import { canAutoPushInBackground } from '@/utils/syncDirectionPolicy';
 import { notifyDeviceClipboardChanged } from '@/features/transfer';
 
+/**
+ * Adding a captured file to history moves it out of the temp folder, so a
+ * send that starts afterwards must read from the history copy instead.
+ */
+async function withStoredFile(content: ClipboardContent): Promise<ClipboardContent> {
+  if (!content.fileUri || !content.fileName || !content.profileHash) return content;
+  try {
+    const { File } = await import('expo-file-system');
+    if (new File(content.fileUri).exists) return content;
+    const { getHistoryFileUri } = await import('@/platform/files');
+    const stored = await getHistoryFileUri(content.type, content.profileHash, content.fileName);
+    if (stored && new File(stored).exists) return { ...content, fileUri: stored };
+  } catch (error) {
+    log.warn('Could not resolve stored file for sync:', error);
+  }
+  return content;
+}
+
 const log = createLogger('ClipboardStore');
 
 let storeMonitorCallbackRegistered = false;
@@ -273,7 +291,7 @@ export const useClipboardStore = create<ClipboardState>((set, get) => ({
           localClipboardHash: content.localClipboardHash,
         });
         await useHistoryStore.getState().addItem(historyItem);
-        void notifyDeviceClipboardChanged(content);
+        void notifyDeviceClipboardChanged(await withStoredFile(content));
       });
       storeMonitorCallbackRegistered = true;
     }

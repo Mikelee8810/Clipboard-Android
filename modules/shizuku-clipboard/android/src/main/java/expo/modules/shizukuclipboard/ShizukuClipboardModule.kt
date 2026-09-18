@@ -39,7 +39,7 @@ class ShizukuClipboardModule : Module() {
             .daemon(false)
             .processNameSuffix("clipboard")
             .debuggable(BuildConfig.DEBUG)
-            .version(4)
+            .version(5)
     }
 
     private val serviceConnection = object : ServiceConnection {

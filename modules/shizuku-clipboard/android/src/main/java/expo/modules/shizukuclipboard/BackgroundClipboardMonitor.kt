@@ -11,7 +11,6 @@ import android.os.IBinder
 import android.util.Log
 import rikka.shizuku.Shizuku
 import java.util.concurrent.CopyOnWriteArraySet
-import java.util.concurrent.Executors
 
 object BackgroundClipboardMonitor {
     private const val TAG = "ShizukuBackgroundMonitor"
@@ -21,7 +20,6 @@ object BackgroundClipboardMonitor {
     private val listeners = mutableMapOf<String, (String) -> Unit>()
     private val listenerLock = Any()
     private val callerToken = Binder()
-    private val persistenceExecutor = Executors.newSingleThreadExecutor()
     private val monitorThread = HandlerThread("clipboard-native-monitor").apply { start() }
     private val monitorHandler = Handler(monitorThread.looper)
     private val mainHandler = Handler(android.os.Looper.getMainLooper())
@@ -83,11 +81,9 @@ object BackgroundClipboardMonitor {
                     }
                     if (snapshot.isNotEmpty() && snapshot != lastSnapshot) {
                         lastSnapshot = snapshot
-                        applicationContext?.let { context ->
-                            persistenceExecutor.execute {
-                                BackgroundClipboardHistoryWriter.persist(context, snapshot, service)
-                            }
-                        }
+                        // History is written by the JavaScript side only. Opening the
+                        // same SQLite file from a second library in this process
+                        // corrupted it (POSIX locks are per process, not per handle).
                         val callbacks = synchronized(listenerLock) { listeners.values.toList() }
                         if (callbacks.isNotEmpty()) {
                             mainHandler.post { callbacks.forEach { it(snapshot) } }
@@ -150,6 +146,10 @@ object BackgroundClipboardMonitor {
     @JvmStatic
     fun isRunning(): Boolean = owners.isNotEmpty() && clipboardService != null && pollerActive
 
+    /** The bound Shizuku worker, when connected. */
+    @JvmStatic
+    fun currentService(): IClipboardUserService? = clipboardService
+
     private fun schedulePoller() {
         monitorHandler.removeCallbacks(pollRunnable)
         monitorHandler.post(pollRunnable)
@@ -202,5 +202,5 @@ object BackgroundClipboardMonitor {
         .daemon(false)
         .processNameSuffix("clipboard")
         .debuggable(BuildConfig.DEBUG)
-        .version(4)
+        .version(5)
 }

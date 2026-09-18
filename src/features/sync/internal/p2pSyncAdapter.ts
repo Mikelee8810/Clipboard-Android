@@ -69,7 +69,12 @@ interface P2pContentPort {
 interface P2pClipboardPort {
   observeClipboardChange(dispatch: boolean): Promise<SendReport | null>;
   /** What the engine last wrote to the system clipboard, if the platform reports it. */
-  lastEngineWrite?(): { kind: 'text' | 'file'; text: string | null; at: number } | null;
+  lastEngineWrite?(): {
+    kind: 'text' | 'file';
+    text: string | null;
+    size?: number;
+    at: number;
+  } | null;
   persistDelivery(profileHash: string | undefined, report: SendReport): Promise<void>;
 }
 
@@ -263,7 +268,15 @@ export class P2pSyncAdapter implements SyncAdapter {
     if (content.type === 'Text') {
       return write.kind === 'text' && (content.text ?? '') === (write.text ?? '');
     }
-    if (content.type === 'Image') return write.kind === 'file';
+    if (content.type === 'Image') {
+      if (write.kind !== 'file') return false;
+      // Compare sizes when both sides know them so a genuinely new image
+      // copied shortly after a peer image is not mistaken for its echo.
+      if (write.size != null && write.size >= 0 && content.fileSize != null) {
+        return write.size === content.fileSize;
+      }
+      return true;
+    }
     return false;
   }
 

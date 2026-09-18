@@ -9,5 +9,7 @@ interface IClipboardUserService {
     boolean copyPrimaryClipToFile(in ParcelFileDescriptor destination);
     boolean setPrimaryClipText(String text);
     boolean resolveBackgroundClipboardRestriction();
+    /** Puts the newest screenshot taken within maxAgeSeconds on the clipboard; returns its media id or -1. */
+    long copyLatestScreenshotToClipboard(long afterMediaId, long maxAgeSeconds);
     void destroy();
 }
