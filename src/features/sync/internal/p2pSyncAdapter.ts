@@ -25,16 +25,16 @@ import type {
 
 const log = createLogger('P2pSyncAdapter');
 
-/** How long a peer-applied entry is still treated as the source of a captured echo. */
-const REMOTE_ECHO_WINDOW_MS = 2 * 60 * 1000;
-/** Images carry no comparable preview, so only a short window after an arrival counts. */
-const REMOTE_IMAGE_ECHO_WINDOW_MS = 20 * 1000;
+/** A peer-applied entry only counts as the source of a captured echo for a short moment. */
+const REMOTE_ECHO_WINDOW_MS = 15 * 1000;
 const REMOTE_ECHO_HISTORY_LIMIT = 10;
-const DEFAULT_CAPTURE_SETTLE_MS = 1500;
+
+const PREVIEW_TRUNCATION = /(\u2026|\.\.\.)\s*$/u;
 
 /** Engine previews may be trimmed and end with an ellipsis; compare on the stable prefix. */
-function normalizePreview(value: string): string {
-  return value.replace(/(\u2026|\.\.\.)\s*$/u, '').trim();
+function normalizePreview(value: string): { text: string; truncated: boolean } {
+  const truncated = PREVIEW_TRUNCATION.test(value);
+  return { text: value.replace(PREVIEW_TRUNCATION, '').trim(), truncated };
 }
 
 interface P2pEnginePort {
@@ -73,8 +73,6 @@ interface P2pClipboardPort {
 
 export interface P2pSyncAdapterDependencies {
   platform: 'android' | 'ios';
-  /** How long a captured clipboard change waits for a matching peer report before it is sent. */
-  captureSettleMs?: number;
   engine: P2pEnginePort;
   space: P2pSpacePort;
   content: P2pContentPort;
@@ -82,8 +80,8 @@ export interface P2pSyncAdapterDependencies {
 }
 
 export class P2pSyncAdapter implements SyncAdapter {
-  private recentRemoteArrivals: Array<{ preview: string; at: number }> = [];
-  private readonly captureSettleMs: number;
+  private recentRemoteArrivals: Array<{ preview: string; truncated: boolean; at: number }> =
+    [];
   readonly id = 'p2p' as const;
   private engineEventsUnsubscribe: (() => void) | null = null;
   private policy: SyncRuntimePolicy = {
@@ -92,9 +90,7 @@ export class P2pSyncAdapter implements SyncAdapter {
   };
   private readonly subscribers = new Set<(event: SyncAdapterEvent) => void>();
 
-  constructor(private readonly dependencies: P2pSyncAdapterDependencies) {
-    this.captureSettleMs = dependencies.captureSettleMs ?? DEFAULT_CAPTURE_SETTLE_MS;
-  }
+  constructor(private readonly dependencies: P2pSyncAdapterDependencies) {}
 
   async start(context: SyncStartContext): Promise<void> {
     this.policy = context.policy;
@@ -171,16 +167,26 @@ export class P2pSyncAdapter implements SyncAdapter {
     content: ClipboardContent,
     dispatch: boolean
   ): Promise<SyncAdapterDelivery | null> {
-    let report = await this.dependencies.clipboard.observeClipboardChange(dispatch);
-    if (!report && dispatch) {
-      // Android hides the system clipboard from a backgrounded app, so the
-      // engine sees nothing to send. Shizuku already captured the content, so
-      // hand it to the engine directly.
+    let report: SendReport | null;
+    if (dispatch && this.policy.appState === 'background') {
+      // Android hides the system clipboard from a backgrounded app, so asking
+      // the engine to read it cannot succeed. The watcher already captured the
+      // content, so hand it to the engine directly.
+      log.info('Background clipboard change captured; sending directly:', {
+        type: content.type,
+        localClipboardHash: content.localClipboardHash?.substring(0, 8),
+      });
       report = await this.sendCapturedContent(content);
+    } else {
+      report = await this.dependencies.clipboard.observeClipboardChange(dispatch);
     }
-    if (!report) return null;
+    if (!report) {
+      log.info('Clipboard change produced nothing to send');
+      return null;
+    }
     await this.dependencies.clipboard.persistDelivery(content.profileHash, report);
     const state = p2pDeliveryStateFromReport(report);
+    log.info('Clipboard change sent:', { state });
     return {
       success: state === 'delivered' || state === 'partial',
       state,
@@ -189,13 +195,8 @@ export class P2pSyncAdapter implements SyncAdapter {
   }
 
   private async sendCapturedContent(content: ClipboardContent): Promise<SendReport | null> {
-    // The watcher fires before the engine reports the entry it just applied,
-    // so give that report a moment to land before deciding this is a real copy.
-    if (!this.isEchoOfRemoteEntry(content)) {
-      await new Promise<void>((resolve) => setTimeout(resolve, this.captureSettleMs));
-    }
     if (this.isEchoOfRemoteEntry(content)) {
-      log.debug('Skipping captured clipboard content that was just received from a peer');
+      log.info('Skipping captured clipboard content that was just received from a peer');
       return null;
     }
     const profileHash = content.profileHash ?? '';
@@ -210,40 +211,42 @@ export class P2pSyncAdapter implements SyncAdapter {
         )
       ).report;
     }
+    log.info('Captured clipboard content has no sendable payload:', { type: content.type });
     return null;
   }
 
   /**
    * Content applied to the clipboard by a peer is captured again by the
-   * Shizuku watcher. The engine drops that echo itself, but the captured-
-   * content fallback would send it straight back, so remember what recently
-   * arrived and never re-send it.
+   * watcher. The engine drops that echo itself when it reads the clipboard,
+   * but the direct send path would return it to the peer, so remember what
+   * just arrived and skip an exact match for a few seconds.
    */
   private rememberRemoteArrival(preview: string): void {
     const now = Date.now();
+    const normalized = normalizePreview(preview);
     this.recentRemoteArrivals = this.recentRemoteArrivals
       .filter((arrival) => now - arrival.at <= REMOTE_ECHO_WINDOW_MS)
       .slice(-REMOTE_ECHO_HISTORY_LIMIT + 1);
-    this.recentRemoteArrivals.push({ preview: normalizePreview(preview), at: now });
+    this.recentRemoteArrivals.push({
+      preview: normalized.text,
+      truncated: normalized.truncated,
+      at: now,
+    });
   }
 
   private isEchoOfRemoteEntry(content: ClipboardContent): boolean {
+    if (content.type !== 'Text') return false;
     const now = Date.now();
     const recent = this.recentRemoteArrivals.filter(
       (arrival) => now - arrival.at <= REMOTE_ECHO_WINDOW_MS
     );
     if (recent.length === 0) return false;
-    if (content.type === 'Text') {
-      const text = normalizePreview(content.text ?? '');
-      if (!text) return false;
-      return recent.some(
-        (arrival) => arrival.preview.length > 0 && text.startsWith(arrival.preview)
-      );
-    }
-    if (content.type === 'Image') {
-      return recent.some((arrival) => now - arrival.at <= REMOTE_IMAGE_ECHO_WINDOW_MS);
-    }
-    return false;
+    const text = (content.text ?? '').trim();
+    if (!text) return false;
+    return recent.some((arrival) => {
+      if (!arrival.preview) return false;
+      return arrival.truncated ? text.startsWith(arrival.preview) : text === arrival.preview;
+    });
   }
 
   private subscribeToEngineEvents(): void {
