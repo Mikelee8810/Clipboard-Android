@@ -9,7 +9,7 @@ appId: ${APP_ID}
     timeout: 30000
 - tapOn: "Diagnostic input"
 - longPressOn: "Next keyboard"
-- tapOn: "UniClip.*"
+- tapOn: "Clip.*"
 - tapOn:
     text: "Allow Paste"
     optional: true

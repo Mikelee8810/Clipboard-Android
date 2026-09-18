@@ -4,7 +4,7 @@ module.exports = (config) => ({
   name: 'keyboard',
   displayName: 'Clipboard',
   // Leading dot → appended to the main app bundle id, so it follows the
-  // dev/prod variant automatically (…UniClipboard.Keyboard / …UniClipboard.dev.Keyboard).
+  // dev/prod variant automatically (…Clipboard.Keyboard / …Clipboard.dev.Keyboard).
   bundleIdentifier: '.Keyboard',
   deploymentTarget: '16.4',
   exportJs: false,

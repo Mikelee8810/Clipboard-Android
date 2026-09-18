@@ -16,8 +16,8 @@ appId: ${APP_ID}
 - tapOn:
     id: KEYBOARDS
 - tapOn: "Add New Keyboard.*"
-- tapOn: "UniClip.*"
-- tapOn: "UniClip.*"
+- tapOn: "Clip.*"
+- tapOn: "Clip.*"
 - tapOn: "Allow Full Access"
 - tapOn: "Allow"
 - takeScreenshot: keyboard-full-access-enabled

@@ -64,7 +64,7 @@ public enum AppleNativeDiagnostics {
 private final class NativeNetworkDiagnostics: @unchecked Sendable {
   private let journal: NativeRuntimeDiagnostics
   private let monitor = NWPathMonitor()
-  private let queue = DispatchQueue(label: "app.uniclipboard.native-network-diagnostics", qos: .utility)
+  private let queue = DispatchQueue(label: "app.clipboard.native-network-diagnostics", qos: .utility)
   private let lock = NSLock()
   private var started = false
   private var hasObservedPath = false

@@ -124,7 +124,7 @@ internal object BackgroundClipboardHistoryWriter {
         fileUri: String?,
         hasData: Boolean
     ): Boolean {
-        val databaseFile = File(context.filesDir, "SQLite/uniclipboard.db")
+        val databaseFile = File(context.filesDir, "SQLite/clipboard.db")
         if (!databaseFile.exists()) {
             Log.w(TAG, "History database is not initialized yet")
             return false

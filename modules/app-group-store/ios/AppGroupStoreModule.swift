@@ -261,7 +261,7 @@ public class AppGroupStoreModule: Module {
     let container = FileManager.default
       .containerURL(forSecurityApplicationGroupIdentifier: SettingsStore.appGroupID)
       ?? FileManager.default.temporaryDirectory
-        .appendingPathComponent("uniclipboard-payloads-fallback", isDirectory: true)
+        .appendingPathComponent("clipboard-payloads-fallback", isDirectory: true)
     let directory = container.appendingPathComponent("payloads", isDirectory: true)
     try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     return directory

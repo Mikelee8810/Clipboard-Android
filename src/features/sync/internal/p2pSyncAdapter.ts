@@ -25,6 +25,18 @@ import type {
 
 const log = createLogger('P2pSyncAdapter');
 
+/** A peer-applied entry only counts as the source of a captured echo for a short moment. */
+const REMOTE_ECHO_WINDOW_MS = 15 * 1000;
+const REMOTE_ECHO_HISTORY_LIMIT = 10;
+
+const PREVIEW_TRUNCATION = /(\u2026|\.\.\.)\s*$/u;
+
+/** Engine previews may be trimmed and end with an ellipsis; compare on the stable prefix. */
+function normalizePreview(value: string): { text: string; truncated: boolean } {
+  const truncated = PREVIEW_TRUNCATION.test(value);
+  return { text: value.replace(PREVIEW_TRUNCATION, '').trim(), truncated };
+}
+
 interface P2pEnginePort {
   start(config: EngineConfig): Promise<void>;
   stop(): Promise<void>;
@@ -56,6 +68,8 @@ interface P2pContentPort {
 
 interface P2pClipboardPort {
   observeClipboardChange(dispatch: boolean): Promise<SendReport | null>;
+  /** What the engine last wrote to the system clipboard, if the platform reports it. */
+  lastEngineWrite?(): { kind: 'text' | 'file'; text: string | null; at: number } | null;
   persistDelivery(profileHash: string | undefined, report: SendReport): Promise<void>;
 }
 
@@ -68,6 +82,8 @@ export interface P2pSyncAdapterDependencies {
 }
 
 export class P2pSyncAdapter implements SyncAdapter {
+  private recentRemoteArrivals: Array<{ preview: string; truncated: boolean; at: number }> =
+    [];
   readonly id = 'p2p' as const;
   private engineEventsUnsubscribe: (() => void) | null = null;
   private policy: SyncRuntimePolicy = {
@@ -153,15 +169,102 @@ export class P2pSyncAdapter implements SyncAdapter {
     content: ClipboardContent,
     dispatch: boolean
   ): Promise<SyncAdapterDelivery | null> {
-    const report = await this.dependencies.clipboard.observeClipboardChange(dispatch);
-    if (!report) return null;
+    let report: SendReport | null;
+    if (dispatch && this.policy.appState === 'background') {
+      // Android hides the system clipboard from a backgrounded app, so asking
+      // the engine to read it cannot succeed. The watcher already captured the
+      // content, so hand it to the engine directly.
+      log.info('Background clipboard change captured; sending directly:', {
+        type: content.type,
+        localClipboardHash: content.localClipboardHash?.substring(0, 8),
+      });
+      report = await this.sendCapturedContent(content);
+    } else {
+      report = await this.dependencies.clipboard.observeClipboardChange(dispatch);
+    }
+    if (!report) {
+      log.info('Clipboard change produced nothing to send');
+      return null;
+    }
     await this.dependencies.clipboard.persistDelivery(content.profileHash, report);
     const state = p2pDeliveryStateFromReport(report);
+    log.info('Clipboard change sent:', { state });
     return {
       success: state === 'delivered' || state === 'partial',
       state,
       counts: p2pDeliveryCountsFromReport(report),
     };
+  }
+
+  private async sendCapturedContent(content: ClipboardContent): Promise<SendReport | null> {
+    if (this.isEchoOfRemoteEntry(content)) {
+      log.info('Skipping captured clipboard content that was just received from a peer');
+      return null;
+    }
+    const profileHash = content.profileHash ?? '';
+    if (content.type === 'Text' && content.text) {
+      return (await this.dependencies.content.sendImportedText(content.text, profileHash)).report;
+    }
+    if (content.type === 'Image' && content.fileUri) {
+      return (
+        await this.dependencies.content.sendImportedAsset(
+          { kind: 'image', uri: content.fileUri, fileName: content.fileName },
+          profileHash
+        )
+      ).report;
+    }
+    log.info('Captured clipboard content has no sendable payload:', { type: content.type });
+    return null;
+  }
+
+  /**
+   * Content applied to the clipboard by a peer is captured again by the
+   * watcher. The engine drops that echo itself when it reads the clipboard,
+   * but the direct send path would return it to the peer, so remember what
+   * just arrived and skip an exact match for a few seconds.
+   */
+  private rememberRemoteArrival(preview: string): void {
+    const now = Date.now();
+    const normalized = normalizePreview(preview);
+    this.recentRemoteArrivals = this.recentRemoteArrivals
+      .filter((arrival) => now - arrival.at <= REMOTE_ECHO_WINDOW_MS)
+      .slice(-REMOTE_ECHO_HISTORY_LIMIT + 1);
+    this.recentRemoteArrivals.push({
+      preview: normalized.text,
+      truncated: normalized.truncated,
+      at: now,
+    });
+  }
+
+  private isEchoOfRemoteEntry(content: ClipboardContent): boolean {
+    if (this.isEchoOfEngineWrite(content)) return true;
+    if (content.type !== 'Text') return false;
+    const now = Date.now();
+    const recent = this.recentRemoteArrivals.filter(
+      (arrival) => now - arrival.at <= REMOTE_ECHO_WINDOW_MS
+    );
+    if (recent.length === 0) return false;
+    const text = (content.text ?? '').trim();
+    if (!text) return false;
+    return recent.some((arrival) => {
+      if (!arrival.preview) return false;
+      return arrival.truncated ? text.startsWith(arrival.preview) : text === arrival.preview;
+    });
+  }
+
+  /**
+   * The engine writes peer content to the system clipboard itself, so the
+   * most reliable echo check is comparing against that write directly. It
+   * does not depend on the order in which the watcher and the engine report.
+   */
+  private isEchoOfEngineWrite(content: ClipboardContent): boolean {
+    const write = this.dependencies.clipboard.lastEngineWrite?.();
+    if (!write || Date.now() - write.at > REMOTE_ECHO_WINDOW_MS) return false;
+    if (content.type === 'Text') {
+      return write.kind === 'text' && (content.text ?? '') === (write.text ?? '');
+    }
+    if (content.type === 'Image') return write.kind === 'file';
+    return false;
   }
 
   private subscribeToEngineEvents(): void {
@@ -172,6 +275,10 @@ export class P2pSyncAdapter implements SyncAdapter {
   }
 
   private handleEngineEvent(event: EngineEvent): void {
+    if (event.type === 'incomingEntry' && event.origin === 'remote') {
+      this.rememberRemoteArrival(event.preview);
+    }
+
     if (event.type === 'deviceTrustChanged' || event.type === 'rePairingRequired') {
       if (this.policy.appState === 'active') {
         void this.dependencies.space

@@ -1,5 +1,5 @@
 {
-  "name": "uniclip-release-tools",
+  "name": "clip-release-tools",
   "private": true,
   "version": "1.0.0",
   "dependencies": {

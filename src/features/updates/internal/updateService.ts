@@ -5,15 +5,15 @@
 
 import { loadLastUpdateCheckDate, recordUpdateCheckDate } from './updateCheckState';
 
-// R2 更新网关。桌面端与移动端共用 bucket `uniclipboard-releases`,由 update-server
-// Worker 暴露在 release.uniclipboard.app;移动端产物集中在 android/ 前缀下:
+// R2 更新网关。桌面端与移动端共用 bucket `clipboard-releases`,由 update-server
+// Update manifests are served from this fork's GitHub releases (latest/download):
 //   GET /android/{stable,beta}.json          → 渠道 manifest
 //   GET /android/artifacts/{tag}/{file}.apk  → APK 下载
-const R2_UPDATE_BASE = 'https://release.uniclipboard.app/android';
+const R2_UPDATE_BASE = 'https://github.com/Mikelee8810/Clipboard-Android/releases/latest/download';
 // GitHub 作为备用下载源保留(R2 为主)。release 附件下载 URL 采用
 // /releases/download/<tag>/<file> 模式,由 manifest 里的 tagName + asset 名推导。
-const RELEASES_PAGE_URL = 'https://github.com/UniClipboard/uc-android/releases';
-const GITHUB_DOWNLOAD_BASE = 'https://github.com/UniClipboard/uc-android/releases/download';
+const RELEASES_PAGE_URL = 'https://github.com/Mikelee8810/Clipboard-Android/releases';
+const GITHUB_DOWNLOAD_BASE = 'https://github.com/Mikelee8810/Clipboard-Android/releases/download';
 
 export interface ParsedVersion {
   major: number;
@@ -25,7 +25,7 @@ export interface ParsedVersion {
 }
 
 export interface ReleaseAssetInfo {
-  /** APK 文件名，如 UniClip-1.0.11-arm64-v8a.apk */
+  /** APK 文件名，如 Clip-1.0.11-arm64-v8a.apk */
   name: string;
   /** R2 直接下载 URL（主下载源） */
   r2DownloadUrl: string;

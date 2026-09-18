@@ -36,9 +36,9 @@ import { ingestLanConnectUrl } from './src/features/lan-servers';
 import { openLanServerSettings } from './src/features/lan-servers/openLanServerSettings';
 import i18n from './src/i18n';
 
-const QUICK_UPLOAD_URL = 'uniclipboard://quick-upload';
-const PROCESS_TEXT_URL = 'uniclipboard://process-text';
-const SHARE_URLS = ['uniclipboard://share', 'uniclipboard-dev://share'];
+const QUICK_UPLOAD_URL = 'clipboard://quick-upload';
+const PROCESS_TEXT_URL = 'clipboard://process-text';
+const SHARE_URLS = ['clipboard://share', 'clipboard-dev://share'];
 function isShareUrl(url: string | null): boolean {
   return url != null && SHARE_URLS.some((scheme) => url.startsWith(scheme));
 }

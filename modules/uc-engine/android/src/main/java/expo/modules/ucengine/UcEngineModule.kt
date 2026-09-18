@@ -150,9 +150,9 @@ private fun workspaceConvergenceMap(convergence: WorkspaceConvergence): Map<Stri
 
 private const val CLIPBOARD_SHARE_MAX_ENTRIES = 64
 private const val CLIPBOARD_SHARE_MAX_AGE_MS = 7L * 24 * 60 * 60 * 1_000
-private const val FILE_DISPLAY_METADATA_FORMAT = "uniclipboard-file-display-metadata"
+private const val FILE_DISPLAY_METADATA_FORMAT = "clipboard-file-display-metadata"
 private const val FILE_DISPLAY_METADATA_MIME =
-  "application/x-uniclipboard-file-display-metadata+json"
+  "application/x-clipboard-file-display-metadata+json"
 
 private fun clipboardDisplayNames(
   representations: List<BindingClipboardRepresentation>
@@ -291,6 +291,20 @@ internal fun clipDataForSnapshot(
       (it.format != FILE_DISPLAY_METADATA_FORMAT && it.mimeType != FILE_DISPLAY_METADATA_MIME)
   } ?: return ClipData.newPlainText("", "")
   return clipDataForRepresentation(context, files, first, displayNames)
+}
+
+/** The last clipboard content the engine itself wrote, so a watcher echo can be recognised. */
+internal object EngineClipboardWrites {
+  @Volatile var lastText: String? = null
+  @Volatile var lastKind: String? = null
+  @Volatile var lastAt: Long = 0
+
+  fun record(clip: ClipData) {
+    val item = clip.takeIf { it.itemCount > 0 }?.getItemAt(0)
+    lastKind = if (item?.uri != null) "file" else "text"
+    lastText = if (item?.uri == null) item?.text?.toString() else null
+    lastAt = System.currentTimeMillis()
+  }
 }
 
 class UcEngineModule : Module() {
@@ -631,6 +645,15 @@ class UcEngineModule : Module() {
       sendReportMap(requireEngine().sendFiles(fileHandles, targetDevices))
     }
     AsyncFunction("captureCurrentClipboard") { requireEngine().captureCurrentClipboard() }
+    Function("lastClipboardWrite") {
+      val at = EngineClipboardWrites.lastAt
+      if (at == 0L) null
+      else mapOf(
+        "kind" to EngineClipboardWrites.lastKind,
+        "text" to EngineClipboardWrites.lastText,
+        "at" to at
+      )
+    }
     AsyncFunction("observeClipboardChange") { dispatch: Boolean ->
       requireEngine().observeClipboardChange(dispatch)?.let(::sendReportMap)
     }
@@ -980,6 +1003,7 @@ private class AndroidEngineHost(
       ?: throw HostBindingException.Unavailable()
     try {
       val clip = clipDataForSnapshot(context, files, snapshot.representations)
+      EngineClipboardWrites.record(clip)
       clipboard.setPrimaryClip(clip)
     } catch (_: SecurityException) {
       throw HostBindingException.PermissionDenied()

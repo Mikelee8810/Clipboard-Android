@@ -48,7 +48,7 @@ internal class AndroidPostHogAnalyticsHost(
     applicationContext.packageManager.getApplicationInfo(
       applicationContext.packageName,
       PackageManager.GET_META_DATA
-    ).metaData?.getString("app.uniclipboard.analytics.POSTHOG_PROJECT_KEY")?.trim().orEmpty()
+    ).metaData?.getString("app.clipboard.analytics.POSTHOG_PROJECT_KEY")?.trim().orEmpty()
   }.getOrDefault("")
 
   init {
@@ -121,7 +121,7 @@ internal class AndroidPostHogAnalyticsHost(
     properties.put("${'$'}insert_id", UUID.randomUUID().toString())
     properties.put("${'$'}device_id", properties.getString("analytics_device_id"))
     properties.put("${'$'}session_id", sessionId)
-    properties.put("${'$'}lib", "uniclipboard-mobile")
+    properties.put("${'$'}lib", "clipboard-mobile")
     properties.put("${'$'}lib_version", appVersion)
     properties.put("${'$'}os", "Android")
     properties.put("${'$'}os_version", Build.VERSION.RELEASE)
@@ -140,7 +140,7 @@ internal class AndroidPostHogAnalyticsHost(
     if (!consentEnabled() || projectKey.isEmpty()) return
     val properties = JSONObject()
       .put("${'$'}anon_distinct_id", payload.oldDistinctId)
-      .put("${'$'}lib", "uniclipboard-mobile")
+      .put("${'$'}lib", "clipboard-mobile")
       .put("${'$'}geoip_disable", true)
     addJson(payload.setJson, "${'$'}set", properties)
     addJson(payload.setOnceJson, "${'$'}set_once", properties)
@@ -156,7 +156,7 @@ internal class AndroidPostHogAnalyticsHost(
     val properties = JSONObject()
       .put("${'$'}group_type", payload.groupType)
       .put("${'$'}group_key", payload.groupKey)
-      .put("${'$'}lib", "uniclipboard-mobile")
+      .put("${'$'}lib", "clipboard-mobile")
       .put("${'$'}geoip_disable", true)
     addJson(payload.setJson, "${'$'}group_set", properties)
     enqueue("${'$'}groupidentify", currentDistinctId(), properties)

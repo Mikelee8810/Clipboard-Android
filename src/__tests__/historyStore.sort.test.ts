@@ -278,7 +278,7 @@ describe('historyStore handleStorageChange 排序', () => {
     const { handleStorageChange } = useHistoryStore.getState();
 
     useHistoryStore.setState({
-      items: [createItem('url', 200, { text: 'https://uniclip.app' })],
+      items: [createItem('url', 200, { text: 'https://clip.app' })],
       totalCount: 1,
       filter: { displayKinds: ['url'] },
     });

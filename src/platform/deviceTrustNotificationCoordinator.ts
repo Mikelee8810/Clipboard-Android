@@ -3,10 +3,10 @@ import { sha256 } from 'js-sha256';
 import type { DeviceTrustSnapshot } from '@/platform/engine';
 import type { DeviceTrustQueryState } from '@/features/space/store';
 
-const STORAGE_KEY = 'uniclip.space-notification-episodes.v1';
+const STORAGE_KEY = 'clip.space-notification-episodes.v1';
 
 export const DEVICE_TRUST_NOTIFICATION_CONTENT = {
-  title: 'UniClip',
+  title: 'Clip',
   body: 'Review an important Space update in the app.',
   data: { kind: 'reviewCurrentChange' },
 } as const;

@@ -115,7 +115,7 @@ progress.md
 .planning/**/simulator-driver/SimulatorDriver.xcodeproj/
 
 # Rust Core (iOS xcframework too large to commit; build locally)
-modules/uc-core/ios/UniClipboardCore.xcframework/
+modules/uc-core/ios/ClipboardCore.xcframework/
 modules/uc-core/ios/Bindings/
 
 # build output

@@ -30,7 +30,7 @@ Temporary simulator-only entry code called the real native module and archive im
 - iOS, iPhone 17 Pro / iOS 26.3: without observability installed, archive creation succeeded with two app logs and an explicit `unavailable`/`missing` Engine status.
 - iOS: real installation and flushing returned ready/completed with zero dropped records. The archive contained 5 JSONL records; its newest record was at `15:20:55.572245Z`, immediately before archive generation at `15:20:55.574Z`. Explicit suspend/resume still allowed a successful flush.
 - iOS process restart: the next archive contained 14 records, including the previous newest timestamp and newly appended records.
-- Android, `UniClip_API_36` emulator: native flush/health calls and archive creation succeeded. Two Engine files were included with no unreadable files and zero reported dropped records.
+- Android, `Clip_API_36` emulator: native flush/health calls and archive creation succeeded. Two Engine files were included with no unreadable files and zero reported dropped records.
 - Android: after sending the application to the home screen and bringing it back, another archive succeeded and retained the previous Engine records. This proves export after background/foreground, not complete capture during arbitrary background-service termination.
 - An isolated sponsor/joiner experiment reached pending admission, not a confirmed authentication failure. It is not an accepted authentication-failure test.
 
@@ -54,7 +54,7 @@ Evidence: `/tmp/mobile-logs-local-auth-proof.json`. This proves the requested En
 
 ## Real Keyboard extension process
 
-On the iOS simulator, the already-enabled UniClip keyboard was opened in a text field without entering or submitting text. Its legacy simulator sync setting initially selected LAN; the original settings were saved, temporarily switched to P2P through the native settings API, and then restored with a semantic equality check.
+On the iOS simulator, the already-enabled Clip keyboard was opened in a text field without entering or submitting text. Its legacy simulator sync setting initially selected LAN; the original settings were saved, temporarily switched to P2P through the native settings API, and then restored with a semantic equality check.
 
 With the main application terminated, the real Keyboard extension process attempted Engine startup, reported an unavailable error (1214), and stopped. Six new Engine records, including task shutdown records, appeared in the shared log file between `15:45:49.595785Z` and `15:45:50.723154Z`. Switching back to the system keyboard completed the dismissal. This exercises the extension's failure/cleanup path, not a successful keyboard synchronization. Evidence: `/tmp/mobile-logs-keyboard-proof.json`.
 

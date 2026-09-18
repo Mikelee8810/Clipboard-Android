@@ -350,6 +350,7 @@ interface UcEngineNativeModule {
   sendFiles(fileHandles: string[], targetDevices: string[]): Promise<SendReport>;
   captureCurrentClipboard(): Promise<string | null>;
   observeClipboardChange(dispatch: boolean): Promise<SendReport | null>;
+  lastClipboardWrite?(): EngineClipboardWrite | null;
   restoreClipboard(entryId: string, mode: ClipboardRestoreMode): Promise<ClipboardRestoreOutcome>;
   exportEntry(entryId: string, destinationHandle: string): Promise<void>;
 }
@@ -547,6 +548,17 @@ export function captureCurrentClipboard(): Promise<string | null> {
 
 export function observeClipboardChange(dispatch: boolean): Promise<SendReport | null> {
   return NativeModule.observeClipboardChange(dispatch);
+}
+
+/** The last clipboard content the engine wrote on this device (Android only). */
+export interface EngineClipboardWrite {
+  kind: 'text' | 'file';
+  text: string | null;
+  at: number;
+}
+
+export function lastClipboardWrite(): EngineClipboardWrite | null {
+  return NativeModule.lastClipboardWrite?.() ?? null;
 }
 
 export function restoreClipboard(

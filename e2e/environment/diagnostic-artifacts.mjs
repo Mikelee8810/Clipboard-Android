@@ -9,7 +9,7 @@ import { command } from './process.mjs';
 export async function captureDiagnosticArchives({ platform, id, appId, output, minimumRuns = 2, captureMode = "standard", requiredFailure = null, requiredNativeRoles = [], latestOnly = false, failureAfter = null }) {
   const destination = join(output, 'diagnostic-archives');
   await mkdir(destination, { recursive: true });
-  const eligible = name => /^uniclip_diagnostics_[0-9_-]+\.zip$/.test(name);
+  const eligible = name => /^clip_diagnostics_[0-9_-]+\.zip$/.test(name);
   if (platform === 'ios') {
     const root = await command('xcrun', ['simctl', 'get_app_container', id, appId, 'data']);
     const cache = join(root, 'Library/Caches');

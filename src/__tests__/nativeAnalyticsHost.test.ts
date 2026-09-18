@@ -123,7 +123,7 @@ describe('native Engine analytics hosts', () => {
     expect(appConfig).not.toContain('posthogProjectKey:');
     expect(plugin).toContain('POSTHOG_PROJECT_KEY');
     expect(plugin).toContain('UCPostHogProjectKey');
-    expect(plugin).toContain('app.uniclipboard.analytics.POSTHOG_PROJECT_KEY');
+    expect(plugin).toContain('app.clipboard.analytics.POSTHOG_PROJECT_KEY');
     expect(appJson).toContain('./plugins/build/withPostHogAnalytics.js');
     expect(workflows).toContain('POSTHOG_PROJECT_KEY: ${{ secrets.UC_POSTHOG_PROJECT_KEY }}');
     expect(workflows).not.toContain('secrets.POSTHOG_PROJECT_KEY');

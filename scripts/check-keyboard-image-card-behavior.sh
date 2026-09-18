@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
-BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/uniclip-keyboard-image-card.XXXXXX")"
+BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/clip-keyboard-image-card.XXXXXX")"
 trap 'rm -rf "${BUILD_DIR}"' EXIT
 
 MODEL_FILE="${PROJECT_DIR}/targets/keyboard/KeyboardModel.swift"

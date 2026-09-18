@@ -132,7 +132,7 @@ v1.3.0.163
 
 - Feature: Add privacy-safe diagnostic export that summarizes the last three days of sync state and categorized errors without including raw log messages
 - Feature: Localize the Share and keyboard extensions in Simplified Chinese, English, Russian, and Brazilian Portuguese, following the app language
-- Improvement: Open UniClip settings directly for keyboard Full Access setup and hide unavailable editing keys until access is granted
+- Improvement: Open Clip settings directly for keyboard Full Access setup and hide unavailable editing keys until access is granted
 - Fix: Restore the Cancel button in the QR scanner
 
 ### Android
@@ -252,14 +252,14 @@ v1.2.0
 
 v1.1.0
 
-- [uc] Feature: Added QR code / deep link support (uniclipboard://connect) for connecting to servers
+- [uc] Feature: Added QR code / deep link support (clipboard://connect) for connecting to servers
 - [uc] Visual: Migrated to Material 3 Expressive design, introduced a token system, and added support for switching between 5 color schemes
 - [uc] Feature: Added support for running on the Web platform
 
 v1.0.11
 
 - [upstream] Fix: Automatic upload verification codes stopped working after 6 hours when background service operation was enabled on Android 14+
-- [uc] Rebranded to UniClip and migrated to UniClipboard/uc-android
+- [uc] Rebranded to Clip and migrated to Clipboard/uc-android
 - [uc] Added a built-in function for downloading new APK versions
 - [uc] Changed the app icon
 

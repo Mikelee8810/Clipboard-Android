@@ -16,7 +16,7 @@ describe('Android background clipboard modes', () => {
       Platform: { OS: 'android' },
     }));
     jest.doMock('expo-application', () => ({
-      applicationId: 'app.uniclipboard.android.dev',
+      applicationId: 'app.clipboard.android.dev',
     }));
     jest.doMock('expo-clipboard', () => ({
       setStringAsync: jest.fn<() => Promise<boolean>>(async () => true),

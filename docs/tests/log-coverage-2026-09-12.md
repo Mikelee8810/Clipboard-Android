@@ -65,7 +65,7 @@
 ## 修复后的新拒收现场
 
 `log-coverage-ios-debug-1789168990597/receiver-final-evidence/` 中的真实 ZIP
-`uniclip_diagnostics_2026-09-12_00-38-20.zip` 保留了 00:37:54.577 UTC 的新拒收。
+`clip_diagnostics_2026-09-12_00-38-20.zip` 保留了 00:37:54.577 UTC 的新拒收。
 它在普通模式下记录 `clipboard_receive`、`error.phase=apply`、`error.reason=apply_failed`，
 并按 trace_id 与故障注入时的源记录匹配。包中没有“database is locked”的更细线索。
 较早的详细模式拒收被后来的容量截断排除，原始日志保存在 `source-engine-logs/`，可对照验证这是导出容量限制，而非未生成事件。
@@ -74,7 +74,7 @@
 
 证据目录：`e2e/results/log-coverage-ios-debug-1789175969291/`。使用本轮创建的独立 iOS 26.3 模拟器、测试空间和现有构建，未使用个人设备的数据。应用内导航和导出仍由 Maestro 执行；系统键盘设置、Safari 输入和分享面板由 Peekaboo 补验。解锁后 Maestro 仍不能正确点击系统键盘列表，分享图标点击也曾仅关闭面板，故不能把之前流程显示完成当成扩展执行证据。分享动作现改为等待实际的“Send to devices”，避免再次误报。
 
-实际 ZIP：`extension-evidence/diagnostic-archives/uniclip_diagnostics_2026-09-12_01-29-01.zip`。逐行解析和终止事件配对结果保存于 `extension-evidence/coverage-check.json`；原始文件另存 `source-native-logs/`、`source-engine.jsonl`。
+实际 ZIP：`extension-evidence/diagnostic-archives/clip_diagnostics_2026-09-12_01-29-01.zip`。逐行解析和终止事件配对结果保存于 `extension-evidence/coverage-check.json`；原始文件另存 `source-native-logs/`、`source-engine.jsonl`。
 
 - 键盘：Safari 显示并插入 `KeyboardHistoryProbe`，截图为 `keyboard-active.png` 和 `keyboard-inserted.png`。17 条原生记录包含启动、安全恢复、隐藏、暂停成功、释放和关闭成功；这些文件中的记录逐字保留在 ZIP。
 - 分享：应用内文本测试及 Safari 链接分别启动了独立扩展进程。6 条原生记录包含两个有相同 operationId 的 handoff 开始/成功对；两个 attempt 均包含 staged、handoff_started、handoff_queued。内容出现在主应用历史，但没有观察到发送页面或发送完成记录，不能把 handoff 的 succeeded 当作设备收到内容。

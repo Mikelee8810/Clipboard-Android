@@ -12,7 +12,7 @@ interface ShareSheetState {
 }
 
 /**
- * 分享弹层的跨层开关:分享扩展深链(uniclipboard://share)与 Android
+ * 分享弹层的跨层开关:分享扩展深链(clipboard://share)与 Android
  * redirector 在 Android 上先调用 `beginParsing()`,页面显示解析状态；转存完成
  * 后只允许同一会话调用 `completeParsing()` 展示内容，避免旧解析重新打开新页面。
  */

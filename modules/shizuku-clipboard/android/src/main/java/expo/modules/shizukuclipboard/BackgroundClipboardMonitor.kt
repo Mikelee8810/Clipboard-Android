@@ -22,7 +22,7 @@ object BackgroundClipboardMonitor {
     private val listenerLock = Any()
     private val callerToken = Binder()
     private val persistenceExecutor = Executors.newSingleThreadExecutor()
-    private val monitorThread = HandlerThread("uniclipboard-native-monitor").apply { start() }
+    private val monitorThread = HandlerThread("clipboard-native-monitor").apply { start() }
     private val monitorHandler = Handler(monitorThread.looper)
     private val mainHandler = Handler(android.os.Looper.getMainLooper())
 

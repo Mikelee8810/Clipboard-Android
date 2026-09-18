@@ -52,8 +52,8 @@ jobs:
       - name: Build app and extensions without signing
         run: |
           xcodebuild build \
-            -workspace ios/UniClip.xcworkspace \
-            -scheme UniClip \
+            -workspace ios/Clip.xcworkspace \
+            -scheme Clip \
             -configuration Release \
             -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_ALLOWED=NO \

@@ -1,9 +1,9 @@
 import Foundation
-#if canImport(UniClipboardModels)
+#if canImport(ClipboardModels)
 // SwiftPM build: `SettingsStore.appGroupID` lives in a sibling target.
 // Xcode app-target builds compile everything as one module so the
 // `canImport` check is false there.
-import UniClipboardModels
+import ClipboardModels
 #endif
 
 /// Content-addressed byte cache for clipboard payloads (image bytes, long-text
@@ -227,7 +227,7 @@ public extension PayloadCache {
         let container = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: SettingsStore.appGroupID)
             ?? FileManager.default.temporaryDirectory
-                .appendingPathComponent("uniclipboard-payloads-fallback", isDirectory: true)
+                .appendingPathComponent("clipboard-payloads-fallback", isDirectory: true)
         return PayloadCache(
             directory: container.appendingPathComponent("payloads", isDirectory: true),
             maxBytes: 200 * 1024 * 1024

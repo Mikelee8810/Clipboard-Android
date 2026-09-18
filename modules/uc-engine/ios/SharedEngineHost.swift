@@ -3,7 +3,7 @@ import OSLog
 import UIKit
 import UniformTypeIdentifiers
 
-private let startupLog = Logger(subsystem: "app.uniclipboard", category: "uc-startup")
+private let startupLog = Logger(subsystem: "app.clipboard", category: "uc-startup")
 
 private func analyticsContext() -> BindingAnalyticsContext {
   var system = utsname()
@@ -476,7 +476,7 @@ public enum ExtensionP2pError: LocalizedError {
   public var errorDescription: String? {
     switch self {
     case .sharedStoreUnavailable:
-      return "Open UniClip once to prepare P2P sharing for extensions."
+      return "Open Clip once to prepare P2P sharing for extensions."
     case .spaceUnavailable:
       return "No P2P space is available for this extension."
     case .runtimeBusy:
@@ -510,7 +510,7 @@ enum P2pSharedStore {
     guard let group = appGroupID(), let root = FileManager.default.containerURL(
       forSecurityApplicationGroupIdentifier: group
     ) else { return nil }
-    return root.appendingPathComponent("Library/Caches/UniClipDiagnostics", isDirectory: true)
+    return root.appendingPathComponent("Library/Caches/ClipDiagnostics", isDirectory: true)
   }
 
   static func sharedP2pDirectory(mode: P2pStorageMode) throws -> URL {

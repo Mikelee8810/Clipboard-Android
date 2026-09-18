@@ -25,7 +25,7 @@ on:
         type: boolean
 
 concurrency:
-  group: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_release && 'uniclip-release' || format('uniclip-build-{0}', github.ref) }}
+  group: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_release && 'clip-release' || format('clip-build-{0}', github.ref) }}
   cancel-in-progress: false
 
 jobs:

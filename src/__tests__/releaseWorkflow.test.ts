@@ -158,7 +158,7 @@ describe('validated release workflow', () => {
   });
 
   it('serializes full releases without cancelling one already in progress', () => {
-    expect(buildWorkflow).toContain('uniclip-release');
+    expect(buildWorkflow).toContain('clip-release');
     expect(buildWorkflow).toContain('cancel-in-progress: false');
   });
 
@@ -181,7 +181,7 @@ describe('validated release workflow', () => {
     expect(releaseWorkflow).toContain('/api/releases/register');
     expect(releaseWorkflow).toContain('FLARE_RELEASE_ACCESS_CLIENT_ID');
     expect(releaseWorkflow).toContain('FLARE_RELEASE_ACCESS_CLIENT_SECRET');
-    expect(releaseWorkflow).not.toContain('uniclipboard-releases/android/${channel}.json');
+    expect(releaseWorkflow).not.toContain('clipboard-releases/android/${channel}.json');
     expect(releaseWorkflow).not.toContain('/api/channels/');
     expect(flareReleaseRegistrationScript).toContain("product: 'android'");
     expect(flareReleaseRegistrationScript).not.toMatch(/channel\s*:/);
@@ -215,7 +215,7 @@ describe('validated release workflow', () => {
     expect(engineAdoptionWorkflow).toContain('gh pr reopen');
     expect(engineAdoptionWorkflow).toContain('actions/create-github-app-token@v3');
     expect(engineAdoptionWorkflow).toContain('permission-pull-requests: write');
-    expect(engineAdoptionWorkflow).toContain('repositories: UniClip');
+    expect(engineAdoptionWorkflow).toContain('repositories: Clip');
     expect(engineAdoptionWorkflow).toContain('GH_TOKEN: ${{ steps.app-token.outputs.token }}');
     expect(engineAdoptionWorkflow).not.toContain('GH_TOKEN: ${{ github.token }}');
   });

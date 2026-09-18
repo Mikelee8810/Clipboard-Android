@@ -383,8 +383,8 @@ describe('DiagnosticArchive', () => {
     const archive = readArchive(artifact.uri);
 
     expect(artifact).toEqual({
-      uri: 'file://cache/uniclip_diagnostics_2026-08-16_11-32-31.zip',
-      fileName: 'uniclip_diagnostics_2026-08-16_11-32-31.zip',
+      uri: 'file://cache/clip_diagnostics_2026-08-16_11-32-31.zip',
+      fileName: 'clip_diagnostics_2026-08-16_11-32-31.zip',
     });
     expect(Object.keys(archive).sort()).toEqual([
       'extensions/share_attempts.json',

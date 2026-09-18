@@ -300,10 +300,10 @@ describe('unified P2P engine native module', () => {
     const nextEventDefinition = swift.slice(nextEventStart, nextOperationStart);
 
     expect(swift).toContain(
-      'private let engineOperationQueue = DispatchQueue(label: "app.uniclipboard.uc-engine")'
+      'private let engineOperationQueue = DispatchQueue(label: "app.clipboard.uc-engine")'
     );
     expect(swift).toContain(
-      'private let engineEventQueue = DispatchQueue(label: "app.uniclipboard.uc-engine-events")'
+      'private let engineEventQueue = DispatchQueue(label: "app.clipboard.uc-engine-events")'
     );
     expect(swift).toMatch(/AsyncFunction\("start"\)[\s\S]*?\.runOnQueue\(engineOperationQueue\)/);
     expect(nextEventDefinition).toContain('.runOnQueue(engineEventQueue)');

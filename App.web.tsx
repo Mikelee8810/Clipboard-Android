@@ -417,7 +417,7 @@ export default function App() {
         <TopAppBar c={c} />
 
         <View style={styles.brandBlock}>
-          <Text style={[type.displayMedium, { color: c.onBackground }]}>UniClip</Text>
+          <Text style={[type.displayMedium, { color: c.onBackground }]}>Clip</Text>
           <Text style={[type.bodyLarge, { color: c.onSurfaceVariant, marginTop: space(1) }]}>
             Material 3 Expressive · UI 重设计预览
           </Text>
@@ -438,7 +438,7 @@ export default function App() {
           timestamp="刚刚"
           size="128 B"
           preview={
-            '欢迎使用 UniClip。\n这是一段示例文本,用于预览新的 Material 3 Expressive 卡片样式。'
+            '欢迎使用 Clip。\n这是一段示例文本,用于预览新的 Material 3 Expressive 卡片样式。'
           }
           source="远程"
         />
@@ -447,7 +447,7 @@ export default function App() {
 
         <ClipboardCardImage
           c={c}
-          imageUrl="https://picsum.photos/seed/uniclip-m3-2/640/360"
+          imageUrl="https://picsum.photos/seed/clip-m3-2/640/360"
           type="图片"
           timestamp="3 分钟前"
           size="245 KB"
@@ -491,7 +491,7 @@ export default function App() {
             c={c}
             leading={
               <LeadingImageThumb
-                url="https://picsum.photos/seed/uniclip-h1/120/120"
+                url="https://picsum.photos/seed/clip-h1/120/120"
                 radius={shape.md}
               />
             }
@@ -563,7 +563,7 @@ function TopAppBar({ c }: { c: M3Scheme }) {
         <Menu size={24} color={c.onSurface} strokeWidth={2} />
       </Pressable>
       <Text style={[type.titleLarge, { color: c.onSurface, flex: 1, marginLeft: space(3) }]}>
-        UniClip
+        Clip
       </Text>
       <Pressable style={({ hovered }: any) => [styles.iconBtn, hovered && stateLayer(c, 'hover')]}>
         <Search size={24} color={c.onSurfaceVariant} strokeWidth={2} />

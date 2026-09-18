@@ -6,7 +6,7 @@ description: Build the iOS app locally with xcodebuild and upload it to App Stor
 # iOS Local Release to TestFlight (no EAS)
 
 Build locally and upload directly to App Store Connect. EAS cloud builds do NOT work
-for iOS in this repo: the 293MB `modules/uc-core/ios/UniClipboardCore.xcframework` is
+for iOS in this repo: the 293MB `modules/uc-core/ios/ClipboardCore.xcframework` is
 gitignored, so cloud builders never see it. Local build is the only supported path.
 
 **Working directories** (do not mix them up):
@@ -26,7 +26,7 @@ gitignored, so cloud builders never see it. Local build is the only supported pa
 3. **Native bindings fresh**: if `modules/uc-core` was rebuilt recently, confirm the
    xcframework and `modules/uc-core/ios/Bindings` come from the same rebuild
    (mismatch causes runtime crashes, not build errors).
-4. **App Store Connect record exists** for bundle id `app.uniclipboard.UniClipboard`
+4. **App Store Connect record exists** for bundle id `app.clipboard.Clipboard`
    (it does — created for 1.1.0). Targets: main app + `.Share` + `.Keyboard`.
 
 ## Step 1 — Bump the build number (marketing version stays frozen)
@@ -78,7 +78,7 @@ marketing version forces a full review.
    - The trailing `prebuild --no-install` skips Expo's own npm/CocoaPods install; we
      run `pod install` once in `ios/` ourselves.
 
-   This produces `ios/UniClip/` (production target; the current `ios/UniClipDev/` is a
+   This produces `ios/Clip/` (production target; the current `ios/ClipDev/` is a
    dev prebuild). Fast path if you skip re-prebuild — set the literal in place, but
    only safe when the extensions inherit the version, else the upload is rejected on a
    bundle-version mismatch:
@@ -86,7 +86,7 @@ marketing version forces a full review.
    ```bash
    # cwd: repo root; BUILD must be the numeric ios.buildNumber from step 1
    BUILD=$(node -p "require('./app.json').expo.ios.buildNumber")
-   /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD" ios/UniClip/Info.plist
+   /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD" ios/Clip/Info.plist
    ```
 
 `CFBundleShortVersionString` must stay the plain 3-segment `expo.version` (e.g.
@@ -96,9 +96,9 @@ marketing version forces a full review.
 ## Step 2 — Archive
 
 ```bash
-cd ios && xcodebuild -workspace UniClip.xcworkspace -scheme UniClip \
+cd ios && xcodebuild -workspace Clip.xcworkspace -scheme Clip \
   -configuration Release -destination 'generic/platform=iOS' \
-  -archivePath build/UniClip.xcarchive archive -allowProvisioningUpdates
+  -archivePath build/Clip.xcarchive archive -allowProvisioningUpdates
 ```
 
 Takes 10–20 minutes — run it in the background. The archive being signed with an
@@ -109,7 +109,7 @@ Verify after success:
 ```bash
 /usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleVersion" \
   -c "Print :ApplicationProperties:CFBundleShortVersionString" \
-  ios/build/UniClip.xcarchive/Info.plist
+  ios/build/Clip.xcarchive/Info.plist
 ```
 
 ## Step 3 — Export and upload
@@ -125,7 +125,7 @@ output). Always prefix PATH with system directories:
 
 ```bash
 cd ios && env PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH" xcodebuild -exportArchive \
-  -archivePath build/UniClip.xcarchive \
+  -archivePath build/Clip.xcarchive \
   -exportOptionsPlist build/ExportOptions.plist \
   -exportPath build/export -allowProvisioningUpdates
 ```

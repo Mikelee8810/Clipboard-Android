@@ -51,7 +51,7 @@
   strip step, the APK Engine library is byte-identical to the pinned AAR library.
 - Android native tests: the physical phone rejected installation of the separate
   test APK (`INSTALL_FAILED_USER_RESTRICTED`). Re-ran on the existing
-  `UniClip_API_36` emulator with `ANDROID_SERIAL`; all 19 tests passed, including
+  `Clip_API_36` emulator with `ANDROID_SERIAL`; all 19 tests passed, including
   the final run against rc.14. The emulator was shut down afterward.
 - Android UI: real preview shows localized reasons and pending confirmations;
   empty trailing row space selects both options; exit review, Back, and final

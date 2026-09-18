@@ -128,7 +128,7 @@ class OverlayClipboardAdapter implements BackgroundClipboardAdapter {
     const overlayModule = getOverlayModule();
     const monitoringReady =
       this.method === 'overlay-polling' || overlayModule.hasReadLogsPermission();
-    const applicationId = Application.applicationId ?? 'app.uniclipboard.android';
+    const applicationId = Application.applicationId ?? 'app.clipboard.android';
     return {
       status: overlayModule.hasOverlayPermission() ? ('ready' as const) : ('unauthorized' as const),
       monitoringStatus: monitoringReady ? ('ready' as const) : ('setup-required' as const),

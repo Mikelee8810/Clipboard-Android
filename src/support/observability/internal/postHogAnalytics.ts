@@ -31,7 +31,7 @@ const FORBIDDEN_KEYS = new Set([
 ]);
 const EVENTS_STORAGE_KEY = '.posthog-rn.json';
 const LOGS_STORAGE_KEY = '.posthog-rn-logs.json';
-const STORAGE_PREFIX = '@uniclip/posthog:';
+const STORAGE_PREFIX = '@clip/posthog:';
 const QUEUE_KEYS = ['queue', 'ai_queue', 'logs_queue'] as const;
 
 type PostHogClient = {
@@ -127,7 +127,7 @@ export function createPostHogOptions(state: AnalyticsState): PostHogOptions {
     },
     before_send: filterPostHogEvent,
     logs: {
-      serviceName: 'uniclip-mobile',
+      serviceName: 'clip-mobile',
       serviceVersion: Application.nativeApplicationVersion ?? undefined,
       environment: __DEV__ ? 'development' : 'production',
       maxBufferSize: 50,

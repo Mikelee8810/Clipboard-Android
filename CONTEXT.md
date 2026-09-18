@@ -5,7 +5,7 @@ mandatory platform and storage rules and `DESIGN.md` for UI conventions.
 
 ## Product Model
 
-UniClip is an Expo SDK 56 / React Native mobile client for encrypted clipboard
+Clip is an Expo SDK 56 / React Native mobile client for encrypted clipboard
 sync across Android, iOS, and desktop devices.
 
 Devices create or join a Space with an invitation code. The mobile app has no

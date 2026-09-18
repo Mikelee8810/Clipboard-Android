@@ -165,8 +165,8 @@ jobs:
       - name: Build iOS app and extensions
         run: >-
           xcodebuild build
-          -workspace ios/UniClip.xcworkspace
-          -scheme UniClip
+          -workspace ios/Clip.xcworkspace
+          -scheme Clip
           -configuration Release
           -destination 'generic/platform=iOS Simulator'
           CODE_SIGNING_ALLOWED=NO
@@ -187,8 +187,8 @@ jobs:
         with:
           client-id: ${{ secrets.ENGINE_RELEASE_APP_CLIENT_ID }}
           private-key: ${{ secrets.ENGINE_RELEASE_APP_PRIVATE_KEY }}
-          owner: UniClipboard
-          repositories: UniClip
+          owner: Clipboard
+          repositories: Clip
           permission-contents: write
           permission-pull-requests: write
 
@@ -206,8 +206,8 @@ jobs:
 
       - name: Push the deterministic branch
         run: |
-          git config user.name "uniclipboard-engine-release[bot]"
-          git config user.email "uniclipboard-engine-release[bot]@users.noreply.github.com"
+          git config user.name "clipboard-engine-release[bot]"
+          git config user.email "clipboard-engine-release[bot]@users.noreply.github.com"
           git checkout -B "$BRANCH"
           git commit -m "chore(engine): adopt $ENGINE_VERSION"
           if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then

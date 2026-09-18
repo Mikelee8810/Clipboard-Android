@@ -8,11 +8,11 @@ Pod::Spec.new do |s|
   s.summary        = 'Expo module exposing the iOS document export picker'
   s.description    = 'Presents UIDocumentPickerViewController(forExporting:) so the user picks where to save a file'
   s.license        = 'MIT'
-  s.author         = 'uniclipboard'
-  s.homepage       = 'https://github.com/nicepkg/uniclipboard'
+  s.author         = 'clipboard'
+  s.homepage       = 'https://github.com/nicepkg/clipboard'
   s.platforms      = { :ios => '16.4' }
   s.swift_version  = '5.9'
-  s.source         = { git: 'https://github.com/nicepkg/uniclipboard.git' }
+  s.source         = { git: 'https://github.com/nicepkg/clipboard.git' }
   s.static_framework = true
 
   s.dependency 'ExpoModulesCore'

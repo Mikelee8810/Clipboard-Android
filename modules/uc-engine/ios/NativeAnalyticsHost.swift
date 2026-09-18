@@ -184,7 +184,7 @@ final class ApplePostHogAnalyticsHost: BindingAnalyticsHost, @unchecked Sendable
   private let store: AppleAnalyticsStore
   private let projectKey: String
   private let endpoint: URL
-  private let deliveryQueue = DispatchQueue(label: "app.uniclipboard.analytics.delivery")
+  private let deliveryQueue = DispatchQueue(label: "app.clipboard.analytics.delivery")
   private let contextLock = NSLock()
   private let sessionID = UUID().uuidString.lowercased()
   private var appVersion: String
@@ -264,7 +264,7 @@ final class ApplePostHogAnalyticsHost: BindingAnalyticsHost, @unchecked Sendable
     properties["$insert_id"] = UUID().uuidString.lowercased()
     properties["$device_id"] = properties["analytics_device_id"]
     properties["$session_id"] = properties["session_id"]
-    properties["$lib"] = "uniclipboard-mobile"
+    properties["$lib"] = "clipboard-mobile"
     properties["$lib_version"] = properties["app_version"]
     properties["$os"] = "iOS"; properties["$os_version"] = properties["os_version"]
     properties["$device_type"] = "Mobile"; properties["$geoip_disable"] = true
@@ -278,7 +278,7 @@ final class ApplePostHogAnalyticsHost: BindingAnalyticsHost, @unchecked Sendable
 
   func identify(payload: BindingAnalyticsIdentify) throws {
     guard store.isEnabled, !projectKey.isEmpty else { return }
-    var properties: [String: Any] = ["$anon_distinct_id": payload.oldDistinctId, "$lib": "uniclipboard-mobile", "$geoip_disable": true]
+    var properties: [String: Any] = ["$anon_distinct_id": payload.oldDistinctId, "$lib": "clipboard-mobile", "$geoip_disable": true]
     try addJSON(payload.setJson, key: "$set", to: &properties)
     try addJSON(payload.setOnceJson, key: "$set_once", to: &properties)
     try enqueue("$identify", distinctID: payload.newDistinctId, properties: properties)
@@ -287,7 +287,7 @@ final class ApplePostHogAnalyticsHost: BindingAnalyticsHost, @unchecked Sendable
   func groupIdentify(payload: BindingAnalyticsGroupIdentify) throws {
     try store.setSpaceGroupKey(payload.groupKey, identified: false)
     guard store.isEnabled, !projectKey.isEmpty else { return }
-    var properties: [String: Any] = ["$group_type": payload.groupType, "$group_key": payload.groupKey, "$lib": "uniclipboard-mobile", "$geoip_disable": true]
+    var properties: [String: Any] = ["$group_type": payload.groupType, "$group_key": payload.groupKey, "$lib": "clipboard-mobile", "$geoip_disable": true]
     try addJSON(payload.setJson, key: "$group_set", to: &properties)
     try enqueue("$groupidentify", distinctID: try store.currentDistinctID(), properties: properties)
     try store.setSpaceGroupIdentified(true)

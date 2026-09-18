@@ -1,4 +1,4 @@
-package app.uniclipboard.android.processtext
+package app.clipboard.android.processtext
 
 import android.app.Activity
 import android.content.Intent
@@ -30,7 +30,7 @@ class ProcessTextActivity : Activity() {
         NativeLogger.d(TAG, "Received process text: ${text.take(50)}")
 
         val encodedText = Uri.encode(text)
-        val url = "uniclipboard://process-text?text=$encodedText"
+        val url = "clipboard://process-text?text=$encodedText"
 
         val mainIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

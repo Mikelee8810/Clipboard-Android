@@ -3,7 +3,7 @@
 Status: **Design finalized — ready to implement.**
 
 This plan is the design of record for the `activate_clipboard` feature in the RN app
-(`uniclipboard-android`). It is grounded in the desktop project's **actual code** and its
+(`clipboard-android`). It is grounded in the desktop project's **actual code** and its
 authoritative docs (`sync-protocol-spec.md`, `sync-engine-design.md`, `sync-quickref.md`,
 `ACTIVATE_CLIPBOARD_DESIGN.md` on the `feature/activate-clipboard-table` worktree), not in
 any earlier/superseded design note.
@@ -191,7 +191,7 @@ is cleared after apply. So Swift extensions / RN UI showing "current item" read 
 
 ## 7. Swift side (iOS extensions)
 
-The keyboard/share extensions open the shared App Group `uniclipboard.db` via the raw SQLite3 C
+The keyboard/share extensions open the shared App Group `clipboard.db` via the raw SQLite3 C
 API, `SQLITE_OPEN_READWRITE` (never create), WAL + `busy_timeout=3000`
 (`targets/_shared/HistoryDatabase.swift`).
 

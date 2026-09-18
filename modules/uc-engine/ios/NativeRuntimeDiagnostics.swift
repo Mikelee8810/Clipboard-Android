@@ -112,7 +112,7 @@ public final class NativeRuntimeDiagnostics: @unchecked Sendable {
   private let role: NativeDiagnosticRole
   private let sessionId = UUID().uuidString.lowercased()
   private let startedAt = Date()
-  private let queue = DispatchQueue(label: "app.uniclipboard.native-diagnostics", qos: .utility)
+  private let queue = DispatchQueue(label: "app.clipboard.native-diagnostics", qos: .utility)
   private let capacity = DispatchSemaphore(value: 128)
   private let state = NSLock()
   private let maxFileBytes: Int

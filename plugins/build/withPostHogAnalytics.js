@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_plugins_1 = require("expo/config-plugins");
-const ANDROID_KEY = 'app.uniclipboard.analytics.POSTHOG_PROJECT_KEY';
+const ANDROID_KEY = 'app.clipboard.analytics.POSTHOG_PROJECT_KEY';
 const EXTENSION_TARGET_NAMES = new Set(['share', 'keyboard']);
 const withPostHogAnalytics = (config) => {
     const projectKey = process.env.POSTHOG_PROJECT_KEY?.trim() ?? '';

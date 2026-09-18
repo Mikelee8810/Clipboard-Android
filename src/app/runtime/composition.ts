@@ -71,6 +71,7 @@ export function configureAppRuntime(): void {
         content: getUnifiedContentService(),
         clipboard: {
           observeClipboardChange: (dispatch) => nativeEngine.observeClipboardChange(dispatch),
+          lastEngineWrite: () => nativeEngine.lastClipboardWrite(),
           persistDelivery: persistP2pDeliveryReport,
         },
       }),

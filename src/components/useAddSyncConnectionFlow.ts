@@ -7,11 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { getUnifiedSpaceService, unifiedSpaceUserErrorCode } from '@/features/space';
 import { useUnifiedSpaceStore } from '@/features/space';
-import {
-  formatInvitationCode,
-  invitationCodeInputValue,
-  isInvitationCodeComplete,
-} from '@/utils/invitationCode';
+import { cleanPairingCode, formatPairingCode, isPairingCodeComplete } from '@/utils/spaceSecret';
 import type { AddSyncConnectionMode } from './AddSyncConnectionSheet.types';
 
 export type AddSyncConnectionFlowMode =
@@ -212,15 +208,16 @@ export function useAddSyncConnectionFlow({
   };
 
   const updateInvitationCode = (value: string) => {
-    const nextValue = invitationCodeInputValue(value);
+    const nextValue = cleanPairingCode(value);
     setInvitationCode(nextValue);
-    setError(/^[0-9]{0,6}$/.test(nextValue) ? null : t('space.error.invitationCodeInvalid'));
-    if (nextValue.length === 3 || isInvitationCodeComplete(nextValue))
-      void Haptics.selectionAsync();
+    setError(
+      /^[0-9]{0,6}[A-Z2-9]{0,10}$/.test(nextValue) ? null : t('space.error.invitationCodeInvalid')
+    );
+    if (nextValue.length === 6 || isPairingCodeComplete(nextValue)) void Haptics.selectionAsync();
   };
 
   const continueFromCode = () => {
-    if (!isInvitationCodeComplete(invitationCode)) {
+    if (!isPairingCodeComplete(invitationCode)) {
       setError(t('space.error.invitationCodeInvalid'));
       return;
     }
@@ -258,7 +255,7 @@ export function useAddSyncConnectionFlow({
     setError(null);
     try {
       const joined = await getUnifiedSpaceService().joinSpace(
-        formatInvitationCode(invitationCode),
+        formatPairingCode(invitationCode),
         deviceName,
         passphrase,
         false
@@ -291,7 +288,7 @@ export function useAddSyncConnectionFlow({
               setPending(true);
               setError(null);
               void getUnifiedSpaceService()
-                .joinSpace(formatInvitationCode(invitationCode), deviceName, passphrase, true)
+                .joinSpace(formatPairingCode(invitationCode), deviceName, passphrase, true)
                 .then((joined) => {
                   if (!mountedRef.current) return;
                   setError(null);
@@ -413,8 +410,8 @@ export function useAddSyncConnectionFlow({
       cancellingJoin,
       error,
       copied,
-      canSubmitDetails: deviceName.trim().length > 0 && passphrase.trim().length > 0,
-      codeComplete: isInvitationCodeComplete(invitationCode),
+      canSubmitDetails: deviceName.trim().length > 0,
+      codeComplete: isPairingCodeComplete(invitationCode),
       invitationExpired: invitation ? invitation.expiresAtMs <= nowMs : false,
       invitationTimeRemaining: invitation ? remainingTime(invitation.expiresAtMs, nowMs) : '0:00',
       remoteDeviceName,

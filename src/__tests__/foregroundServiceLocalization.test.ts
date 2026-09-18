@@ -14,8 +14,8 @@ const servicePath = join(
 const expectedStrings = {
   foreground_service_channel_name: ['Background tasks', '后台任务'],
   foreground_service_channel_description: [
-    'UniClip background sync service',
-    'UniClip 后台同步服务',
+    'Clip background sync service',
+    'Clip 后台同步服务',
   ],
   foreground_service_running: ['Background tasks running', '后台任务运行中'],
   foreground_service_stopping: ['Stopping…', '正在停止…'],

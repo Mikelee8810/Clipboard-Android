@@ -39,7 +39,7 @@ describe('PostHog logs SDK delivery', () => {
       const logs = requests.filter((request) => request.url.includes('/i/v1/logs'));
       expect(logs).toHaveLength(1);
       expect(logs[0].body).toContain('Join space failed');
-      expect(logs[0].body).toContain('uniclip-mobile');
+      expect(logs[0].body).toContain('clip-mobile');
       expect(logs[0].body).not.toContain('secret-payload');
       controller.captureLog('info', 'P2pSyncAdapter', ['P2P space state', { deviceCount: 2 }]);
       consentEnabled = false;

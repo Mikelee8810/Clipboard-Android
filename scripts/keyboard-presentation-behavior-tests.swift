@@ -259,7 +259,7 @@ private enum KeyboardPresentationBehaviorTests {
         )
         return KeyboardViewState(
             layout: .init(hasFullAccess: mode != .needsFullAccess, needsInputModeSwitchKey: true, returnKeyTitle: nil),
-            topBar: .init(title: "UniClip", showsSearch: mode == .cards, showsRefresh: mode != .needsFullAccess, isServerEnabled: true, servers: [
+            topBar: .init(title: "Clip", showsSearch: mode == .cards, showsRefresh: mode != .needsFullAccess, isServerEnabled: true, servers: [
                 .init(id: "server-1", title: "Home", isActive: true),
                 .init(id: "server-2", title: "Work", isActive: false),
             ]),

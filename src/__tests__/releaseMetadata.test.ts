@@ -12,7 +12,7 @@ function createReleaseFixture(options?: {
   englishChangelogTag?: string;
   releaseChannel?: { name: 'alpha'; number: number };
 }): string {
-  const root = mkdtempSync(join(tmpdir(), 'uniclip-release-metadata-'));
+  const root = mkdtempSync(join(tmpdir(), 'clip-release-metadata-'));
   const androidBuild = options?.androidBuild ?? 156;
   const iosBuild = options?.iosBuild ?? '156';
   const changelogTag = options?.changelogTag ?? 'v1.3.0.156';

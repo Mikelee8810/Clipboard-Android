@@ -5,7 +5,7 @@ Date: 2026-09-11. Local Apple Silicon macOS. No physical-device or cross-device-
 ## Tested artifacts
 
 - Maestro 2.10.0; iOS 26.3 / iPhone 17 Pro; Android API 36 / Pixel 8 arm64.
-- iOS: `app.uniclipboard.UniClipboard.dev`, version 2.0.0 (180), Release Simulator build with simulated App Group entitlements.
+- iOS: `app.clipboard.Clipboard.dev`, version 2.0.0 (180), Release Simulator build with simulated App Group entitlements.
 - iOS executable SHA-256: `6f20ec48bf61a3adc4700ac7f12ddb226aa58a178aae05d9b4be3aa721e63096`.
 - iOS main.jsbundle SHA-256: `6805eaab2bc800cef7d0b6be66830cf8628502f4bfd0b0798a1a1758d6293336`.
 - Android APK SHA-256: `148247273325af9bc6df6a01e566f4a1383aaf6df441940fa5eae8647f6d84d6`.

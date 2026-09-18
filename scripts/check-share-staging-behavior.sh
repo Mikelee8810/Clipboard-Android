@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
-BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/uniclip-share-staging.XXXXXX")"
+BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/clip-share-staging.XXXXXX")"
 trap 'rm -rf "${BUILD_DIR}"' EXIT
 
 SWIFTC_BIN="${SWIFTC:-}"

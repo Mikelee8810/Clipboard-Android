@@ -78,8 +78,6 @@ describe('unified sync connection flows', () => {
       expect(platform).toContain("'success'");
       expect(platform).toContain('space.flow.waitingTitle');
       expect(platform).toContain('space.flow.successTitle');
-      expect(platform).toContain('normalizeInvitationCodeInput');
-      expect(platform).toContain('formatInvitationCode');
     }
 
     expect(android).toContain('space.flow.joinCodeTitle');
@@ -113,7 +111,7 @@ describe('unified sync connection flows', () => {
     expect(ios).toContain('if (normalized !== value) invitationCodeState.value = normalized');
     expect(ios).toContain("keyboardType('numeric')");
     expect(source('components/AddSyncConnectionSheet.android.tsx')).toContain(
-      "keyboardType: 'number'"
+      "capitalization: 'characters'"
     );
     expect(ios).toContain('autoFocus');
     expect(ios).toContain('ClipboardProxy.getStringAsync()');

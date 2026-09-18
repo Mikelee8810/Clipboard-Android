@@ -209,7 +209,7 @@ public final class ShareDiagnosticsStore: @unchecked Sendable {
     retentionMilliseconds: Int64 = 3 * 24 * 60 * 60 * 1_000
   ) throws {
     self.directoryURL = containerURL
-      .appendingPathComponent("Library/Caches/UniClipDiagnostics", isDirectory: true)
+      .appendingPathComponent("Library/Caches/ClipDiagnostics", isDirectory: true)
       .appendingPathComponent("share-attempts", isDirectory: true)
     self.maxAttempts = max(1, maxAttempts)
     self.retentionMilliseconds = max(0, retentionMilliseconds)

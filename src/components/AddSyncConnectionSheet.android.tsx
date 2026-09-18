@@ -33,7 +33,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useTheme } from '@/hooks/useTheme';
 import { resolveDefaultDeviceName } from '@/utils/deviceName';
-import { formatInvitationCode, normalizeInvitationCodeInput } from '@/utils/invitationCode';
+import { formatPairingCode } from '@/utils/spaceSecret';
 import type { AddSyncConnectionSheetProps } from './AddSyncConnectionSheet.types';
 import { useAddSyncConnectionFlow } from './useAddSyncConnectionFlow';
 
@@ -49,7 +49,7 @@ const ICONS = {
 };
 
 const TITLE_STYLE = { typography: 'titleLarge' } as const;
-const CODE_REVIEW_STYLE = { typography: 'headlineMedium' } as const;
+const CODE_REVIEW_STYLE = { typography: 'titleLarge' } as const;
 const INVITATION_STYLE = {
   typography: 'displaySmall',
   fontFamily: 'monospace',
@@ -195,28 +195,12 @@ function AddSyncConnectionSheetContent({
               value={deviceNameState}
               onValueChange={setDeviceName}
               singleLine
-              keyboardOptions={{ capitalization: 'words', imeAction: 'next' }}
+              keyboardOptions={{ capitalization: 'words', imeAction: 'done' }}
+              keyboardActions={{ onDone: () => void submitCreate() }}
               modifiers={[fillMaxWidth()]}
             >
               <OutlinedTextField.Label>
                 <ComposeText>{t('space.field.deviceName')}</ComposeText>
-              </OutlinedTextField.Label>
-            </OutlinedTextField>
-            <Spacer modifiers={[heightModifier(12)]} />
-            <OutlinedTextField
-              value={passphraseState}
-              onValueChange={setPassphrase}
-              singleLine
-              visualTransformation="password"
-              keyboardOptions={{
-                keyboardType: 'password',
-                autoCorrectEnabled: false,
-                imeAction: 'done',
-              }}
-              modifiers={[fillMaxWidth()]}
-            >
-              <OutlinedTextField.Label>
-                <ComposeText>{t('space.field.passphrase')}</ComposeText>
               </OutlinedTextField.Label>
             </OutlinedTextField>
             <Spacer modifiers={[heightModifier(20)]} />
@@ -251,7 +235,7 @@ function AddSyncConnectionSheetContent({
               singleLine
               keyboardOptions={{
                 autoCorrectEnabled: false,
-                keyboardType: 'number',
+                capitalization: 'characters',
                 imeAction: 'next',
               }}
               textStyle={CODE_INPUT_STYLE}
@@ -262,7 +246,7 @@ function AddSyncConnectionSheetContent({
                 <ComposeText>{t('space.field.invitationCode')}</ComposeText>
               </OutlinedTextField.Label>
               <OutlinedTextField.Placeholder>
-                <ComposeText>123-456</ComposeText>
+                <ComposeText>123-456-ABCDEFGHJK</ComposeText>
               </OutlinedTextField.Placeholder>
             </OutlinedTextField>
             <Spacer modifiers={[heightModifier(20)]} />
@@ -282,27 +266,9 @@ function AddSyncConnectionSheetContent({
             </ComposeText>
             <Spacer modifiers={[heightModifier(12)]} />
             <ComposeText style={CODE_REVIEW_STYLE}>
-              {formatInvitationCode(normalizeInvitationCodeInput(invitationCode))}
+              {formatPairingCode(invitationCode)}
             </ComposeText>
             <Spacer modifiers={[heightModifier(20)]} />
-            <OutlinedTextField
-              value={passphraseState}
-              onValueChange={setPassphrase}
-              autoFocus
-              singleLine
-              visualTransformation="password"
-              keyboardOptions={{
-                keyboardType: 'password',
-                autoCorrectEnabled: false,
-                imeAction: 'next',
-              }}
-              modifiers={[fillMaxWidth()]}
-            >
-              <OutlinedTextField.Label>
-                <ComposeText>{t('space.field.passphrase')}</ComposeText>
-              </OutlinedTextField.Label>
-            </OutlinedTextField>
-            <Spacer modifiers={[heightModifier(12)]} />
             <OutlinedTextField
               value={deviceNameState}
               onValueChange={setDeviceName}

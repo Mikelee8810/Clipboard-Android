@@ -36,33 +36,33 @@ describe('Expo app config variants', () => {
     const extensions = config.extra.eas.build.experimental.ios.appExtensions;
 
     expect(config.name).toBe('Clipboard');
-    expect(config.scheme).toBe('uniclipboard-dev');
-    expect(config.ios.bundleIdentifier).toBe('app.uniclipboard.UniClipboard.dev');
+    expect(config.scheme).toBe('clipboard-dev');
+    expect(config.ios.bundleIdentifier).toBe('app.clipboard.Clipboard.dev');
     expect(config.ios.infoPlist.UCAppGroupIdentifier).toBe(
-      'group.app.uniclipboard.UniClipboard.dev'
+      'group.app.clipboard.Clipboard.dev'
     );
     expect(config.ios.infoPlist.UCP2PKeychainAccessGroup).toBe(
-      '$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.dev.p2p'
+      '$(AppIdentifierPrefix)app.clipboard.Clipboard.dev.p2p'
     );
-    expect(appGroups).toEqual(['group.app.uniclipboard.UniClipboard.dev']);
+    expect(appGroups).toEqual(['group.app.clipboard.Clipboard.dev']);
     expect(config.ios.entitlements['keychain-access-groups']).toEqual([
-      '$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.dev.p2p',
+      '$(AppIdentifierPrefix)app.clipboard.Clipboard.dev.p2p',
     ]);
     expect(extensions).toEqual([
       {
         targetName: 'share',
-        bundleIdentifier: 'app.uniclipboard.UniClipboard.dev.Share',
+        bundleIdentifier: 'app.clipboard.Clipboard.dev.Share',
         entitlements: {
-          'com.apple.security.application-groups': ['group.app.uniclipboard.UniClipboard.dev'],
-          'keychain-access-groups': ['$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.dev.p2p'],
+          'com.apple.security.application-groups': ['group.app.clipboard.Clipboard.dev'],
+          'keychain-access-groups': ['$(AppIdentifierPrefix)app.clipboard.Clipboard.dev.p2p'],
         },
       },
       {
         targetName: 'keyboard',
-        bundleIdentifier: 'app.uniclipboard.UniClipboard.dev.Keyboard',
+        bundleIdentifier: 'app.clipboard.Clipboard.dev.Keyboard',
         entitlements: {
-          'com.apple.security.application-groups': ['group.app.uniclipboard.UniClipboard.dev'],
-          'keychain-access-groups': ['$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.dev.p2p'],
+          'com.apple.security.application-groups': ['group.app.clipboard.Clipboard.dev'],
+          'keychain-access-groups': ['$(AppIdentifierPrefix)app.clipboard.Clipboard.dev.p2p'],
         },
       },
     ]);
@@ -74,40 +74,40 @@ describe('Expo app config variants', () => {
     const extensions = config.extra.eas.build.experimental.ios.appExtensions;
 
     expect(config.name).toBe('Clipboard');
-    expect(config.scheme).toBe('uniclipboard');
-    expect(config.ios.bundleIdentifier).toBe('app.uniclipboard.UniClipboard');
-    expect(config.ios.infoPlist.UCAppGroupIdentifier).toBe('group.app.uniclipboard.UniClipboard');
+    expect(config.scheme).toBe('clipboard');
+    expect(config.ios.bundleIdentifier).toBe('app.clipboard.Clipboard');
+    expect(config.ios.infoPlist.UCAppGroupIdentifier).toBe('group.app.clipboard.Clipboard');
     expect(config.ios.infoPlist.UCP2PKeychainAccessGroup).toBe(
-      '$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.p2p'
+      '$(AppIdentifierPrefix)app.clipboard.Clipboard.p2p'
     );
     expect(appGroups).toEqual([
-      'group.app.uniclipboard.UniClipboard',
-      'group.app.uniclipboard.ios',
+      'group.app.clipboard.Clipboard',
+      'group.app.clipboard.ios',
     ]);
     expect(config.ios.entitlements['keychain-access-groups']).toEqual([
-      '$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.p2p',
+      '$(AppIdentifierPrefix)app.clipboard.Clipboard.p2p',
     ]);
     expect(extensions).toEqual([
       {
         targetName: 'share',
-        bundleIdentifier: 'app.uniclipboard.UniClipboard.Share',
+        bundleIdentifier: 'app.clipboard.Clipboard.Share',
         entitlements: {
           'com.apple.security.application-groups': [
-            'group.app.uniclipboard.UniClipboard',
-            'group.app.uniclipboard.ios',
+            'group.app.clipboard.Clipboard',
+            'group.app.clipboard.ios',
           ],
-          'keychain-access-groups': ['$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.p2p'],
+          'keychain-access-groups': ['$(AppIdentifierPrefix)app.clipboard.Clipboard.p2p'],
         },
       },
       {
         targetName: 'keyboard',
-        bundleIdentifier: 'app.uniclipboard.UniClipboard.Keyboard',
+        bundleIdentifier: 'app.clipboard.Clipboard.Keyboard',
         entitlements: {
           'com.apple.security.application-groups': [
-            'group.app.uniclipboard.UniClipboard',
-            'group.app.uniclipboard.ios',
+            'group.app.clipboard.Clipboard',
+            'group.app.clipboard.ios',
           ],
-          'keychain-access-groups': ['$(AppIdentifierPrefix)app.uniclipboard.UniClipboard.p2p'],
+          'keychain-access-groups': ['$(AppIdentifierPrefix)app.clipboard.Clipboard.p2p'],
         },
       },
     ]);
@@ -129,11 +129,11 @@ describe('Expo app config variants', () => {
       const source = readFileSync(path.join(process.cwd(), file), 'utf8');
       expect(source).toContain('UCAppGroupIdentifier');
       expect(source).toContain('Bundle.main.bundleIdentifier');
-      expect(source).toContain('app.uniclipboard.UniClipboard');
+      expect(source).toContain('app.clipboard.Clipboard');
       expect(source).toContain('group.\\(bundleID)');
       expect(source).toContain('[".Share", ".Keyboard"]');
       expect(source).not.toContain(
-        'forSecurityApplicationGroupIdentifier: "group.app.uniclipboard.UniClipboard"'
+        'forSecurityApplicationGroupIdentifier: "group.app.clipboard.Clipboard"'
       );
       expect(source).not.toContain('SecTaskCopyValueForEntitlement');
     }
@@ -167,7 +167,7 @@ describe('Expo app config variants', () => {
     for (const file of extensionPlists) {
       const source = readFileSync(path.join(process.cwd(), file), 'utf8');
       expect(source).toContain('<string>$(UCP2P_KEYCHAIN_ACCESS_GROUP)</string>');
-      expect(source).not.toContain('UniClipboard.dev.p2p');
+      expect(source).not.toContain('Clipboard.dev.p2p');
     }
   });
 

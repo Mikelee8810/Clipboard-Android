@@ -1,4 +1,4 @@
-# UniClip
+# Clip
 
 [简体中文](./README.md) · **English**
 
@@ -39,7 +39,7 @@ Covers **Android**, **iOS**, and desktop.
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshorts/hero.jpg" width="900" alt="UniClip syncing across iPad and iPhone" />
+  <img src="docs/screenshorts/hero.jpg" width="900" alt="Clip syncing across iPad and iPhone" />
 </p>
 
 ## Architecture overview
@@ -107,13 +107,13 @@ For the release process and versioning strategy, see [docs/RELEASE.md](./docs/RE
 
 ## Acknowledgements
 
-The mobile side of UniClip was originally forked from [Jeric-X/syncclipboard-mobile](https://github.com/Jeric-X/syncclipboard-mobile) (MIT, by JericX). Many thanks.
+The mobile side of Clip was originally forked from [Jeric-X/syncclipboard-mobile](https://github.com/Jeric-X/syncclipboard-mobile) (MIT, by JericX). Many thanks.
 
 ## License
 
 This project includes the following copyright notices:
 
 - Copyright (c) 2026 JericX (original author of the upstream SyncClipboard)
-- Copyright (c) 2026 mkdir700 (UniClip)
+- Copyright (c) 2026 mkdir700 (Clip)
 
 See [LICENSE](./LICENSE) for details.

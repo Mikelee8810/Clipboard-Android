@@ -22,11 +22,11 @@ describe('shareFile', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('shares JSON diagnostics with the correct MIME type and iOS UTI', async () => {
-    await shareFile('file://cache/uniclip_diagnostics.json', 'uniclip_diagnostics.json');
+    await shareFile('file://cache/clip_diagnostics.json', 'clip_diagnostics.json');
 
-    expect(mockShareAsync).toHaveBeenCalledWith('file://cache/uniclip_diagnostics.json', {
+    expect(mockShareAsync).toHaveBeenCalledWith('file://cache/clip_diagnostics.json', {
       mimeType: 'application/json',
-      dialogTitle: 'uniclip_diagnostics.json',
+      dialogTitle: 'clip_diagnostics.json',
       UTI: 'public.json',
     });
   });

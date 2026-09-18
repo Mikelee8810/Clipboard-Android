@@ -44,7 +44,7 @@ export async function fetchURLMetadata(url: string): Promise<URLCardMetadata> {
       signal: controller.signal,
       headers: {
         'User-Agent':
-          'Mozilla/5.0 (compatible; UniClipboard/1.0; +https://github.com/user/uniclipboard)',
+          'Mozilla/5.0 (compatible; Clipboard/1.0; +https://github.com/user/clipboard)',
       },
     });
     clearTimeout(timeout);

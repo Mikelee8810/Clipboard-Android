@@ -1,4 +1,4 @@
-package app.uniclipboard.android.quicksettings
+package app.clipboard.android.quicksettings
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -35,7 +35,7 @@ class UploadTileService : TileService() {
             val intent = Intent().apply {
                 component = ComponentName(
                     applicationContext,
-                    "app.uniclipboard.android.quickaction.QuickActionActivity"
+                    "app.clipboard.android.quickaction.QuickActionActivity"
                 )
                 putExtra("direction", "upload")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

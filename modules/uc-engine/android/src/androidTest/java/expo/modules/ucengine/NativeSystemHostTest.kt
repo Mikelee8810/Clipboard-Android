@@ -144,8 +144,8 @@ class NativeSystemHostTest {
           "file://${source.absolutePath}\n".toByteArray()
         ),
         BindingClipboardRepresentation.Inline(
-          "uniclipboard-file-display-metadata",
-          "application/x-uniclipboard-file-display-metadata+json",
+          "clipboard-file-display-metadata",
+          "application/x-clipboard-file-display-metadata+json",
           """{"files":[{"storage_name":"00000000","display_name":"plan006-original-name.txt"}]}"""
             .toByteArray()
         )

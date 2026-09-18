@@ -1,5 +1,5 @@
 ---
-name: UniClipboard
+name: Clipboard
 description: Cross-platform clipboard sync app — Material 3 Expressive on Android, Liquid Glass on iOS (26.x)
 
 # ─── Android: Material 3 Expressive (Indigo default) ───────────────
@@ -351,7 +351,7 @@ motion:
 
 ## Overview
 
-UniClipboard is a cross-platform clipboard sync utility built with Expo / React Native. It runs on **Android** and **iOS** with fully platform-specific UI: Material Design 3 Expressive on Android, and Apple Liquid Glass on iOS (26.x).
+Clipboard is a cross-platform clipboard sync utility built with Expo / React Native. It runs on **Android** and **iOS** with fully platform-specific UI: Material Design 3 Expressive on Android, and Apple Liquid Glass on iOS (26.x).
 
 The project follows a strict file-split pattern — every visual component has `.android.tsx` and `.ios.tsx` variants. Shared props live in `.types.ts`. Platform files own their own styles; there are no shared style objects across platforms.
 

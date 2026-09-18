@@ -1,4 +1,4 @@
-# UniClip
+# Clip
 
 **简体中文** · [English](./README.en.md)
 
@@ -39,7 +39,7 @@
 ## 截图
 
 <p align="center">
-  <img src="docs/screenshorts/hero.jpg" width="900" alt="UniClip 在 iPad 与 iPhone 上的同步界面" />
+  <img src="docs/screenshorts/hero.jpg" width="900" alt="Clip 在 iPad 与 iPhone 上的同步界面" />
 </p>
 
 ## 架构概览
@@ -119,14 +119,14 @@ npm run plugin:build
 
 ## 致谢
 
-UniClip 的移动端早期 fork 自 [Jeric-X/syncclipboard-mobile](https://github.com/Jeric-X/syncclipboard-mobile)（MIT，作者 JericX），特此致谢。
+Clip 的移动端早期 fork 自 [Jeric-X/syncclipboard-mobile](https://github.com/Jeric-X/syncclipboard-mobile)（MIT，作者 JericX），特此致谢。
 
 ## 许可协议
 
 本项目包含以下版权声明：
 
 - Copyright (c) 2026 JericX（上游 SyncClipboard 原作者）
-- Copyright (c) 2026 mkdir700（UniClip）
+- Copyright (c) 2026 mkdir700（Clip）
 
 详见 [LICENSE](./LICENSE)。
 

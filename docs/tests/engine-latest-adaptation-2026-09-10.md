@@ -21,7 +21,7 @@
 - All iOS Engine slices (device ARM64, simulator ARM64 and x86_64) and Android Engine slices (ARM64 and x86_64) compiled successfully from the pinned checkout.
 - Both dist source markers match the target SHA. Prepared-file integrity verification passed after recording the actual artifact hashes.
 - iOS Debug simulator app build, including extensions, passed. Installed and launched on iPhone 17 Pro (iOS 26.3); observed the home screen. Screenshot: `/tmp/mobile-engine-upgrade-ios.png`.
-- Android `:app:assembleDebug` passed after the POM fix. Installed and launched on `UniClip_API_36`; observed the onboarding screen. Screenshot: `/tmp/mobile-engine-upgrade-android.png`. Peer refresh reported retryable Engine error 1382 (UNAVAILABLE); no successful peer synchronization is claimed.
+- Android `:app:assembleDebug` passed after the POM fix. Installed and launched on `Clip_API_36`; observed the onboarding screen. Screenshot: `/tmp/mobile-engine-upgrade-android.png`. Peer refresh reported retryable Engine error 1382 (UNAVAILABLE); no successful peer synchronization is claimed.
 - Full Jest run: 180 suites, 1304 tests passed. After the POM fix, 4 relevant suites / 57 tests passed again.
 - No physical-device pairing, synchronization, or production profile upgrade was exercised. Simulator startup does not prove those behaviors.
 - Logs are `/tmp/mobile-engine-upgrade-*.log`.

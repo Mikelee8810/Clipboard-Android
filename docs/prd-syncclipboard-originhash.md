@@ -1,7 +1,7 @@
 # PRD — SyncClipboard Protocol: `originHash` Field
 
 Status: Proposed
-Owner: Server (uniclipboard daemon)
+Owner: Server (clipboard daemon)
 Consumers: Mobile sync clients (iOS / Android)
 Scope: Server-side only. This document defines **requirements and the protocol
 contract**. It does not prescribe an implementation.

@@ -18,7 +18,7 @@ function loadParser():
 
 function uri(payload: Record<string, unknown>, envelope = 'v=1&svc=mobile-sync'): string {
   const encoded = Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
-  return `uniclipboard://connect?${envelope}&p=${encoded}`;
+  return `clipboard://connect?${envelope}&p=${encoded}`;
 }
 
 describe('parseLanConnectUri', () => {
@@ -56,9 +56,9 @@ describe('parseLanConnectUri', () => {
 
   it.each([
     ['https://example.com', 'INVALID_SCHEME'],
-    ['uniclipboard://connect?v=2&svc=mobile-sync&p=e30', 'UNSUPPORTED_VERSION'],
-    ['uniclipboard://connect?v=1&svc=other&p=e30', 'UNSUPPORTED_SERVICE'],
-    ['uniclipboard://connect?v=1&svc=mobile-sync&p=not-valid!', 'PAYLOAD_DECODE_FAILED'],
+    ['clipboard://connect?v=2&svc=mobile-sync&p=e30', 'UNSUPPORTED_VERSION'],
+    ['clipboard://connect?v=1&svc=other&p=e30', 'UNSUPPORTED_SERVICE'],
+    ['clipboard://connect?v=1&svc=mobile-sync&p=not-valid!', 'PAYLOAD_DECODE_FAILED'],
     [uri({ v: 1, url: 'http://home.local', user: 'user' }), 'MISSING_FIELD'],
     [uri({ v: 1, url: 'ftp://home.local', user: 'user', pwd: 'password' }), 'INVALID_URL'],
   ])('maps %s to %s without throwing', (raw, error) => {
@@ -91,7 +91,7 @@ describe('parseLanConnectUri', () => {
       url: 'http://home.local:42720',
       user: 'user',
       pwd: 'password',
-    }).replace('uniclipboard://', 'uniclipboard-dev://');
+    }).replace('clipboard://', 'clipboard-dev://');
 
     expect(parser.parseLanConnectUri(raw)).toEqual(expect.objectContaining({ ok: true }));
   });

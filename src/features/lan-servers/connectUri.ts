@@ -1,5 +1,5 @@
-export const LAN_CONNECT_URI_PREFIX = 'uniclipboard://connect';
-export const LAN_CONNECT_URI_DEV_PREFIX = 'uniclipboard-dev://connect';
+export const LAN_CONNECT_URI_PREFIX = 'clipboard://connect';
+export const LAN_CONNECT_URI_DEV_PREFIX = 'clipboard-dev://connect';
 
 export type LanConnectUriError =
   | 'INVALID_SCHEME'
@@ -77,7 +77,7 @@ export function parseLanConnectUri(rawInput: string): ParseLanConnectUriResult {
   const raw = (rawInput ?? '').trim();
   const split = splitConnectUri(raw);
   const scheme = split?.scheme.toLowerCase();
-  const supportedScheme = scheme === 'uniclipboard' || (__DEV__ && scheme === 'uniclipboard-dev');
+  const supportedScheme = scheme === 'clipboard' || (__DEV__ && scheme === 'clipboard-dev');
   if (!split || !supportedScheme || split.host.toLowerCase() !== 'connect') {
     return { ok: false, error: 'INVALID_SCHEME' };
   }

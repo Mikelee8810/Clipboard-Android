@@ -48,10 +48,10 @@ function fixture() {
     join(root, 'package-lock.json'),
     `${JSON.stringify(
       {
-        name: 'uniclip',
+        name: 'clip',
         lockfileVersion: 3,
         packages: {
-          '': { name: 'uniclip', workspaces: ['modules/*'] },
+          '': { name: 'clip', workspaces: ['modules/*'] },
           'modules/uc-engine': { name: 'uc-engine', version: '0.0.0' },
         },
       },

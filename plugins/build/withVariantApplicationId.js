@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_plugins_1 = require("expo/config-plugins");
-const BASE_APPLICATION_ID = 'app.uniclipboard.android';
+const BASE_APPLICATION_ID = 'app.clipboard.android';
 /**
  * Appends a suffix to the Android `applicationId` WITHOUT touching the
  * gradle `namespace`.
  *
- * Keeping the namespace pinned at `app.uniclipboard.android` is essential:
+ * Keeping the namespace pinned at `app.clipboard.android` is essential:
  * `BuildConfig` is generated under the namespace package, so the native
- * Kotlin `import app.uniclipboard.android.BuildConfig` and every
+ * Kotlin `import app.clipboard.android.BuildConfig` and every
  * `ComponentName` class FQN keep resolving. Only the install-time
  * `applicationId` changes, which is what lets a ".dev" build coexist with the
  * production install on one device (FileProvider authorities and

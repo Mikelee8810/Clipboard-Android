@@ -2,8 +2,8 @@ import Foundation
 import Security
 
 public enum LanServerCredentialStore {
-    private static let service = "app.uniclipboard.lan-servers"
-    private static let keyPrefix = "uniclip.lan.server."
+    private static let service = "app.clipboard.lan-servers"
+    private static let keyPrefix = "clip.lan.server."
 
     public static func password(serverId: String) throws -> String? {
         try read(serverId: serverId, accessGroup: try sharedAccessGroup())

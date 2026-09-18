@@ -62,7 +62,7 @@ describe('P2P onboarding and upgrade UI', () => {
 
   it('omits the welcome header and its reserved space', () => {
     const screen = source('screens/OnboardingScreen.tsx');
-    expect(screen).not.toContain('UniClipboard');
+    expect(screen).not.toContain('UniClip');
     expect(screen).not.toContain('s.header');
     expect(screen).not.toContain('s.logo');
   });
